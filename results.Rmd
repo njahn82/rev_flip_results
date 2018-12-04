@@ -1,0 +1,260 @@
+---
+title: "Results Reverse Flips"
+output:
+  word_document: default
+  fig_caption: yes
+---
+
+````{r, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  echo = FALSE,
+  fig.width = 6,
+  fig.asp = 0.618,
+  dpi = 300,
+  fig.align = "center"
+)
+options(scipen = 999, digits = 2)
+knitr::knit_hooks$set(inline = function(x) {
+      if(is.numeric(x)){
+          return(prettyNum(x, big.mark=","))
+      }else{
+          return(x)
+       }
+   })
+# libraries
+library(tidyverse)
+library(ggridges)
+library(ggpubr)
+```
+
+```{r data}
+my_df <- readxl::read_xlsx("data/master_list.xlsx", sheet= 3) %>%
+  mutate(issn = ifelse(issn == "0037-8615", "1405-213X", issn)) %>%
+  # create id column
+  mutate(id = paste(row.names(.), issn, sep = "/"))
+```
+
+
+This section presents the key summary statistics of our dataset. In total, we identified `r n_distinct(my_df$journal_name)` journals that converted from fully open access to a subscription-based business model including hybrid open access. Figure presents a breakdown of these journals by the year when this switch occurred. While the earliest reverse flip happened in `r as.character(min(my_df$year_reverse_flipped, na.rm = TRUE))`, the majority of journals changed their business model from 2013 onward (N = `r filter(my_df, !is.na(year_reverse_flipped), year_reverse_flipped > 2012) %>% nrow()`).
+
+
+```{r time, fig.cap= "Number of journals converted from fully open access to a subscription-based business model per year. For three journals, no date information could be obtained."}
+my_df %>%
+  filter(!is.na(year_reverse_flipped)) %>%
+  ggplot(aes(as.factor(year_reverse_flipped))) +
+  geom_histogram(stat = "count") +
+  theme_minimal() +
+  labs(x = "Year of Reverse Flip", y = "Number of journals")
+```
+
+```{r}
+my_df %>% 
+  mutate(age_at_time_of_flip = year_reverse_flipped - year_founded) %>%
+#  group_by(issn) %>%
+  summarise(Mean = mean(age_at_time_of_flip),
+            Median = median(age_at_time_of_flip),
+            `Standard Deviation` = sd(age_at_time_of_flip),
+            `Minimum` = min(age_at_time_of_flip),
+            `Maximum` = max(age_at_time_of_flip),
+            `Q1` = quantile(age_at_time_of_flip, 1/4),
+            `Q3` = quantile(age_at_time_of_flip, 3/4)) %>%
+ gather(key = " ", value = "Journal Age") -> age_df
+```
+
+The dataset also includes information about the launch year of the journal, suggesting that not all journals in our sample were born online journals. In fact, around `r round(filter(my_df, !is.na(year_founded), year_founded < 1990) %>% nrow() / nrow(my_df) * 100)`% (N = `r filter(my_df, !is.na(year_reverse_flipped), year_founded < 1990) %>% nrow()`) of all journals found started before 1990. 
+
+Table provides summary statistics of the journal age when the reverse flipped occured. Large age differences can be observed, ranging from one year of existences until `r age_df 
+```
+
+Figure presents the number of journals by journal a
+
+Discipline by journal age at the time of reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per Discipline.
+
+```{r, fig.cap="Discipline by journal age at the time of reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per Discipline."}
+# Motivation: https://serialmentor.com/dataviz/nested-proportions.html
+my_df %>%
+  mutate(age_at_time_of_flip = year_reverse_flipped - year_founded) %>%
+  mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip < 6, "1-5", NA)) %>%
+  mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip > 5, "6-15", age_at_time_of_flip_cat)) %>%
+  mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip > 15, "> 15", age_at_time_of_flip_cat)) -> my_df_tt
+year_all <- my_df_tt %>%
+  count(age_at_time_of_flip_cat)
+my_df_tt %>%
+  count(age_at_time_of_flip_cat, Discipline) %>% 
+ggplot(aes(x = factor(age_at_time_of_flip_cat, levels = c("1-5", "6-15", "> 15")), y = n)) +
+  geom_bar(data = year_all, aes(fill = "All Reverse Flipped Journals"), color = "transparent", stat = "identity") +
+  geom_bar(aes(fill = "per Discipline"), color = "transparent", stat = "identity") +
+  facet_wrap(~Discipline, nrow = 1) +
+  scale_fill_manual(values = c("#b3b3b3a0", "#2b8cbed0"), name = "") +
+  theme_minimal() +
+  labs(x = "Journal Age", y = "Journals") +
+  theme(legend.position = "top",
+          legend.justification = "right")
+
+
+
+
+# %>%
+#   filter(!is.na(year_reverse_flipped)) %>%
+#   ggplot(aes(as.factor(year_reverse_flipped))) +
+#   geom_histogram(stat = "count") +
+#   theme_minimal() +
+#   facet_wrap(~ age_at_time_of_flip_cat) +
+#   labs(x = "Year of Reverse Flip", y = "Number of journals")
+# plot, re-use https://serialmentor.com/dataviz/nested-proportions.html
+```
+
+## Breakdown by indexing
+
+```{r}
+# cr_md <- readr::read_csv("data/cr_md.csv", col_types = cols(.default = "c")) %>%
+#   mutate(issued_year = lubridate::year(lubridate::parse_date_time(issued, c('y', 'ymd', 'ym'))))
+# scopus <- readr::read_csv("../data/scopus_issnl_match.csv")
+# my_df %>%
+#   inner_join(scopus, by = c("issn" = "issn"))
+```
+
+We investigated the indexing status of the reverserly flipped journals in large bibliometric databases. Table summarizes 
+
+
+## Breakdown by publisher
+
+```{r}
+cr_md <- readr::read_csv("data/cr_md.csv", col_types = cols(.default = "c")) %>%
+  mutate(issued_year = lubridate::year(lubridate::parse_date_time(issued, c('y', 'ymd', 'ym'))))
+# obtain current publisher and journal title name from crossre
+cr_md %>% 
+  group_by(issn, container.title, publisher, issued_year) %>% 
+  summarize(n = n()) %>% 
+  ungroup() %>%
+  group_by(issn) %>%
+  filter(issued_year == max(issued_year)) %>%
+  filter(n == max(n)) %>%
+  mutate(publisher = ifelse(publisher %in% "Springer Nature America, Inc", "Springer Nature", publisher)) %>%
+  mutate(publisher = ifelse(publisher %in% "Brill Academic Publishers", "Brill", publisher)) %>%
+  ungroup() %>%
+  count(publisher, container.title, issn, sort = TRUE) %>%
+  select(cr_publisher = publisher, 2:3) -> cr_publishers
+# disambiguate our publisher and journal title
+my_df %>%
+  left_join(cr_publishers, by = ("issn")) %>%
+  mutate(publisher = ifelse(!is.na(cr_publisher), cr_publisher, publisher)) %>%
+  mutate(journal_name = ifelse(!is.na(container.title), container.title, journal_name)) %>%
+  mutate(publisher = ifelse(!is.na(publisher), publisher, "unknown")) %>%
+  mutate(publisher_fct = fct_lump(fct_infreq(publisher), n = 5))  -> my_df_cr
+```
+
+The dataset allows to analyse the extent of reverse flips across publishers. For this aim, publisher names for every journal were obtained using Crossref, and if not available, added manually. In case of a change of publishing house (To Do, describe the dynamics in methods section and, if possible, quantify it), the current publisher name was used. In total, `r n_distinct(my_df_cr$publisher)` different publishing houses with reversely flipped journals are included in our dataset. 
+
+Table shows the top 5 publishers based on the number of journals in their subscription-based portfolio that were converted from fully open access. These five publishers comprise a total `r my_df_cr %>% filter(!publisher_fct == "Other") %>% nrow` journals, representing `r (my_df_cr %>% filter(!publisher_fct == "Other") %>% nrow) / nrow(my_df_cr) * 100`% of all journals found. The remaining `r my_df_cr %>% filter(publisher_fct == "Other") %>% group_by(publisher) %>% summarise(n = n_distinct(publisher)) %>% nrow()` publishers are represented in the category "Other". The extent of reverse flips across publishers reflects roughly the general market shares in scholarly publishing  where the large commercial publishers Elsevier BV, Springer Nature, Informa UK Limited and Wiley also dominate.
+
+```{r}
+my_df_cr %>%
+  count(publisher_fct) %>% 
+ # mutate(cumsum = cumsum(n)) %>%
+  mutate(prop = n / sum(n) * 100) %>%
+  select(`Publisher` = 1, `Reversely flipped journals` = 2, `Proportion (in%)` = 3) %>% 
+  mutate(Publisher = as.character(Publisher)) %>% 
+  rbind(list("Total", nrow(my_df_cr), 100)) %>%
+  knitr::kable(caption = "Top 5 publishers based on number of journals converted from from fully open access to a subscription-based business model", digits = 2)
+```
+
+
+## Breakdown by publication volume
+
+Using our dataset, we retrieved all Crossref indexed articles from 2000 onwards. Articles metadata from `r n_distinct(cr_md$issn)` journals were registered with Crossref. In total, these converted journals published `r nrow(cr_md)` articles in this period. 
+
+```{r}
+cr_md %>%
+  count(issn, issued_year) %>%
+  left_join(my_df_cr, by = c("issn")) %>%
+  select(1:3, year_reverse_flipped, container.title, cr_publisher) %>%
+  filter(!is.na(year_reverse_flipped)) %>%
+  mutate(lag = issued_year - year_reverse_flipped) %>%
+  filter(lag %in% -2:2) -> tmp
+tmp %>% 
+  filter(lag %in% c(-2,2)) %>% 
+  group_by(issn) %>% 
+  filter(n() > 1) %>% 
+  ungroup() %>% 
+  group_by(lag) %>% 
+  summarise(md = median(n)) ->median_change
+```  
+
+Publication volume across journals varies.
+
+Comparing yearly article volumes two years before and two years after the flip reveals little change. The median article volume  increased marginaly from `r filter(median_change, lag == -2) %>% .$md` to `r filter(median_change, lag == 2) %>% .$md` articles. Figure illustrate the distribution before and after the flip.
+
+
+
+```{r}
+cr_md %>%
+  count(issn, issued_year) %>%
+  left_join(my_df_cr, by = c("issn")) %>%
+  select(1:3, year_reverse_flipped, container.title, cr_publisher) %>%
+  filter(!is.na(year_reverse_flipped)) %>%
+  mutate(lag = issued_year - year_reverse_flipped) %>%
+  filter(lag %in% -2:2) -> tmp
+tmp %>% 
+  filter(lag %in% c(-2,2)) %>% 
+  group_by(issn) %>% 
+  filter(n() > 1) %>% 
+  mutate(lag = as.factor(lag)) -> tt
+ggpubr::ggdensity(tt, x = "n",
+           rug = TRUE, fill = "lag", 
+           color = "lag", 
+           palette = rev(c("#56B4E950", "#E69F0050")),
+           add = "median", alpha = 0.4) +
+  coord_cartesian(xlim = 0:500)
+```
+
+## Breakdown by subject
+
+## Breakdown by citation impact
+
+```{r}
+cwts <- readr::read_csv("data/cwts_jn_flipped.csv") 
+# add lag variable
+cwts %>%
+  distinct(issn, Year, .keep_all = TRUE) %>%
+  filter(!is.na(year_reverse_flipped)) %>%
+  mutate(lag = Year - year_reverse_flipped) %>%
+  filter(lag %in% -2:2) -> snip
+snip %>% 
+  # add publisher info
+  left_join(cr_publishers, by = "issn") %>%
+  filter(lag %in% c(-2, 2)) %>%
+  group_by(issn) %>% 
+  filter(n() > 1) %>% 
+  mutate(lag = as.factor(lag)) -> tt
+```
+
+To investigate whether the citation impact of a journal changed after the journal was converted to a toll-access business model, we used the source normalized impact per paper (SNIP) indicator from the CWTS. We were able to match `r n_distinct(cwts$issn)` journals. Figure illustrates the SNIP distribution of reverse-flip-journals two years before and after the conversion. The latest SNIP values were reported for 2017. Accordingly, only journals where the flip happened in 2015 or earlier were taken into account (N = `r n_distinct(tt$issn)`).
+
+Figure suggests that there is no statistical difference on SNIP values before and after the business model change. 
+
+```{r}
+ggpubr::ggdensity(tt, x = "SNIP.x",
+           rug = TRUE, fill = "lag", 
+           color = "lag", 
+           palette = rev(c("#56B4E950", "#E69F0050")),
+           add = "median", alpha = 0.4) +
+  xlab("SNIP")
+```
+
+```{r}
+# tt %>% 
+#   filter(cr_publisher %in% c("Springer Nature", "Elsevier BV")) %>%
+#   ggpubr::ggdensity(x = "SNIP.x",
+#            rug = TRUE, fill = "lag", 
+#            color = "lag", 
+#            palette = rev(c("#56B4E950", "#E69F0050")),
+#            add = "median", alpha = 0.4) +
+#   xlab("SNIP") +
+#   facet_wrap(~ cr_publisher) +
+#   theme_minimal()
+```
