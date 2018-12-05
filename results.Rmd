@@ -1,9 +1,9 @@
 ---
 title: "Results Reverse Flips"
 output:
-  word_document: default
+  word_document: 
+    keep_md: true
   fig_caption: yes
-  pdf_document: default
 ---
 
 ````{r, echo = FALSE, message = FALSE}
@@ -40,7 +40,8 @@ my_df <- readxl::read_xlsx("data/master_list.xlsx", sheet= 3) %>%
   rename(prev_pub = `prev. publisher`)
 ```
 
-### 
+### Research question 1: How many journals reverse-flipped from fully open access to toll-access (including hybrid)? 
+
 We found `r n_distinct(my_df$journal_name)` journals that converted from fully open access to a subscription-based business model including hybrid open access. Figure presents a breakdown of these journals by the year when this switch occurred. While the earliest reverse flip happened in `r as.character(min(my_df$year_reverse_flipped, na.rm = TRUE))`, the majority of journals changed their business model from 2013 onward (N = `r filter(my_df, !is.na(year_reverse_flipped), year_reverse_flipped > 2012) %>% nrow()`).
 
 
@@ -51,6 +52,63 @@ my_df %>%
   geom_histogram(stat = "count") +
   theme_minimal() +
   labs(x = "Year of Reverse Flip", y = "Number of journals")
+```
+
+### Research Question 2: How many articles did these journals publish between 2000 and 2018?
+
+```{r}
+cr_md <- readr::read_csv("data/cr_md.csv", col_types = cols(.default = "c")) %>%
+  mutate(issued_year = lubridate::year(lubridate::parse_date_time(issued, c('y', 'ymd', 'ym'))))
+cr_md %>%
+  group_by(issn) %>% 
+  summarise(volumes = n_distinct(issued_year), n = sum(n_distinct(DOI))) %>% 
+  mutate(average = n / volumes) -> article_volume
+```
+
+To obtain the journal publication volume, we retrieved all articles indexed in Crossref from 2000 onwards. Articles metadata from `r n_distinct(cr_md$issn)` journals were registered with Crossref, representing `r n_distinct(cr_md$issn) / nrow(my_df) * 100`% of our sample. These converted journals published `r nrow(cr_md)` articles between 2000 and 2018. Table presents summary statistics for the average yearly publication volume. It reveals that the size of the journals in terms of the yearly article volume varies considerably, ranging from `r round(min(article_volume$average),0)` to `r round(max(article_volume$average),0)`. Half of the journals studied published `r round(median(article_volume$average),0)` or less articles per year. 
+
+```{r}
+article_volume %>%
+  summarise(Mean = mean(average),
+            Median = median(average),
+            `Standard Deviation` = sd(average),
+            `Minimum` = min(average),
+            `Maximum` = max(average),
+            `Q1` = quantile(average, 1/4),
+            `Q3` = quantile(average, 3/4)) %>%
+gather(1:7, key = " ", value = "Average Yearly Article Volume") %>%
+  knitr::kable(caption = "Summary statistics of yearly average publication volume per reverse flip journals. Publication volume for 142 journals was obtained using Crossref.", digits = 0)
+```
+
+### Research Question 3: What is the disciplinary distribution of these journals? 
+
+```{r}
+cr_md <- readr::read_csv("data/cr_md.csv", col_types = cols(.default = "c")) %>%
+  mutate(issued_year = lubridate::year(lubridate::parse_date_time(issued, c('y', 'ymd', 'ym'))))
+cr_md %>%
+  count(issn, issued_year) %>%
+  left_join(my_df, by = c("issn")) %>%
+  select(1:3, year_reverse_flipped) %>%
+  filter(!is.na(year_reverse_flipped)) %>%
+  mutate(lag = issued_year - year_reverse_flipped) %>%
+  filter(lag %in% -2:2) -> tmp
+tmp %>% 
+  filter(lag %in% c(-2,2)) %>% 
+  group_by(issn) %>% 
+  filter(n() > 1) %>% 
+  ungroup() %>% 
+  group_by(lag) %>% 
+  summarise(md = median(n)) ->median_change
+```  
+
+Table presents a breakdown by top-level discipline, highlighting that reverse flipped journal could be found in various fields (needs to be discussed).
+
+```{r}
+my_df %>%
+  count(Discipline) %>%
+  mutate(prop = n / sum(n) * 100) %>%
+  rbind(list("Total", nrow(my_df), 100)) %>%
+  knitr::kable(col.names = c("Discipline", "Number of Journals", "Proportion (in%)"), digits = 2, caption = "Breakdown of reverse flip journals by discipline")
 ```
 
 ```{r}
@@ -66,6 +124,8 @@ my_df %>%
             `Q3` = quantile(age_at_time_of_flip, 3/4)) -> age_df
 ```
 
+### Research Question 4: How old were the journals when the reverse flips happened?
+
 Table provides summary statistics about the journal age at the year of the reverse flip. Large age differences can be observed, ranging from one year of existences to `r age_df$Maximum` years. Around `r round(filter(my_df, !is.na(year_founded), year_founded < 1990) %>% nrow() / nrow(my_df) * 100)`% (N = `r filter(my_df, !is.na(year_reverse_flipped), year_founded < 1990) %>% nrow()`) of all journals found started before 1990 These findings suggest that not all journals in our sample were born fully open access or online journals, but some might underwent more than one business model change in the course of history.
 
 ```{r}
@@ -74,18 +134,10 @@ age_df %>%
  knitr::kable(digits = 0, caption = "Summary statistics for journal age at time of reverse flip")
 ```
 
-Reverse flipped journal could be found across all discplines. Table and Figure present a breakdown by top-level discipline. Table presents absolute and percentage of reverse flips per discpline. Figure provides a breakdown of discipline by journal age at the time of the reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per discipline. 
-
-```{r}
-my_df %>%
-  count(Discipline) %>%
-  mutate(prop = n / sum(n) * 100) %>%
-  rbind(list("Total", nrow(my_df), 100)) %>%
-  knitr::kable(col.names = c("Discipline", "Number of Journals", "Proportion (in%)"), digits = 2, caption = "Breakdown of reverse flip journals by discipline")
-```
+Figure provides a breakdown of discipline by journal age at the time of the reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per discipline. 
 
 
-```{r, fig.cap="Discipline by journal age at the time of reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per Discipline."}
+```{r, fig.cap='Discipline by journal age at the time of reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per Discipline.'}
 # Motivation: https://serialmentor.com/dataviz/nested-proportions.html
 my_df %>%
   mutate(age_at_time_of_flip = year_reverse_flipped - year_founded) %>%
@@ -105,34 +157,9 @@ ggplot(aes(x = factor(age_at_time_of_flip_cat, levels = c("1-5", "6-15", "> 15")
   labs(x = "Journal Age", y = "Journals") +
   theme(legend.position = "top",
           legend.justification = "right")
-
-
-
-
-# %>%
-#   filter(!is.na(year_reverse_flipped)) %>%
-#   ggplot(aes(as.factor(year_reverse_flipped))) +
-#   geom_histogram(stat = "count") +
-#   theme_minimal() +
-#   facet_wrap(~ age_at_time_of_flip_cat) +
-#   labs(x = "Year of Reverse Flip", y = "Number of journals")
-# plot, re-use https://serialmentor.com/dataviz/nested-proportions.html
 ```
 
-## Breakdown by indexing
-
-```{r}
-# cr_md <- readr::read_csv("data/cr_md.csv", col_types = cols(.default = "c")) %>%
-#   mutate(issued_year = lubridate::year(lubridate::parse_date_time(issued, c('y', 'ymd', 'ym'))))
-# scopus <- readr::read_csv("../data/scopus_issnl_match.csv")
-# my_df %>%
-#   inner_join(scopus, by = c("issn" = "issn"))
-```
-
-We investigated the indexing status of the reverserly flipped journals in large bibliometric databases. Table summarizes 
-
-
-## Breakdown by publisher
+### Research Question 5: What publishers are now publishing the reverse-flipped journals?
 
 ```{r}
 cr_md <- readr::read_csv("data/cr_md.csv", col_types = cols(.default = "c")) %>%
@@ -159,7 +186,7 @@ my_df %>%
   mutate(publisher_fct = fct_lump(fct_infreq(publisher), n = 5))  -> my_df_cr
 ```
 
-The dataset allows to analyse the extent of reverse flips across publishers. For this aim, publisher names for every journal were obtained using Crossref, and if not available, added manually. In case of a change of publishing house, which is the case for over `r my_df %>% filter(!prev_pub == "-") %>% nrow() / nrow(my_df) * 100`% (N = `r my_df %>% filter(!prev_pub == "-") %>% nrow()`) journals in our sample , the current publisher name was used. In total, `r n_distinct(my_df_cr$publisher)` different publishing houses with reversely flipped journals are included in our dataset. 
+To investigate the extent of reverse flips across publishers, publisher names for every journal were obtained using Crossref, and if not available, added manually. In case of a change of publishing house, which is the case for over `r my_df %>% filter(!prev_pub == "-") %>% nrow() / nrow(my_df) * 100`% (N = `r my_df %>% filter(!prev_pub == "-") %>% nrow()`) journals in our sample , the current publisher name was used. In total, `r n_distinct(my_df_cr$publisher)` different publishing houses with reversely flipped journals are included in our dataset. 
 
 Table shows the top 5 publishers based on the number of journals in their subscription-based portfolio that were converted from fully open access. These five publishers comprise a total `r my_df_cr %>% filter(!publisher_fct == "Other") %>% nrow` journals, representing `r (my_df_cr %>% filter(!publisher_fct == "Other") %>% nrow) / nrow(my_df_cr) * 100`% of all journals found. The remaining `r my_df_cr %>% filter(publisher_fct == "Other") %>% group_by(publisher) %>% summarise(n = n_distinct(publisher)) %>% nrow()` publishers are represented in the category "Other". The extent of reverse flips across publishers reflects roughly the general market shares in scholarly publishing  where the large commercial publishers Elsevier BV, Springer Nature, Informa UK Limited and Wiley also dominate.
 
@@ -174,16 +201,17 @@ my_df_cr %>%
   knitr::kable(caption = "Top 5 publishers based on number of journals converted from from fully open access to a subscription-based business model", digits = 2)
 ```
 
+### Research Question 6: How many of these journals a) had been subscription journals in the past, b) had been APC-based prior to the reverse-flip, and at what price levels, c) are associated with scholarly societies?
 
-## Breakdown by publication volume
+(unsure about how to answer this question using our dataset, help is very much appreciated!)
 
-Using our dataset, we retrieved all Crossref indexed articles from 2000 onwards. Articles metadata from `r n_distinct(cr_md$issn)` journals were registered with Crossref. In total, these converted journals published `r nrow(cr_md)` articles in this period. 
+### Research Question 7:  Is there significant variation in  a) publication volume before and after the reverse flip and b) journal-level citation metrics before and after the reverse flip?
+
 
 ```{r}
 cr_md %>%
   count(issn, issued_year) %>%
-  left_join(my_df_cr, by = c("issn")) %>%
-  select(1:3, year_reverse_flipped, container.title, cr_publisher) %>%
+  left_join(my_df, by = c("issn")) %>%
   filter(!is.na(year_reverse_flipped)) %>%
   mutate(lag = issued_year - year_reverse_flipped) %>%
   filter(lag %in% -2:2) -> tmp
@@ -196,20 +224,11 @@ tmp %>%
   summarise(md = median(n)) ->median_change
 ```  
 
-Publication volume across journals varies.
+To determine the variation in publicatiom volume, we studied all journals in our dataset that converted latestin 2016 and where Crossref provided article metadata two years before and after the year of the reverse flip. Publication volume for this five-years period could be obtained for `r tmp %>%  filter(lag %in% c(-2,2)) %>%  group_by(issn) %>%  filter(n() > 1) %>% group_by(issn) %>% summarise(n_distinct(issn)) %>% nrow()` journals.
 
 Comparing yearly article volumes two years before and two years after the flip reveals little change. The median article volume  increased marginaly from `r filter(median_change, lag == -2) %>% .$md` to `r filter(median_change, lag == 2) %>% .$md` articles. Figure illustrate the distribution before and after the flip.
 
-
-
-```{r}
-cr_md %>%
-  count(issn, issued_year) %>%
-  left_join(my_df_cr, by = c("issn")) %>%
-  select(1:3, year_reverse_flipped, container.title, cr_publisher) %>%
-  filter(!is.na(year_reverse_flipped)) %>%
-  mutate(lag = issued_year - year_reverse_flipped) %>%
-  filter(lag %in% -2:2) -> tmp
+```{r, fig.cap='Density plot of publication volume twi years before and after the reverse flip. Dotted line represents the median annual article volume.'}
 tmp %>% 
   filter(lag %in% c(-2,2)) %>% 
   group_by(issn) %>% 
@@ -219,13 +238,9 @@ ggpubr::ggdensity(tt, x = "n",
            rug = TRUE, fill = "lag", 
            color = "lag", 
            palette = rev(c("#56B4E950", "#E69F0050")),
-           add = "median", alpha = 0.4) +
-  coord_cartesian(xlim = 0:500)
+           add = "median", alpha = 0.4)# +
+  #coord_cartesian(xlim = 0:500)
 ```
-
-## Breakdown by subject
-
-## Breakdown by citation impact
 
 ```{r}
 cwts <- readr::read_csv("data/cwts_jn_flipped.csv") 
@@ -248,7 +263,7 @@ To investigate whether the citation impact of a journal changed after the journa
 
 Figure suggests that there is no statistical difference on SNIP values before and after the business model change. 
 
-```{r}
+```{r, fig.cap='Density plot of source normalized impact per paper (SNIP) value two years before and after the reverse flip. Dotted line represents the median SNIP value.'}
 ggpubr::ggdensity(tt, x = "SNIP.x",
            rug = TRUE, fill = "lag", 
            color = "lag", 
@@ -257,15 +272,44 @@ ggpubr::ggdensity(tt, x = "SNIP.x",
   xlab("SNIP")
 ```
 
+### Research Question 8: For the subset of journals that now offer hybrid OA, a) what is the difference in the APC before and after the flip among the journals, b) what is the uptake of hybrid OA in these journals, is it above average among hybrid OA journals? 
+
+Table presents the journal business model after the reverse flip. It highligths that around `r round(my_df %>% filter(grepl("Hybrid", oa_model, fixed = FALSE, ignore.case = TRUE)) %>% nrow() / nrow(my_df) * 100, 0)` % of the journals offer options to make articles immediatley availabe after a fee was paid, also know as hybrid open access. `r my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow()`  or `r round(my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow() / nrow(my_df) * 100, 0)` % journals operated under a subscription-based model only.
+
 ```{r}
-# tt %>% 
-#   filter(cr_publisher %in% c("Springer Nature", "Elsevier BV")) %>%
-#   ggpubr::ggdensity(x = "SNIP.x",
-#            rug = TRUE, fill = "lag", 
-#            color = "lag", 
-#            palette = rev(c("#56B4E950", "#E69F0050")),
-#            add = "median", alpha = 0.4) +
-#   xlab("SNIP") +
-#   facet_wrap(~ cr_publisher) +
-#   theme_minimal()
+my_df %>%
+  mutate(oa_model = gsub("Subscriptions", "Subscription", oa_model)) %>%
+  count(oa_model) %>%
+  mutate(prop  = n / sum(n) * 100) %>% 
+  arrange(desc(prop)) %>%
+  rbind(list("Total", nrow(my_df), 100)) %>%
+  knitr::kable(caption = "Business model of journals after reverse flip", digits = 2, col.names = c("Business model", "Journals", "Proportion"))
+```
+
+
+```{r}
+my_df %>% filter(oa_model == "Hybrid") %>%
+  mutate(
+    `Before Flip` = as.numeric(apc_pre),
+    `After Flip` = as.numeric(apc_post),
+     diff = `After Flip` - `Before Flip`) %>% 
+  filter(!is.na(diff)) %>%
+  select(issn, diff, `Before Flip`, `After Flip`) %>%
+  gather(3:4, key = "apc_type", value = "apc") %>%
+  filter(apc > 0) %>% 
+  group_by(issn) %>%
+  filter(n() > 1) -> apc_df
+```
+
+We were able to obtain publication fee list prices before and after the flip for `r length(unique(apc_df$issn))` journals. Figure compares them with each other, highlighting an considerable increase after the reverse flip.  
+
+
+```{r}
+apc_df %>% 
+  ggplot(aes(apc_type, apc, fill = apc_type)) +
+  geom_boxplot() +
+  scale_x_discrete(limits = c("Before Flip", "After Flip")) +
+  scale_fill_manual(values = c("#56B4E950", "#E69F0050")) +
+  theme_minimal() +
+  labs(x = "Journal Business Modell", y = "Publication Fee List Price") 
 ```
