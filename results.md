@@ -21,7 +21,7 @@ We found 159 journals that converted from fully open access to a subscription-ba
 
 
 
-To obtain the journal publication volume, we retrieved all articles indexed in Crossref from 2000 onwards. Articles metadata from 142 journals were registered with Crossref, representing 89% of our sample. These converted journals published 214,570 articles between 2000 and 2018. Table presents summary statistics for the average yearly publication volume. It reveals that the size of the journals in terms of the yearly article volume varies considerably, ranging from 10 to 2,192. Half of the journals studied published 58 or less articles per year. 
+To obtain the journal publication volume, we retrieved all articles indexed in Crossref from 2000 onward. Articles metadata from 142 journals were registered with Crossref, representing 89% of our sample. These converted journals published 214,570 articles between 2000 and 2018. Table presents summary statistics for the average yearly publication volume. It reveals that the size of the journals in terms of the yearly article volume varies considerably, ranging from 10 to 2,192. Half of the journals studied published 58 or less articles per year. 
 
 
 Table: Summary statistics of yearly average publication volume per reverse flip journals. Publication volume for 142 journals was obtained using Crossref.
@@ -108,9 +108,9 @@ Total                                            159              100.0
 
 
 
-To determine the variation in publicatiom volume, we studied all journals in our dataset that converted latestin 2016 and where Crossref provided article metadata two years before and after the year of the reverse flip. Publication volume for this five-years period could be obtained for 94 journals.
+To determine the variation in publication volume, we studied all journals in our dataset that converted latest in 2016 and where Crossref provided article metadata two years before and after the year of the reverse flip. Publication volume for this five-years period could be obtained for 94 journals.
 
-Comparing yearly article volumes two years before and two years after the flip reveals little change. The median article volume  increased marginaly from 53 to 60 articles. Figure illustrate the distribution before and after the flip.
+Comparing yearly article volumes two years before and two years after the flip reveals little change. The median article volume  increased marginally from 53 to 60 articles. Figure illustrate the distribution before and after the flip.
 
 ![Density plot of publication volume twi years before and after the reverse flip. Dotted line represents the median annual article volume.](results_files/figure-docx/unnamed-chunk-12-1.png)
 
@@ -124,7 +124,7 @@ Figure suggests that there is no statistical difference on SNIP values before an
 
 ### Research Question 8: For the subset of journals that now offer hybrid OA, a) what is the difference in the APC before and after the flip among the journals, b) what is the uptake of hybrid OA in these journals, is it above average among hybrid OA journals? 
 
-Table presents the journal business model after the reverse flip. It highligths that around 51 % of the journals offer options to make articles immediatley availabe after a fee was paid, also know as hybrid open access. 74  or 47 % journals operated under a subscription-based model only.
+Table presents the journal business model after the reverse flip. It highlights that around 51 % of the journals offer options to make articles immediately availabe after a fee was paid, also know as hybrid open access. 74  or 47 % journals operated under a subscription-based model only.
 
 
 Table: Business model of journals after reverse flip

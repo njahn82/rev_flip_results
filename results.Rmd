@@ -65,7 +65,7 @@ cr_md %>%
   mutate(average = n / volumes) -> article_volume
 ```
 
-To obtain the journal publication volume, we retrieved all articles indexed in Crossref from 2000 onwards. Articles metadata from `r n_distinct(cr_md$issn)` journals were registered with Crossref, representing `r n_distinct(cr_md$issn) / nrow(my_df) * 100`% of our sample. These converted journals published `r nrow(cr_md)` articles between 2000 and 2018. Table presents summary statistics for the average yearly publication volume. It reveals that the size of the journals in terms of the yearly article volume varies considerably, ranging from `r round(min(article_volume$average),0)` to `r round(max(article_volume$average),0)`. Half of the journals studied published `r round(median(article_volume$average),0)` or less articles per year. 
+To obtain the journal publication volume, we retrieved all articles indexed in Crossref from 2000 onward. Articles metadata from `r n_distinct(cr_md$issn)` journals were registered with Crossref, representing `r n_distinct(cr_md$issn) / nrow(my_df) * 100`% of our sample. These converted journals published `r nrow(cr_md)` articles between 2000 and 2018. Table presents summary statistics for the average yearly publication volume. It reveals that the size of the journals in terms of the yearly article volume varies considerably, ranging from `r round(min(article_volume$average),0)` to `r round(max(article_volume$average),0)`. Half of the journals studied published `r round(median(article_volume$average),0)` or less articles per year. 
 
 ```{r}
 article_volume %>%
@@ -224,9 +224,9 @@ tmp %>%
   summarise(md = median(n)) ->median_change
 ```  
 
-To determine the variation in publicatiom volume, we studied all journals in our dataset that converted latestin 2016 and where Crossref provided article metadata two years before and after the year of the reverse flip. Publication volume for this five-years period could be obtained for `r tmp %>%  filter(lag %in% c(-2,2)) %>%  group_by(issn) %>%  filter(n() > 1) %>% group_by(issn) %>% summarise(n_distinct(issn)) %>% nrow()` journals.
+To determine the variation in publication volume, we studied all journals in our dataset that converted latest in 2016 and where Crossref provided article metadata two years before and after the year of the reverse flip. Publication volume for this five-years period could be obtained for `r tmp %>%  filter(lag %in% c(-2,2)) %>%  group_by(issn) %>%  filter(n() > 1) %>% group_by(issn) %>% summarise(n_distinct(issn)) %>% nrow()` journals.
 
-Comparing yearly article volumes two years before and two years after the flip reveals little change. The median article volume  increased marginaly from `r filter(median_change, lag == -2) %>% .$md` to `r filter(median_change, lag == 2) %>% .$md` articles. Figure illustrate the distribution before and after the flip.
+Comparing yearly article volumes two years before and two years after the flip reveals little change. The median article volume  increased marginally from `r filter(median_change, lag == -2) %>% .$md` to `r filter(median_change, lag == 2) %>% .$md` articles. Figure illustrate the distribution before and after the flip.
 
 ```{r, fig.cap='Density plot of publication volume twi years before and after the reverse flip. Dotted line represents the median annual article volume.'}
 tmp %>% 
@@ -274,7 +274,7 @@ ggpubr::ggdensity(tt, x = "SNIP.x",
 
 ### Research Question 8: For the subset of journals that now offer hybrid OA, a) what is the difference in the APC before and after the flip among the journals, b) what is the uptake of hybrid OA in these journals, is it above average among hybrid OA journals? 
 
-Table presents the journal business model after the reverse flip. It highligths that around `r round(my_df %>% filter(grepl("Hybrid", oa_model, fixed = FALSE, ignore.case = TRUE)) %>% nrow() / nrow(my_df) * 100, 0)` % of the journals offer options to make articles immediatley availabe after a fee was paid, also know as hybrid open access. `r my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow()`  or `r round(my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow() / nrow(my_df) * 100, 0)` % journals operated under a subscription-based model only.
+Table presents the journal business model after the reverse flip. It highlights that around `r round(my_df %>% filter(grepl("Hybrid", oa_model, fixed = FALSE, ignore.case = TRUE)) %>% nrow() / nrow(my_df) * 100, 0)` % of the journals offer options to make articles immediately availabe after a fee was paid, also know as hybrid open access. `r my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow()`  or `r round(my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow() / nrow(my_df) * 100, 0)` % journals operated under a subscription-based model only.
 
 ```{r}
 my_df %>%
