@@ -120,7 +120,7 @@ To investigate whether the citation impact changed after the journal was convert
 
 Figure suggests that there is no statistical difference on SNIP values before and after the business model change. 
 
-![Density plot of source normalized impact per paper (SNIP) value two years before and after the reverse flip. Dotted line represents the median SNIP value.](results_files/figure-docx/unnamed-chunk-14-1.png)
+![Developement of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.](results_files/figure-docx/unnamed-chunk-14-1.png)
 
 ### Research Question 8: For the subset of journals that now offer hybrid OA, a) what is the difference in the APC before and after the flip among the journals, b) what is the uptake of hybrid OA in these journals, is it above average among hybrid OA journals? 
 

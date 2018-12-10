@@ -51,7 +51,13 @@ my_df %>%
   ggplot(aes(as.factor(year_reverse_flipped))) +
   geom_histogram(stat = "count") +
   theme_minimal() +
-  labs(x = "Year of Reverse Flip", y = "Number of journals")
+  labs(x = "Year of Reverse Flip", y = "Number of Journals") +
+    theme_minimal(base_family="Roboto") +
+  theme(plot.margin=margin(30,30,30,30)) +
+  theme(panel.grid.minor=element_blank()) +
+  theme(axis.ticks=element_blank()) +
+  theme(panel.grid.major.x=element_blank()) +
+  theme(panel.border=element_blank())
 ```
 
 ### Research Question 2: How many articles did these journals publish between 2000 and 2018?
@@ -98,7 +104,7 @@ tmp %>%
   filter(n() > 1) %>% 
   ungroup() %>% 
   group_by(lag) %>% 
-  summarise(md = median(n)) ->median_change
+  summarise(md = median(n)) -> median_change
 ```  
 
 Table presents a breakdown by top-level discipline, highlighting that reverse flipped journal could be found in various fields (needs to be discussed).
@@ -155,6 +161,12 @@ ggplot(aes(x = factor(age_at_time_of_flip_cat, levels = c("1-5", "6-15", "> 15")
   scale_fill_manual(values = c("#b3b3b3a0", "#2b8cbed0"), name = "") +
   theme_minimal() +
   labs(x = "Journal Age", y = "Journals") +
+  theme_minimal(base_family="Roboto") +
+  theme(plot.margin=margin(30,30,30,30)) +
+  theme(panel.grid.minor=element_blank()) +
+  theme(axis.ticks=element_blank()) +
+  theme(panel.grid.major.x=element_blank()) +
+  theme(panel.border=element_blank()) +
   theme(legend.position = "top",
           legend.justification = "right")
 ```
@@ -230,16 +242,25 @@ Comparing yearly article volumes two years before and two years after the flip r
 
 ```{r, fig.cap='Density plot of publication volume two years before and after the reverse flip. Dotted line represents the median annual article volume.'}
 tmp %>% 
-  filter(lag %in% c(-2,2)) %>% 
+  filter(lag %in% c(-2:2)) %>% 
   group_by(issn) %>% 
-  filter(n() > 1) %>% 
+  filter(n() > 4) %>% 
   mutate(lag = as.factor(lag)) -> tt
-ggpubr::ggdensity(tt, x = "n",
-           rug = TRUE, fill = "lag", 
-           color = "lag", 
-           palette = rev(c("#56B4E950", "#E69F0050")),
-           add = "median", alpha = 0.4)# +
-  #coord_cartesian(xlim = 0:500)
+tt %>%
+  ggplot(aes(lag, n, fill = lag)) +
+  geom_boxplot() +
+  coord_cartesian(ylim = 0:400) +
+  xlab("Years since the Reverse Flip") +
+  ylab("Yearly Article Volume") +
+  scale_fill_manual(values = c("#009392","#39b185","#e9e29c","#e88471","#cf597e")) +
+  # remove legend
+  theme_minimal(base_family="Roboto") +
+  theme(plot.margin=margin(30,30,30,30)) +
+  theme(panel.grid.minor=element_blank()) +
+  theme(axis.ticks=element_blank()) +
+  theme(panel.grid.major.x=element_blank()) +
+  theme(panel.border=element_blank()) +
+  guides(fill=FALSE)
 ```
 
 ```{r}
@@ -253,9 +274,9 @@ cwts %>%
 snip %>% 
   # add publisher info
   left_join(cr_publishers, by = "issn") %>%
-  filter(lag %in% c(-2, 2)) %>%
+  filter(lag %in% c(-2:2)) %>%
   group_by(issn) %>% 
-  filter(n() > 1) %>% 
+  filter(n() > 4) %>% 
   mutate(lag = as.factor(lag)) -> tt
 ```
 
@@ -263,13 +284,24 @@ To investigate whether the citation impact changed after the journal was convert
 
 Figure suggests that there is no statistical difference on SNIP values before and after the business model change. 
 
-```{r, fig.cap='Density plot of source normalized impact per paper (SNIP) value two years before and after the reverse flip. Dotted line represents the median SNIP value.'}
-ggpubr::ggdensity(tt, x = "SNIP.x",
-           rug = TRUE, fill = "lag", 
-           color = "lag", 
-           palette = rev(c("#56B4E950", "#E69F0050")),
-           add = "median", alpha = 0.4) +
-  xlab("SNIP")
+```{r, fig.cap='Developement of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.'}
+tt %>%
+  ggplot(aes(lag, SNIP.x, fill = lag)) +
+  geom_boxplot() +
+  coord_cartesian(ylim = 0:2.5) +
+  theme_minimal() +
+  xlab("Years since the reverse flip") +
+  ylab("SNIP") +
+  scale_fill_manual(values = c("#009392","#39b185","#e9e29c","#e88471","#cf597e")) +
+  # remove legend
+  theme_minimal(base_family="Roboto") +
+  theme(plot.margin=margin(30,30,30,30)) +
+  theme(panel.grid.minor=element_blank()) +
+  theme(axis.ticks=element_blank()) +
+  theme(panel.grid.major.x=element_blank()) +
+  theme(panel.border=element_blank()) +
+  guides(fill=FALSE)
+
 ```
 
 ### Research Question 8: For the subset of journals that now offer hybrid OA, a) what is the difference in the APC before and after the flip among the journals, b) what is the uptake of hybrid OA in these journals, is it above average among hybrid OA journals? 
@@ -312,5 +344,13 @@ apc_df %>%
   scale_x_discrete(limits = c("Before Flip", "After Flip", "Current APC")) +
   scale_fill_manual(values = c("#CC6677", "#88CCEE", "#DDCC77")) +
   theme_minimal() +
-  labs(x = "Journal Business Modell", y = "Publication Fee List Price") 
+  labs(x = "APC Pricing", y = "List Price") +
+  # remove legend
+  guides(fill=FALSE) +
+  theme_minimal(base_family="Roboto") +
+  theme(plot.margin=margin(30,30,30,30)) +
+  theme(panel.grid.minor=element_blank()) +
+  theme(axis.ticks=element_blank()) +
+  theme(panel.grid.major.x=element_blank()) +
+  theme(panel.border=element_blank())
 ```
