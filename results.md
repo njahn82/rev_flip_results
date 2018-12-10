@@ -124,7 +124,7 @@ Figure suggests that there is no statistical difference on SNIP values before an
 
 ### Research Question 8: For the subset of journals that now offer hybrid OA, a) what is the difference in the APC before and after the flip among the journals, b) what is the uptake of hybrid OA in these journals, is it above average among hybrid OA journals? 
 
-Table presents the journal business model after the reverse flip. It highlights that around 51 % of the journals offer options to make articles immediately availabe after a fee was paid, also know as hybrid open access. 74  or 47 % journals operated under a subscription-based model only.
+Table presents the journal business model after the reverse flip. It highlights that around 51 % of the journals offer options to make articles immediately available after a fee was paid, also known as hybrid open access. 74  or 47 % journals operated under a subscription-based model only.
 
 
 Table: Business model of journals after reverse flip
