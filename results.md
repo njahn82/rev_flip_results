@@ -142,7 +142,7 @@ Total                           159       100.00
 
 
 
-We were able to obtain publication fee list prices before and after the flip for 27 journals. Figure compares them with each other, highlighting an considerable increase after the reverse flip.  
+We were able to obtain publication fee list prices before and after the flip including the most recent level in 2018 for 27 journals. Figure compares them with each other, highlighting an considerable increase after the reverse flip.
 
 
-![](results_files/figure-docx/unnamed-chunk-17-1.png)<!-- -->
+![APC list prices before and after the flip including most current level among reverse-flip journals.](results_files/figure-docx/unnamed-chunk-17-1.png)

@@ -221,7 +221,7 @@ tmp %>%
   filter(n() > 1) %>% 
   ungroup() %>% 
   group_by(lag) %>% 
-  summarise(md = median(n)) ->median_change
+  summarise(md = median(n)) -> median_change
 ```  
 
 To determine the variation in publication volume, we studied all journals in our dataset that converted latest in 2016 and where Crossref provided article metadata two years before and after the year of the reverse flip. Publication volume for this five-years period could be obtained for `r tmp %>%  filter(lag %in% c(-2,2)) %>%  group_by(issn) %>%  filter(n() > 1) %>% group_by(issn) %>% summarise(n_distinct(issn)) %>% nrow()` journals.
@@ -292,24 +292,25 @@ my_df %>% filter(oa_model == "Hybrid") %>%
   mutate(
     `Before Flip` = as.numeric(apc_pre),
     `After Flip` = as.numeric(apc_post),
+    `Current APC` = as.numeric(apc_now),
      diff = `After Flip` - `Before Flip`) %>% 
   filter(!is.na(diff)) %>%
-  select(issn, diff, `Before Flip`, `After Flip`) %>%
-  gather(3:4, key = "apc_type", value = "apc") %>%
+  select(issn, diff, `Before Flip`, `After Flip`, `Current APC`) %>%
+  gather(3:5, key = "apc_type", value = "apc") %>%
   filter(apc > 0) %>% 
   group_by(issn) %>%
-  filter(n() > 1) -> apc_df
+  filter(n() > 2) -> apc_df
 ```
 
-We were able to obtain publication fee list prices before and after the flip for `r length(unique(apc_df$issn))` journals. Figure compares them with each other, highlighting an considerable increase after the reverse flip.  
+We were able to obtain publication fee list prices before and after the flip including the most recent level in 2018 for `r length(unique(apc_df$issn))` journals. Figure compares them with each other, highlighting an considerable increase after the reverse flip.
 
 
-```{r}
+```{r, fig.cap="APC list prices before and after the flip including most current level among reverse-flip journals."}
 apc_df %>% 
   ggplot(aes(apc_type, apc, fill = apc_type)) +
   geom_boxplot() +
-  scale_x_discrete(limits = c("Before Flip", "After Flip")) +
-  scale_fill_manual(values = c("#56B4E950", "#E69F0050")) +
+  scale_x_discrete(limits = c("Before Flip", "After Flip", "Current APC")) +
+  scale_fill_manual(values = c("#CC6677", "#88CCEE", "#DDCC77")) +
   theme_minimal() +
   labs(x = "Journal Business Modell", y = "Publication Fee List Price") 
 ```
