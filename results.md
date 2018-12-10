@@ -58,7 +58,7 @@ Total                        159              100.0
 
 ### Research Question 4: How old were the journals when the reverse flips happened?
 
-Table provides summary statistics about the journal age at the year of the reverse flip. Large age differences can be observed, ranging from one year of existences to 124 years. Around 42% (N = 66) of all journals found started before 1990 These findings suggest that not all journals in our sample were born fully open access or online journals, but some might underwent more than one business model change in the course of history.
+Table provides summary statistics about the journal age at the year of the reverse flip. Large age differences can be observed, ranging from one year of existences to 124 years. Around 42% (N = 66) of all journals found started before 1990. These findings suggest that not all journals in our sample were born fully open access or online journals, but some might underwent more than one business model change in the course of history.
 
 
 Table: Summary statistics for journal age at time of reverse flip
@@ -73,7 +73,7 @@ Maximum                                124
 Q1                                       6
 Q3                                      36
 
-Figure provides a breakdown of discipline by journal age at the time of the reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per discipline. 
+Figure presents a breakdown of discipline by journal age at the time of the reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per discipline. 
 
 
 ![Discipline by journal age at the time of reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per Discipline.](results_files/figure-docx/unnamed-chunk-8-1.png)
@@ -82,7 +82,7 @@ Figure provides a breakdown of discipline by journal age at the time of the reve
 
 
 
-To investigate the extent of reverse flips across publishers, publisher names for every journal were obtained using Crossref, and if not available, added manually. In case of a change of publishing house, which is the case for over 72% (N = 115) journals in our sample , the current publisher name was used. In total, 46 different publishing houses with reversely flipped journals are included in our dataset. 
+To investigate the extent of reverse flips across publishers, publisher names for every journal were obtained using Crossref, and if not available, added manually. In case of a change of publishing house, which is the case for over 72% (N = 115) journals in our sample, the current publisher name was used. In total, 46 different publishing houses with reversely flipped journals are included in our dataset. 
 
 Table shows the top 5 publishers based on the number of journals in their subscription-based portfolio that were converted from fully open access. These five publishers comprise a total 103 journals, representing 65% of all journals found. The remaining 41 publishers are represented in the category "Other". The extent of reverse flips across publishers reflects roughly the general market shares in scholarly publishing  where the large commercial publishers Elsevier BV, Springer Nature, Informa UK Limited and Wiley also dominate.
 
@@ -112,11 +112,11 @@ To determine the variation in publication volume, we studied all journals in our
 
 Comparing yearly article volumes two years before and two years after the flip reveals little change. The median article volume  increased marginally from 53 to 60 articles. Figure illustrate the distribution before and after the flip.
 
-![Density plot of publication volume twi years before and after the reverse flip. Dotted line represents the median annual article volume.](results_files/figure-docx/unnamed-chunk-12-1.png)
+![Density plot of publication volume two years before and after the reverse flip. Dotted line represents the median annual article volume.](results_files/figure-docx/unnamed-chunk-12-1.png)
 
 
 
-To investigate whether the citation impact of a journal changed after the journal was converted to a toll-access business model, we used the source normalized impact per paper (SNIP) indicator from the CWTS. We were able to match 123 journals. Figure illustrates the SNIP distribution of reverse-flip-journals two years before and after the conversion. The latest SNIP values were reported for 2017. Accordingly, only journals where the flip happened in 2015 or earlier were taken into account (N = 82).
+To investigate whether the citation impact changed after the journal was converted to a toll-access business model, we used the source normalized impact per paper (SNIP) indicator from the CWTS. We were able to match 123 journals. Figure illustrates the SNIP distribution of reverse-flip-journals two years before and after the conversion. The latest SNIP values were reported for 2017. Accordingly, only journals where the flip happened in 2015 or earlier were taken into account (N = 82).
 
 Figure suggests that there is no statistical difference on SNIP values before and after the business model change. 
 

@@ -126,7 +126,7 @@ my_df %>%
 
 ### Research Question 4: How old were the journals when the reverse flips happened?
 
-Table provides summary statistics about the journal age at the year of the reverse flip. Large age differences can be observed, ranging from one year of existences to `r age_df$Maximum` years. Around `r round(filter(my_df, !is.na(year_founded), year_founded < 1990) %>% nrow() / nrow(my_df) * 100)`% (N = `r filter(my_df, !is.na(year_reverse_flipped), year_founded < 1990) %>% nrow()`) of all journals found started before 1990 These findings suggest that not all journals in our sample were born fully open access or online journals, but some might underwent more than one business model change in the course of history.
+Table provides summary statistics about the journal age at the year of the reverse flip. Large age differences can be observed, ranging from one year of existences to `r age_df$Maximum` years. Around `r round(filter(my_df, !is.na(year_founded), year_founded < 1990) %>% nrow() / nrow(my_df) * 100)`% (N = `r filter(my_df, !is.na(year_reverse_flipped), year_founded < 1990) %>% nrow()`) of all journals found started before 1990. These findings suggest that not all journals in our sample were born fully open access or online journals, but some might underwent more than one business model change in the course of history.
 
 ```{r}
 age_df %>%
@@ -134,7 +134,7 @@ age_df %>%
  knitr::kable(digits = 0, caption = "Summary statistics for journal age at time of reverse flip")
 ```
 
-Figure provides a breakdown of discipline by journal age at the time of the reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per discipline. 
+Figure presents a breakdown of discipline by journal age at the time of the reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per discipline. 
 
 
 ```{r, fig.cap='Discipline by journal age at the time of reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per Discipline.'}
@@ -186,7 +186,7 @@ my_df %>%
   mutate(publisher_fct = fct_lump(fct_infreq(publisher), n = 5))  -> my_df_cr
 ```
 
-To investigate the extent of reverse flips across publishers, publisher names for every journal were obtained using Crossref, and if not available, added manually. In case of a change of publishing house, which is the case for over `r my_df %>% filter(!prev_pub == "-") %>% nrow() / nrow(my_df) * 100`% (N = `r my_df %>% filter(!prev_pub == "-") %>% nrow()`) journals in our sample , the current publisher name was used. In total, `r n_distinct(my_df_cr$publisher)` different publishing houses with reversely flipped journals are included in our dataset. 
+To investigate the extent of reverse flips across publishers, publisher names for every journal were obtained using Crossref, and if not available, added manually. In case of a change of publishing house, which is the case for over `r my_df %>% filter(!prev_pub == "-") %>% nrow() / nrow(my_df) * 100`% (N = `r my_df %>% filter(!prev_pub == "-") %>% nrow()`) journals in our sample, the current publisher name was used. In total, `r n_distinct(my_df_cr$publisher)` different publishing houses with reversely flipped journals are included in our dataset. 
 
 Table shows the top 5 publishers based on the number of journals in their subscription-based portfolio that were converted from fully open access. These five publishers comprise a total `r my_df_cr %>% filter(!publisher_fct == "Other") %>% nrow` journals, representing `r (my_df_cr %>% filter(!publisher_fct == "Other") %>% nrow) / nrow(my_df_cr) * 100`% of all journals found. The remaining `r my_df_cr %>% filter(publisher_fct == "Other") %>% group_by(publisher) %>% summarise(n = n_distinct(publisher)) %>% nrow()` publishers are represented in the category "Other". The extent of reverse flips across publishers reflects roughly the general market shares in scholarly publishing  where the large commercial publishers Elsevier BV, Springer Nature, Informa UK Limited and Wiley also dominate.
 
@@ -228,7 +228,7 @@ To determine the variation in publication volume, we studied all journals in our
 
 Comparing yearly article volumes two years before and two years after the flip reveals little change. The median article volume  increased marginally from `r filter(median_change, lag == -2) %>% .$md` to `r filter(median_change, lag == 2) %>% .$md` articles. Figure illustrate the distribution before and after the flip.
 
-```{r, fig.cap='Density plot of publication volume twi years before and after the reverse flip. Dotted line represents the median annual article volume.'}
+```{r, fig.cap='Density plot of publication volume two years before and after the reverse flip. Dotted line represents the median annual article volume.'}
 tmp %>% 
   filter(lag %in% c(-2,2)) %>% 
   group_by(issn) %>% 
@@ -259,7 +259,7 @@ snip %>%
   mutate(lag = as.factor(lag)) -> tt
 ```
 
-To investigate whether the citation impact of a journal changed after the journal was converted to a toll-access business model, we used the source normalized impact per paper (SNIP) indicator from the CWTS. We were able to match `r n_distinct(cwts$issn)` journals. Figure illustrates the SNIP distribution of reverse-flip-journals two years before and after the conversion. The latest SNIP values were reported for 2017. Accordingly, only journals where the flip happened in 2015 or earlier were taken into account (N = `r n_distinct(tt$issn)`).
+To investigate whether the citation impact changed after the journal was converted to a toll-access business model, we used the source normalized impact per paper (SNIP) indicator from the CWTS. We were able to match `r n_distinct(cwts$issn)` journals. Figure illustrates the SNIP distribution of reverse-flip-journals two years before and after the conversion. The latest SNIP values were reported for 2017. Accordingly, only journals where the flip happened in 2015 or earlier were taken into account (N = `r n_distinct(tt$issn)`).
 
 Figure suggests that there is no statistical difference on SNIP values before and after the business model change. 
 
@@ -274,7 +274,7 @@ ggpubr::ggdensity(tt, x = "SNIP.x",
 
 ### Research Question 8: For the subset of journals that now offer hybrid OA, a) what is the difference in the APC before and after the flip among the journals, b) what is the uptake of hybrid OA in these journals, is it above average among hybrid OA journals? 
 
-Table presents the journal business model after the reverse flip. It highlights that around `r round(my_df %>% filter(grepl("Hybrid", oa_model, fixed = FALSE, ignore.case = TRUE)) %>% nrow() / nrow(my_df) * 100, 0)` % of the journals offer options to make articles immediately availabe after a fee was paid, also know as hybrid open access. `r my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow()`  or `r round(my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow() / nrow(my_df) * 100, 0)` % journals operated under a subscription-based model only.
+Table presents the journal business model after the reverse flip. It highlights that around `r round(my_df %>% filter(grepl("Hybrid", oa_model, fixed = FALSE, ignore.case = TRUE)) %>% nrow() / nrow(my_df) * 100, 0)` % of the journals offer options to make articles immediately available after a fee was paid, also known as hybrid open access. `r my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow()`  or `r round(my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow() / nrow(my_df) * 100, 0)` % journals operated under a subscription-based model only.
 
 ```{r}
 my_df %>%
