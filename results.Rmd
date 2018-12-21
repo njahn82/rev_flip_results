@@ -33,7 +33,7 @@ library(ggpubr)
 ```
 
 ```{r data}
-my_df <- readxl::read_xlsx("data/master_list.xlsx", sheet= 3) %>%
+my_df <- readxl::read_xlsx("data/master_list.xlsx", sheet= 2) %>%
   mutate(issn = ifelse(issn == "0037-8615", "1405-213X", issn)) %>%
   # create id column
   mutate(id = paste(row.names(.), issn, sep = "/")) %>%
@@ -160,7 +160,7 @@ ggplot(aes(x = factor(age_at_time_of_flip_cat, levels = c("1-5", "6-15", "> 15")
   facet_wrap(~Discipline, nrow = 1) +
   scale_fill_manual(values = c("#b3b3b3a0", "#2b8cbed0"), name = "") +
   theme_minimal() +
-  labs(x = "Journal Age", y = "Journals") +
+  labs(x = "Journal Age at Time of Flip", y = "Journals") +
   theme_minimal(base_family="Roboto") +
   theme(plot.margin=margin(30,30,30,30)) +
   theme(panel.grid.minor=element_blank()) +
@@ -214,6 +214,7 @@ my_df_cr %>%
 ```
 
 ### Research Question 6: How many of these journals a) had been subscription journals in the past, b) had been APC-based prior to the reverse-flip, and at what price levels, c) are associated with scholarly societies?
+
 
 (unsure about how to answer this question using our dataset, help is very much appreciated!)
 
@@ -353,4 +354,18 @@ apc_df %>%
   theme(axis.ticks=element_blank()) +
   theme(panel.grid.major.x=element_blank()) +
   theme(panel.border=element_blank())
+```
+
+
+```{r}
+# hybrid oa share from hybrid oa dashboard
+hybrid <- readr::read_csv("https://github.com/subugoe/hybrid_oa_dashboard/blob/master/data/hybrid_publications.csv?raw=true") 
+my_df %>% 
+  filter(oa_model == "Hybrid") -> apc_df
+hybrid %>%
+  filter(journal_title %in% apc_df$journal_name) %>%
+  distinct(journal_title, issued, yearly_jn_volume, license_ref_n) %>%
+  group_by(journal_title) %>%
+  summarise(jn_volume = sum(yearly_jn_volume),
+            hoa = sum(license_ref_n))
 ```
