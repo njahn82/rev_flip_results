@@ -36,6 +36,8 @@ Maximum                                         637
 Q1                                               30
 Q3                                              114
 
+![](results_files/figure-docx/unnamed-chunk-4-1.png)<!-- -->
+
 ### Research Question 3: What is the disciplinary distribution of these journals? 
 
 
@@ -47,10 +49,10 @@ Table: Breakdown of reverse flip journals by discipline
 
 Discipline    Number of Journals   Proportion (in%)
 -----------  -------------------  -----------------
-Health                        39                 25
-LS                            23                 15
 PSM                           54                 35
+Health                        39                 25
 SSH                           38                 25
+LS                            23                 15
 Total                        154                100
 
 
@@ -75,7 +77,7 @@ Q3                                      38
 Figure presents a breakdown of discipline by journal age at the time of the reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per discipline. 
 
 
-![Discipline by journal age at the time of reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per Discipline.](results_files/figure-docx/unnamed-chunk-8-1.png)
+![Discipline by journal age at the time of reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per Discipline.](results_files/figure-docx/unnamed-chunk-9-1.png)
 
 ### Research Question 5: What publishers are now publishing the reverse-flipped journals?
 
@@ -112,7 +114,7 @@ To determine the variation in publication volume, we studied all journals in our
 
 Comparing yearly article volumes two years before and two years after the flip reveals little change. The median article volume  increased marginally from 53 to 62 articles. Figure illustrate the distribution before and after the flip.
 
-![Density plot of publication volume two years before and after the reverse flip. Dotted line represents the median annual article volume.](results_files/figure-docx/unnamed-chunk-12-1.png)
+![Density plot of publication volume two years before and after the reverse flip. Dotted line represents the median annual article volume.](results_files/figure-docx/unnamed-chunk-13-1.png)
 
 
 
@@ -120,7 +122,7 @@ To investigate whether the citation impact changed after the journal was convert
 
 Figure suggests that there is no statistical difference on SNIP values before and after the business model change. 
 
-![Developement of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.](results_files/figure-docx/unnamed-chunk-14-1.png)
+![Developement of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.](results_files/figure-docx/unnamed-chunk-15-1.png)
 
 ### Research Question 8: For the subset of journals that now offer hybrid OA, a) what is the difference in the APC before and after the flip among the journals, b) what is the uptake of hybrid OA in these journals, is it above average among hybrid OA journals? 
 
@@ -141,7 +143,7 @@ Total                  154          100
 We were able to obtain publication fee list prices before and after the flip including the most recent level in 2018 for 30 journals. Figure compares them with each other, highlighting an considerable increase after the reverse flip.
 
 
-![APC list prices before and after the flip including most current level among reverse-flip journals.](results_files/figure-docx/unnamed-chunk-17-1.png)
+![APC list prices before and after the flip including most current level among reverse-flip journals.](results_files/figure-docx/unnamed-chunk-18-1.png)
 
 
 

@@ -86,6 +86,24 @@ gather(1:7, key = " ", value = "Average Yearly Article Volume") %>%
   knitr::kable(caption = "Summary statistics of yearly average publication volume per reverse flip journals. Publication volume for 142 journals was obtained using Crossref.", digits = 0)
 ```
 
+```{r}
+article_volume %>%
+  ggplot(aes(x = average)) +
+  geom_histogram(aes(y = ..density..), 
+                 binwidth = 10, colour = "#00AFBB", fill = "#00AFBB") +
+  geom_density(alpha = .2, fill="#E7B800") +
+  geom_vline(aes(xintercept = mean(average, na.rm = T)),
+             colour = "#FC4E07", linetype ="longdash", size = .8) +
+  theme_minimal() +
+  labs(x = "Average Yearly Journal Volume", y = "Density") +
+    theme_minimal(base_family="Roboto") +
+  theme(plot.margin=margin(30,30,30,30)) +
+  theme(panel.grid.minor=element_blank()) +
+  theme(axis.ticks=element_blank()) +
+  theme(panel.grid.major.x=element_blank()) +
+  theme(panel.border=element_blank())
+```
+
 ### Research Question 3: What is the disciplinary distribution of these journals? 
 
 ```{r}
@@ -113,6 +131,7 @@ Table presents a breakdown by top-level discipline, highlighting that reverse fl
 my_df %>%
   count(Discipline) %>%
   mutate(prop = n / sum(n) * 100) %>%
+  arrange(desc(prop)) %>%
   rbind(list("Total", nrow(my_df), 100)) %>%
   knitr::kable(col.names = c("Discipline", "Number of Journals", "Proportion (in%)"), digits = 2, caption = "Breakdown of reverse flip journals by discipline")
 ```
