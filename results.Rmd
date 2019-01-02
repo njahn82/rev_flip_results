@@ -28,8 +28,8 @@ knitr::knit_hooks$set(inline = function(x) {
    })
 # libraries
 library(tidyverse)
-library(ggridges)
-library(ggpubr)
+#library(ggridges)
+#library(ggpubr)
 ```
 
 ```{r data}
@@ -45,7 +45,7 @@ my_df <- readxl::read_xlsx("data/master_list.xlsx", sheet= 2) %>%
 We found `r n_distinct(my_df$journal_name)` journals that converted from fully open access to a subscription-based business model including hybrid open access. Figure presents a breakdown of these journals by the year when this switch occurred. While the earliest reverse flip happened in `r as.character(min(my_df$year_reverse_flipped, na.rm = TRUE))`, the majority of journals changed their business model from 2013 onward (N = `r filter(my_df, !is.na(year_reverse_flipped), year_reverse_flipped > 2012) %>% nrow()`).
 
 
-```{r time, fig.cap= "Number of journals converted from fully open access to a subscription-based business model per year. For three journals, no date information could be obtained."}
+```{r time, fig.cap= "Number of journals converted from fully open access to a subscription-based business model per year."}
 my_df %>%
   filter(!is.na(year_reverse_flipped)) %>%
   ggplot(aes(as.factor(year_reverse_flipped))) +
@@ -71,7 +71,7 @@ cr_md %>%
   mutate(average = n / volumes) -> article_volume
 ```
 
-To obtain the journal publication volume, we retrieved all articles indexed in Crossref from 2000 onward. Articles metadata from `r n_distinct(cr_md$issn)` journals were registered with Crossref, representing `r n_distinct(cr_md$issn) / nrow(my_df) * 100`% of our sample. These converted journals published `r nrow(cr_md)` articles between 2000 and 2018. Table presents summary statistics for the average yearly publication volume. It reveals that the size of the journals in terms of the yearly article volume varies considerably, ranging from `r round(min(article_volume$average),0)` to `r round(max(article_volume$average),0)`. Half of the journals studied published `r round(median(article_volume$average),0)` or less articles per year. 
+To obtain the journal publication volume, we retrieved all articles indexed in Crossref from 2000 onward. Articles metadata from `r n_distinct(cr_md$issn)` journals were registered with Crossref, representing `r n_distinct(cr_md$issn) / nrow(my_df) * 100`% of our sample. These journals published `r nrow(cr_md)` articles between 2000 and 2018. Table presents summary statistics for the average yearly publication volume. Figure presents the average yearly journal volume. They show that the size of the journals in terms of the yearly article volume varies considerably, ranging from `r round(min(article_volume$average),0)` to `r round(max(article_volume$average),0)`. Half of the journals studied published `r round(median(article_volume$average),0)` or less articles per year. 
 
 ```{r}
 article_volume %>%
@@ -86,17 +86,18 @@ gather(1:7, key = " ", value = "Average Yearly Article Volume") %>%
   knitr::kable(caption = "Summary statistics of yearly average publication volume per reverse flip journals. Publication volume for 142 journals was obtained using Crossref.", digits = 0)
 ```
 
-```{r}
+```{r, fig.cap="Histogram of average journal size in terms of yearly article volume published. Red dashed line represents the median, yellow dashed lined the mean value of the distribution."}
 article_volume %>%
   ggplot(aes(x = average)) +
-  geom_histogram(aes(y = ..density..), 
-                 binwidth = 10, colour = "#00AFBB", fill = "#00AFBB") +
-  geom_density(alpha = .2, fill="#E7B800") +
+  geom_histogram(bins = 15, fill="#56B4E9", alpha=0.5, color = "#56B4E9") +
   geom_vline(aes(xintercept = mean(average, na.rm = T)),
-             colour = "#FC4E07", linetype ="longdash", size = .8) +
+             colour = "#E69F00", linetype ="dashed", size = .8) +
+  geom_vline(aes(xintercept = median(average, na.rm = T)),
+             colour = "red", linetype ="dashed", size = .8) +
   theme_minimal() +
-  labs(x = "Average Yearly Journal Volume", y = "Density") +
+  labs(x = "Average Yearly Journal Volume", y = "Number of Journals") +
     theme_minimal(base_family="Roboto") +
+  scale_x_continuous(breaks = c(0, 100, 200, 300, 400, 500, 600)) +
   theme(plot.margin=margin(30,30,30,30)) +
   theme(panel.grid.minor=element_blank()) +
   theme(axis.ticks=element_blank()) +
@@ -159,6 +160,29 @@ age_df %>%
  knitr::kable(digits = 0, caption = "Summary statistics for journal age at time of reverse flip")
 ```
 
+Figure presents the number of journals converted from fully open access to a subscription-based business model per year grouped by journal age when the reverse flip happened.
+
+```{r, fig.cap="Number of journals converted from fully open access to a subscription-based business model per year, grouped by journal age at time of reverse flip."}
+my_df %>%
+  mutate(age_at_time_of_flip = year_reverse_flipped - year_founded) %>%
+  mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip < 6, "1-5", NA)) %>%
+  mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip > 5, "6-15", age_at_time_of_flip_cat)) %>%
+  mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip > 15, "> 15", age_at_time_of_flip_cat)) -> my_df_tt
+ggplot(my_df_tt, aes(as.factor(year_reverse_flipped), 
+                     fill = factor(age_at_time_of_flip_cat, levels = c("1-5", "6-15", "> 15")))) +
+  geom_histogram(stat = "count") +
+  scale_fill_manual("Journal Age at Year of Flip", values = c("#fcde9c","#e34f6f","#7c1d6f")) +
+  theme_minimal() +
+  labs(x = "Year of Reverse Flip", y = "Number of Journals") +
+    theme_minimal(base_family="Roboto") +
+  theme(plot.margin=margin(30,30,30,30)) +
+  theme(panel.grid.minor=element_blank()) +
+  theme(axis.ticks=element_blank()) +
+  theme(panel.grid.major.x=element_blank()) +
+  theme(panel.border=element_blank()) +
+  theme(legend.position="top")
+```
+
 Figure presents a breakdown of discipline by journal age at the time of the reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per discipline. 
 
 
@@ -177,7 +201,7 @@ ggplot(aes(x = factor(age_at_time_of_flip_cat, levels = c("1-5", "6-15", "> 15")
   geom_bar(data = year_all, aes(fill = "All Reverse Flipped Journals"), color = "transparent", stat = "identity") +
   geom_bar(aes(fill = "per Discipline"), color = "transparent", stat = "identity") +
   facet_wrap(~Discipline, nrow = 1) +
-  scale_fill_manual(values = c("#b3b3b3a0", "#2b8cbed0"), name = "") +
+  scale_fill_manual(values = c("#b3b3b3a0", "#56B4E9"), name = "") +
   theme_minimal() +
   labs(x = "Journal Age at Time of Flip", y = "Journals") +
   theme_minimal(base_family="Roboto") +
@@ -189,6 +213,8 @@ ggplot(aes(x = factor(age_at_time_of_flip_cat, levels = c("1-5", "6-15", "> 15")
   theme(legend.position = "top",
           legend.justification = "right")
 ```
+
+It seems that for health and life sciences journals (Health) the majority of flips only happened after a period of establishing the journal (>15 years). However, for the physical sciences and mathematics (PSM) as well as the social sciences and humanities (SSH) this process of reconsidering the publishing model seems to have started earlier. For PSM journals about one third already flipped within the first five years of the journal’s lifetime. Overall, this may have resulted from a somewhat lower degree of acceptance of APC-based open access in these disciplines (add REF)
 
 ### Research Question 5: What publishers are now publishing the reverse-flipped journals?
 
@@ -226,7 +252,7 @@ my_df_cr %>%
   count(publisher_fct) %>% 
  # mutate(cumsum = cumsum(n)) %>%
   mutate(prop = n / sum(n) * 100) %>%
-  select(`Publisher` = 1, `Reversely flipped journals` = 2, `Proportion (in%)` = 3) %>% 
+  select(`Publisher` = 1, `Number of reverse-flipped journals` = 2, `Proportion (in%)` = 3) %>% 
   mutate(Publisher = as.character(Publisher)) %>% 
   rbind(list("Total", nrow(my_df_cr), 100)) %>%
   knitr::kable(caption = "Top 5 publishers based on number of journals converted from from fully open access to a subscription-based business model", digits = 2)
@@ -384,7 +410,12 @@ my_df %>%
 hybrid %>%
   filter(journal_title %in% apc_df$journal_name) %>%
   distinct(journal_title, issued, yearly_jn_volume, license_ref_n) %>%
+  inner_join(apc_df, by = c("journal_title" = "journal_name")) %>%
+  filter(issued >= year_reverse_flipped) %>%
   group_by(journal_title) %>%
   summarise(jn_volume = sum(yearly_jn_volume),
-            hoa = sum(license_ref_n))
+            hoa = sum(license_ref_n)) %>%
+  mutate(prop = round(hoa/ jn_volume * 100, 2)) -> hybrid_shares
+# backup
+write_csv(hybrid_shares, "data/hybrid_article_shares.csv")
 ```

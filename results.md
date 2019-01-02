@@ -15,13 +15,13 @@ output:
 We found 154 journals that converted from fully open access to a subscription-based business model including hybrid open access. Figure presents a breakdown of these journals by the year when this switch occurred. While the earliest reverse flip happened in 2005, the majority of journals changed their business model from 2013 onward (N = 92).
 
 
-![Number of journals converted from fully open access to a subscription-based business model per year. For three journals, no date information could be obtained.](results_files/figure-docx/time-1.png)
+![Number of journals converted from fully open access to a subscription-based business model per year.](results_files/figure-docx/time-1.png)
 
 ### Research Question 2: How many articles did these journals publish between 2000 and 2018?
 
 
 
-To obtain the journal publication volume, we retrieved all articles indexed in Crossref from 2000 onward. Articles metadata from 138 journals were registered with Crossref, representing 90% of our sample. These converted journals published 192,601 articles between 2000 and 2018. Table presents summary statistics for the average yearly publication volume. It reveals that the size of the journals in terms of the yearly article volume varies considerably, ranging from 10 to 637. Half of the journals studied published 58 or less articles per year. 
+To obtain the journal publication volume, we retrieved all articles indexed in Crossref from 2000 onward. Articles metadata from 138 journals were registered with Crossref, representing 90% of our sample. These journals published 192,640 articles between 2000 and 2018. Table presents summary statistics for the average yearly publication volume. Figure presents the average yearly journal volume. They show that the size of the journals in terms of the yearly article volume varies considerably, ranging from 10 to 638. Half of the journals studied published 58 or less articles per year. 
 
 
 Table: Summary statistics of yearly average publication volume per reverse flip journals. Publication volume for 142 journals was obtained using Crossref.
@@ -32,11 +32,11 @@ Mean                                             99
 Median                                           58
 Standard Deviation                              116
 Minimum                                          10
-Maximum                                         637
+Maximum                                         638
 Q1                                               30
 Q3                                              114
 
-![](results_files/figure-docx/unnamed-chunk-4-1.png)<!-- -->
+![Histogram of average journal size in terms of yearly article volume published. Red dashed line represents the median, yellow dashed lined the mean value of the distribution.](results_files/figure-docx/unnamed-chunk-4-1.png)
 
 ### Research Question 3: What is the disciplinary distribution of these journals? 
 
@@ -74,10 +74,16 @@ Maximum                                124
 Q1                                       7
 Q3                                      38
 
+Figure presents the number of journals converted from fully open access to a subscription-based business model per year grouped by journal age when the reverse flip happened.
+
+![Number of journals converted from fully open access to a subscription-based business model per year, grouped by journal age at time of reverse flip.](results_files/figure-docx/unnamed-chunk-9-1.png)
+
 Figure presents a breakdown of discipline by journal age at the time of the reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per discipline. 
 
 
-![Discipline by journal age at the time of reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per Discipline.](results_files/figure-docx/unnamed-chunk-9-1.png)
+![Discipline by journal age at the time of reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per Discipline.](results_files/figure-docx/unnamed-chunk-10-1.png)
+
+It seems that for health and life sciences journals (Health) the majority of flips only happened after a period of establishing the journal (>15 years). However, for the physical sciences and mathematics (PSM) as well as the social sciences and humanities (SSH) this process of reconsidering the publishing model seems to have started earlier. For PSM journals about one third already flipped within the first five years of the journal’s lifetime. Overall, this may have resulted from a somewhat lower degree of acceptance of APC-based open access in these disciplines (add REF)
 
 ### Research Question 5: What publishers are now publishing the reverse-flipped journals?
 
@@ -90,15 +96,15 @@ Table shows the top 5 publishers based on the number of journals in their subscr
 
 Table: Top 5 publishers based on number of journals converted from from fully open access to a subscription-based business model
 
-Publisher                 Reversely flipped journals   Proportion (in%)
------------------------  ---------------------------  -----------------
-Springer Nature                                   41               26.6
-Elsevier BV                                       35               22.7
-Informa UK Limited                                13                8.4
-Walter de Gruyter GmbH                             7                4.5
-Wiley                                              4                2.6
-Other                                             54               35.1
-Total                                            154              100.0
+Publisher                 Number of reverse-flipped journals   Proportion (in%)
+-----------------------  -----------------------------------  -----------------
+Springer Nature                                           41               26.6
+Elsevier BV                                               35               22.7
+Informa UK Limited                                        13                8.4
+Walter de Gruyter GmbH                                     7                4.5
+Wiley                                                      4                2.6
+Other                                                     54               35.1
+Total                                                    154              100.0
 
 ### Research Question 6: How many of these journals a) had been subscription journals in the past, b) had been APC-based prior to the reverse-flip, and at what price levels, c) are associated with scholarly societies?
 
@@ -114,7 +120,7 @@ To determine the variation in publication volume, we studied all journals in our
 
 Comparing yearly article volumes two years before and two years after the flip reveals little change. The median article volume  increased marginally from 53 to 62 articles. Figure illustrate the distribution before and after the flip.
 
-![Density plot of publication volume two years before and after the reverse flip. Dotted line represents the median annual article volume.](results_files/figure-docx/unnamed-chunk-13-1.png)
+![Density plot of publication volume two years before and after the reverse flip. Dotted line represents the median annual article volume.](results_files/figure-docx/unnamed-chunk-14-1.png)
 
 
 
@@ -122,7 +128,7 @@ To investigate whether the citation impact changed after the journal was convert
 
 Figure suggests that there is no statistical difference on SNIP values before and after the business model change. 
 
-![Developement of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.](results_files/figure-docx/unnamed-chunk-15-1.png)
+![Developement of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.](results_files/figure-docx/unnamed-chunk-16-1.png)
 
 ### Research Question 8: For the subset of journals that now offer hybrid OA, a) what is the difference in the APC before and after the flip among the journals, b) what is the uptake of hybrid OA in these journals, is it above average among hybrid OA journals? 
 
@@ -143,32 +149,7 @@ Total                  154          100
 We were able to obtain publication fee list prices before and after the flip including the most recent level in 2018 for 30 journals. Figure compares them with each other, highlighting an considerable increase after the reverse flip.
 
 
-![APC list prices before and after the flip including most current level among reverse-flip journals.](results_files/figure-docx/unnamed-chunk-18-1.png)
+![APC list prices before and after the flip including most current level among reverse-flip journals.](results_files/figure-docx/unnamed-chunk-19-1.png)
 
 
 
-```
-#> # A tibble: 20 x 3
-#>    journal_title                                           jn_volume   hoa
-#>    <chr>                                                       <int> <int>
-#>  1 3 Biotech                                                    1183   319
-#>  2 Acta Geophysica                                               492   110
-#>  3 Annals of Nuclear Medicine                                    267    51
-#>  4 Applied Nanoscience                                           399    56
-#>  5 Arabian Journal for Science and Engineering                  2071    12
-#>  6 Brazilian Journal of Physics                                   85     1
-#>  7 Cancer Treatment Communications                               155     7
-#>  8 Computational and Applied Mathematics                         461    11
-#>  9 Gold Bulletin                                                  39     2
-#> 10 Integrating Materials and Manufacturing Innovation             51    14
-#> 11 International Journal of Environmental Science and Tec…      1467    54
-#> 12 International Review of Economics Education                    40     1
-#> 13 Journal of Applied Genetics                                   215    70
-#> 14 Journal of Remanufacturing                                     37     7
-#> 15 Journal of the Brazilian Society of Mechanical Science…       790     7
-#> 16 Maritime Studies                                              100    48
-#> 17 Plant Gene                                                    250    54
-#> 18 Research in Number Theory                                     144    15
-#> 19 Research in the Mathematical Sciences                         143    76
-#> 20 Tropical Plant Pathology                                      136     7
-```
