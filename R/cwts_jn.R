@@ -1,13 +1,12 @@
 # cwts test
 library(tidyverse)
-my_df <- readxl::read_xlsx("master_list.xlsx", sheet= 3) %>%
-  #filter(is.na(najko)) %>%
+my_df <- readxl::read_xlsx("data/master_list.xlsx", sheet = 2) %>%
   mutate(issn = ifelse(issn == "0037-8615", "1405-213X", issn)) %>%
   # create id column
   mutate(id = issn)
 #' #' get all issn variants. for this aim, we use issn matching, whih can be freely downloaded from here
 #' #' add to dataset
-cwts <- readxl::read_xlsx("~/Downloads/CWTS Journal Indicators May 2018.xlsx")
+cwts <- readxl::read_xlsx("data/CWTS Journal Indicators May 2018.xlsx")
 cwts %>%
   gather(3:4, key = "issn_type", value = "issn") -> cwts_enriched
 issn_mapping <- readr::read_csv("issn_matching_cr.csv")
