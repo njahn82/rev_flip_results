@@ -21,8 +21,7 @@ changed_jns <- tribble(~issn, ~journal_title, ~issn_cr,
                        "1546-3222", "Proceedings of the American Thoracic Society", "2329-6933",
                        "1982-5676", "Tropical Plant Pathology", "1983-2052",
                        "1672-1977", "Journal of Chinese Integrative Medicine", "2095-4964",
-                       "0035-8835", "Journal of the Royal College of Surgeons of Edinburgh", "1479-666X",
-                       "2351-9797", "Advances in Digestive Medicine", "2351-9800")
+                       "0035-8835", "Journal of the Royal College of Surgeons of Edinburgh", "1479-666X")
 issn_mapping <- bind_rows(issn_mapping, changed_jns)
 issn_mapping %>%
   inner_join(cwts_enriched, by = c("issn_cr" = "issn")) %>%

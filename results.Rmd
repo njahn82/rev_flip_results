@@ -282,9 +282,9 @@ tmp %>%
   summarise(md = median(n)) -> median_change
 ```  
 
-To determine the variation in publication volume, we studied all journals in our dataset that converted latest in 2016 and where Crossref provided article metadata two years before and after the year of the reverse flip. Publication volume for this five-years period could be obtained for `r tmp %>%  filter(lag %in% c(-2,2)) %>%  group_by(issn) %>%  filter(n() > 1) %>% group_by(issn) %>% summarise(n_distinct(issn)) %>% nrow()` journals.
-
-Comparing yearly article volumes two years before and two years after the flip reveals little change. The median article volume  increased marginally from `r filter(median_change, lag == -2) %>% .$md` to `r filter(median_change, lag == 2) %>% .$md` articles. Figure illustrate the distribution before and after the flip.
+ To determine the variation in publication volume, we studied all journals that had converted until 2016 and for which Crossref provides article metadata two years before and after the reverse flip. We were able to obtain the publication volume of `r tmp %>%  filter(lag %in% c(-2,2)) %>%  group_by(issn) %>%  filter(n() > 1) %>% group_by(issn) %>% summarise(n_distinct(issn)) %>% nrow()` journals for this five-year period.
+ 
+Comparing the yearly article volumes over the period from two years before to two years after the flip reveals little change. The median article volume  increased marginally from `r filter(median_change, lag == -2) %>% .$md` to `r filter(median_change, lag == 2) %>% .$md` articles. Figure illustrates the distribution before and after the flip.
 
 ```{r, fig.cap='Density plot of publication volume two years before and after the reverse flip. Dotted line represents the median annual article volume.'}
 tmp %>% 
@@ -309,6 +309,8 @@ tt %>%
   guides(fill=FALSE)
 ```
 
+There are, however, some cases were article volume increased noticeably. One example is the journal *Meta Gene* launched by Elsevier BV in 2013. Its article volume grew from 86 articles published in the year of the reverse flip (2016) to 201 articles published two years after (2018).
+
 ```{r}
 cwts <- readr::read_csv("data/cwts_jn_flipped.csv") 
 # add lag variable
@@ -326,11 +328,10 @@ snip %>%
   mutate(lag = as.factor(lag)) -> tt
 ```
 
-To investigate whether the citation impact changed after the journal was converted to a toll-access business model, we used the source normalized impact per paper (SNIP) indicator from the CWTS. We were able to match `r n_distinct(cwts$issn)` journals. Figure illustrates the SNIP distribution of reverse-flip-journals two years before and after the conversion. The latest SNIP values were reported for 2017. Accordingly, only journals where the flip happened in 2015 or earlier were taken into account (N = `r n_distinct(tt$issn)`).
+To investigate whether the citation impact changed after the journal converted to a toll-access business model, we used the Source Normalized Impact per Paper (SNIP) indicator from the Centre for Science and Technology Studies (CWTS) at Leiden University, matching `r n_distinct(cwts$issn)` journals from our sample.
+Figure illustrates the SNIP distribution of reverse-flip journals two years before and after the conversion. The most recent SNIP values were reported for 2017; accordingly, we only included journals that flipped until 2015 (N = `r n_distinct(tt$issn)`). Our analysis suggests that there is no statistical difference in SNIP values before and after the business model change.
 
-Figure suggests that there is no statistical difference on SNIP values before and after the business model change. 
-
-```{r, fig.cap='Developement of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.'}
+```{r, fig.cap='Development of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.5'}
 tt %>%
   ggplot(aes(lag, SNIP.x, fill = lag)) +
   geom_boxplot() +
@@ -352,7 +353,7 @@ tt %>%
 
 ### Research Question 8: For the subset of journals that now offer hybrid OA, a) what is the difference in the APC before and after the flip among the journals, b) what is the uptake of hybrid OA in these journals, is it above average among hybrid OA journals? 
 
-Table presents the journal business model after the reverse flip. It highlights that around `r round(my_df %>% filter(grepl("Hybrid", oa_model, fixed = FALSE, ignore.case = TRUE)) %>% nrow() / nrow(my_df) * 100, 0)` % of the journals offer options to make articles immediately available after a fee was paid, also known as hybrid open access. `r my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow()`  or `r round(my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow() / nrow(my_df) * 100, 0)` % journals operated under a subscription-based model only.
+Table presents the journal business model after the reverse flip. Our analysis shows that around `r round(my_df %>% filter(grepl("Hybrid", oa_model, fixed = FALSE, ignore.case = TRUE)) %>% nrow() / nrow(my_df) * 100, 0)` % (N = `r my_df %>% filter(grepl("Hybrid", oa_model, fixed = FALSE, ignore.case = TRUE)) %>% nrow()`) of the journals offer options to make articles immediately available after a fee was paid, also known as hybrid open access. `r my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow()`  or `r round(my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow() / nrow(my_df) * 100, 0)` % (N = `r my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow()`) journals operated under a subscription-based model only.
 
 ```{r}
 my_df %>%
@@ -381,6 +382,7 @@ my_df %>% filter(oa_model == "Hybrid") %>%
 ```
 
 We were able to obtain publication fee list prices before and after the flip including the most recent level in 2018 for `r length(unique(apc_df$issn))` journals. Figure compares them with each other, highlighting an considerable increase after the reverse flip.
+
 
 
 ```{r, fig.cap="APC list prices before and after the flip including most current level among reverse-flip journals."}

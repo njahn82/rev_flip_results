@@ -116,23 +116,24 @@ Total                                                    154              100.0
 
 
 
-To determine the variation in publication volume, we studied all journals in our dataset that converted latest in 2016 and where Crossref provided article metadata two years before and after the year of the reverse flip. Publication volume for this five-years period could be obtained for 94 journals.
-
-Comparing yearly article volumes two years before and two years after the flip reveals little change. The median article volume  increased marginally from 53 to 62 articles. Figure illustrate the distribution before and after the flip.
+ To determine the variation in publication volume, we studied all journals that had converted until 2016 and for which Crossref provides article metadata two years before and after the reverse flip. We were able to obtain the publication volume of 94 journals for this five-year period.
+ 
+Comparing the yearly article volumes over the period from two years before to two years after the flip reveals little change. The median article volume  increased marginally from 53 to 62 articles. Figure illustrates the distribution before and after the flip.
 
 ![Density plot of publication volume two years before and after the reverse flip. Dotted line represents the median annual article volume.](results_files/figure-docx/unnamed-chunk-14-1.png)
 
+There are, however, some cases were article volume increased noticeably. One example is the journal *Meta Gene* launched by Elsevier BV in 2013. Its article volume grew from 86 articles published in the year of the reverse flip (2016) to 201 articles published two years after (2018).
 
 
-To investigate whether the citation impact changed after the journal was converted to a toll-access business model, we used the source normalized impact per paper (SNIP) indicator from the CWTS. We were able to match 119 journals. Figure illustrates the SNIP distribution of reverse-flip-journals two years before and after the conversion. The latest SNIP values were reported for 2017. Accordingly, only journals where the flip happened in 2015 or earlier were taken into account (N = 82).
 
-Figure suggests that there is no statistical difference on SNIP values before and after the business model change. 
+To investigate whether the citation impact changed after the journal converted to a toll-access business model, we used the Source Normalized Impact per Paper (SNIP) indicator from the Centre for Science and Technology Studies (CWTS) at Leiden University, matching 119 journals from our sample.
+Figure illustrates the SNIP distribution of reverse-flip journals two years before and after the conversion. The most recent SNIP values were reported for 2017; accordingly, we only included journals that flipped until 2015 (N = 82). Our analysis suggests that there is no statistical difference in SNIP values before and after the business model change.
 
-![Developement of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.](results_files/figure-docx/unnamed-chunk-16-1.png)
+![Development of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.5](results_files/figure-docx/unnamed-chunk-16-1.png)
 
 ### Research Question 8: For the subset of journals that now offer hybrid OA, a) what is the difference in the APC before and after the flip among the journals, b) what is the uptake of hybrid OA in these journals, is it above average among hybrid OA journals? 
 
-Table presents the journal business model after the reverse flip. It highlights that around 49 % of the journals offer options to make articles immediately available after a fee was paid, also known as hybrid open access. 78  or 51 % journals operated under a subscription-based model only.
+Table presents the journal business model after the reverse flip. Our analysis shows that around 49 % (N = 76) of the journals offer options to make articles immediately available after a fee was paid, also known as hybrid open access. 78  or 51 % (N = 78) journals operated under a subscription-based model only.
 
 
 Table: Business model of journals after reverse flip
@@ -147,6 +148,7 @@ Total                  154          100
 
 
 We were able to obtain publication fee list prices before and after the flip including the most recent level in 2018 for 30 journals. Figure compares them with each other, highlighting an considerable increase after the reverse flip.
+
 
 
 ![APC list prices before and after the flip including most current level among reverse-flip journals.](results_files/figure-docx/unnamed-chunk-19-1.png)
