@@ -108,6 +108,9 @@ Total                                                    154              100.0
 
 ### Research Question 6: How many of these journals a) had been subscription journals in the past, b) had been APC-based prior to the reverse-flip, and at what price levels, c) are associated with scholarly societies?
 
+We manually checked the past business models of every journal in our sample. As the journal age suggests, not all were born digital and underwent several business changes. In total, around 62% had been subscription-based in the past. 
+
+![](results_files/figure-docx/unnamed-chunk-13-1.png)<!-- -->
 
 (unsure about how to answer this question using our dataset, help is very much appreciated!)
 
@@ -120,7 +123,7 @@ Total                                                    154              100.0
  
 Comparing the yearly article volumes over the period from two years before to two years after the flip reveals little change. The median article volume  increased marginally from 53 to 62 articles. Figure illustrates the distribution before and after the flip.
 
-![Density plot of publication volume two years before and after the reverse flip. Dotted line represents the median annual article volume.](results_files/figure-docx/unnamed-chunk-14-1.png)
+![Density plot of publication volume two years before and after the reverse flip. Dotted line represents the median annual article volume.](results_files/figure-docx/unnamed-chunk-15-1.png)
 
 There are, however, some cases were article volume increased noticeably. One example is the journal *Meta Gene* launched by Elsevier BV in 2013. Its article volume grew from 86 articles published in the year of the reverse flip (2016) to 201 articles published two years after (2018).
 
@@ -129,7 +132,7 @@ There are, however, some cases were article volume increased noticeably. One exa
 To investigate whether the citation impact changed after the journal converted to a toll-access business model, we used the Source Normalized Impact per Paper (SNIP) indicator from the Centre for Science and Technology Studies (CWTS) at Leiden University, matching 119 journals from our sample.
 Figure illustrates the SNIP distribution of reverse-flip journals two years before and after the conversion. The most recent SNIP values were reported for 2017; accordingly, we only included journals that flipped until 2015 (N = 82). Our analysis suggests that there is no statistical difference in SNIP values before and after the business model change.
 
-![Development of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.5](results_files/figure-docx/unnamed-chunk-16-1.png)
+![Development of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.5](results_files/figure-docx/unnamed-chunk-17-1.png)
 
 ### Research Question 8: For the subset of journals that now offer hybrid OA, a) what is the difference in the APC before and after the flip among the journals, b) what is the uptake of hybrid OA in these journals, is it above average among hybrid OA journals? 
 
@@ -150,8 +153,42 @@ Total                  154          100
 We were able to obtain publication fee list prices before and after the flip including the most recent level in 2018 for 30 journals. Figure compares them with each other, highlighting an considerable increase after the reverse flip.
 
 
+![APC list prices before and after the flip including most current level among reverse-flip journals.](results_files/figure-docx/unnamed-chunk-20-1.png)
 
-![APC list prices before and after the flip including most current level among reverse-flip journals.](results_files/figure-docx/unnamed-chunk-19-1.png)
+
+
+Retrieving open content licenses including start date from Crossref, we were able to obtain 416 articles from 21 that were made available immediately as open access articles in the year or after the reverse flip. They represent 5.4% of the total article volume studied.
+
+Using data from the Open APC initiative, we finally checked whether institutions have financed hybrid open access articles in reverse-flipped journals. We found evidence for institutional sponsorship for three individual articles in reverse-flip journals, and as part of a transformative agreement "Springer Compact" offered by Springer Nature to individual institutions and countries. Table summaries the total number of articles in reverse-flip journal that were made openly available under "Springer Compact" agreements, as well as its proportion per transformation contract. Although the proportion these articles is marginally, findings suggest that mechanisms were missing that would have helped institutions to prevent funding of open access publication in reverse-flipped journals.
+
+
+hybrid_type             publisher.x       Sponsor           OA Articles in Reverse Flip Journals   All OA Articles   Proportion (in%)
+----------------------  ----------------  ---------------  -------------------------------------  ----------------  -----------------
+Open APC (Offsetting)   Springer Nature   United Kingdom                                      20             10289               0.19
+Open APC (Offsetting)   Springer Nature   Sweden                                              10              3285               0.30
+Open APC (Offsetting)   Springer Nature   Austria                                              5              1721               0.29
+Open APC (Offsetting)   Springer Nature   Germany                                              3               621               0.48
+Open APC (Offsetting)   Springer Nature   Netherlands                                          2              6085               0.03
+
+
+
+```
+#> # A tibble: 21 x 4
+#>    journal_title                                     jn_volume   hoa  prop
+#>    <chr>                                                 <int> <int> <dbl>
+#>  1 3 Biotech                                               895    60  6.7 
+#>  2 Acta Geophysica                                         232    46 19.8 
+#>  3 Annals of Nuclear Medicine                              273    53 19.4 
+#>  4 Applied Nanoscience                                     292    11  3.77
+#>  5 Arabian Journal for Science and Engineering            2124    12  0.56
+#>  6 Brazilian Journal of Physics                             85     1  1.18
+#>  7 Cancer Treatment Communications                          34     1  2.94
+#>  8 Computational and Applied Mathematics                   462    11  2.38
+#>  9 Gold Bulletin                                            41     2  4.88
+#> 10 Integrating Materials and Manufacturing Innovati…        41     4  9.76
+#> # ... with 11 more rows
+```
+
 
 
 

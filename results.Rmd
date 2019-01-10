@@ -37,7 +37,7 @@ my_df <- readxl::read_xlsx("data/master_list.xlsx", sheet= 2) %>%
   mutate(issn = ifelse(issn == "0037-8615", "1405-213X", issn)) %>%
   # create id column
   mutate(id = paste(row.names(.), issn, sep = "/")) %>%
-  rename(prev_pub = `prev. publisher`)
+  rename(prev_pub = `prev. publisher`, born_oa = `Born OA`, flipped_oa = `Flipped OA`)
 ```
 
 ### Research question 1: How many journals reverse-flipped from fully open access to toll-access (including hybrid)? 
@@ -260,6 +260,15 @@ my_df_cr %>%
 
 ### Research Question 6: How many of these journals a) had been subscription journals in the past, b) had been APC-based prior to the reverse-flip, and at what price levels, c) are associated with scholarly societies?
 
+We manually checked the past business models of every journal in our sample. As the journal age suggests, not all were born digital and underwent several business changes. In total, around `r round(my_df %>% filter(born_oa == "0") %>% nrow() / nrow(my_df) * 100, 0)`% had been subscription-based in the past. 
+
+```{r}
+my_df %>%
+  mutate(society = ifelse(prev_pub == "-", NA, "Co-published with Society")) %>%
+  ggplot(aes(born_oa, y = ..count..)) +
+  geom_bar() +
+  facet_wrap(~society)
+```
 
 (unsure about how to answer this question using our dataset, help is very much appreciated!)
 
@@ -384,7 +393,6 @@ my_df %>% filter(oa_model == "Hybrid") %>%
 We were able to obtain publication fee list prices before and after the flip including the most recent level in 2018 for `r length(unique(apc_df$issn))` journals. Figure compares them with each other, highlighting an considerable increase after the reverse flip.
 
 
-
 ```{r, fig.cap="APC list prices before and after the flip including most current level among reverse-flip journals."}
 apc_df %>% 
   ggplot(aes(apc_type, apc, fill = apc_type)) +
@@ -403,6 +411,64 @@ apc_df %>%
   theme(panel.border=element_blank())
 ```
 
+```{r}
+hybrid <- readr::read_csv("https://github.com/subugoe/hybrid_oa_dashboard/blob/master/data/hybrid_publications.csv?raw=true") 
+my_df %>% 
+  filter(oa_model == "Hybrid") -> apc_df
+hybrid %>%
+  filter(journal_title %in% apc_df$journal_name) %>%
+  distinct(journal_title, issued, yearly_jn_volume, license_ref_n) %>%
+  inner_join(apc_df, by = c("journal_title" = "journal_name")) %>%
+  filter(issued >= year_reverse_flipped) %>%
+  group_by(journal_title) %>%
+  summarise(jn_volume = sum(yearly_jn_volume),
+            hoa = sum(license_ref_n)) %>%
+  mutate(prop = round(hoa/ jn_volume * 100, 2)) -> hybrid_shares
+
+# oapc <- readr::read_csv("https://github.com/subugoe/hybrid_oa_dashboard/blob/master/data/oapc_hybrid.csv?raw=true") %>% 
+#   group_by(country_name, hybrid_type, publisher) %>% 
+#   summarise(n = n())
+# hybrid <- readr::read_csv("https://github.com/subugoe/hybrid_oa_dashboard/blob/master/data/hybrid_publications.csv?raw=true") 
+# my_df %>% 
+#   filter(oa_model == "Hybrid") -> apc_df
+# hybrid %>%
+#   filter(journal_title %in% apc_df$journal_name) %>%
+#  # distinct(journal_title, issued, yearly_jn_volume, license_ref_n) %>%
+#   inner_join(apc_df, by = c("journal_title" = "journal_name")) %>%
+#   filter(issued >= year_reverse_flipped) %>% 
+#   filter(!is.na(hybrid_type)) %>%
+#   group_by(hybrid_type, country_name, publisher.x) %>%
+#   count() %>% 
+#   left_join(oapc, by = c("country_name", "hybrid_type", "publisher.x" = "publisher")) %>%
+#   mutate(prop = round(n.x / n.y * 100,2)) %>%
+#   filter(hybrid_type == "Open APC (Offsetting)") %>%
+#   arrange(desc(n.x)) 
+```
+
+Retrieving open content licenses including start date from Crossref, we were able to obtain `r sum(hybrid_shares$hoa)` articles from `r length(unique(hybrid_shares$journal_title))` that were made available immediately as open access articles in the year or after the reverse flip. They represent `r round(sum(hybrid_shares$hoa) / sum(hybrid_shares$jn_volume) * 100, 2)`% of the total article volume studied.
+
+Using data from the Open APC initiative, we finally checked whether institutions have financed hybrid open access articles in reverse-flipped journals. We found evidence for institutional sponsorship for three individual articles in reverse-flip journals, and as part of a transformative agreement "Springer Compact" offered by Springer Nature to individual institutions and countries. Table summaries the total number of articles in reverse-flip journal that were made openly available under "Springer Compact" agreements, as well as its proportion per transformation contract. Although the proportion these articles is marginally, findings suggest that mechanisms were missing that would have helped institutions to prevent funding of open access publication in reverse-flipped journals.
+
+```{r}
+oapc <- readr::read_csv("https://github.com/subugoe/hybrid_oa_dashboard/blob/master/data/oapc_hybrid.csv?raw=true") %>% 
+   group_by(country_name, hybrid_type, publisher) %>% 
+   summarise(n = n())
+hybrid %>%
+  filter(journal_title %in% apc_df$journal_name) %>%
+ # distinct(journal_title, issued, yearly_jn_volume, license_ref_n) %>%
+  inner_join(apc_df, by = c("journal_title" = "journal_name")) %>%
+  filter(issued >= year_reverse_flipped) %>% 
+  filter(!is.na(hybrid_type)) %>%
+  group_by(hybrid_type, country_name, publisher.x) %>%
+  count() %>% 
+  left_join(oapc, by = c("country_name", "hybrid_type", "publisher.x" = "publisher")) %>%
+  mutate(prop = round(n.x / n.y * 100,2)) %>%
+  filter(hybrid_type == "Open APC (Offsetting)") %>%
+  arrange(desc(n.x)) %>%
+  select(-hybrid_type, -publisher.x, Sponsor = country_name, `OA Articles in Reverse Flip Journals` = n.x, `All OA Articles` = n.y, `Proportion (in%)` = prop) %>%
+  knitr::kable()
+```
+
 
 ```{r}
 # hybrid oa share from hybrid oa dashboard
@@ -418,6 +484,27 @@ hybrid %>%
   summarise(jn_volume = sum(yearly_jn_volume),
             hoa = sum(license_ref_n)) %>%
   mutate(prop = round(hoa/ jn_volume * 100, 2)) -> hybrid_shares
-# backup
-write_csv(hybrid_shares, "data/hybrid_article_shares.csv")
+hybrid_shares
 ```
+
+
+```{r}
+# backup
+# write_csv(hybrid_shares, "data/hybrid_article_shares.csv")
+# 
+# hybrid <- readr::read_csv("https://github.com/subugoe/hybrid_oa_dashboard/blob/master/data/hybrid_publications.csv?raw=true") 
+# my_df %>% 
+#   filter(oa_model == "Hybrid") -> apc_df
+# hybrid %>%
+#   filter(journal_title %in% apc_df$journal_name) %>%
+#  # distinct(journal_title, issued, yearly_jn_volume, license_ref_n) %>%
+#   inner_join(apc_df, by = c("journal_title" = "journal_name")) %>%
+#   filter(issued >= year_reverse_flipped) %>% 
+#   filter(!is.na(hybrid_type)) %>%
+#   group_by(hybrid_type, country, publisher.x) %>%
+#   summarize(n = n_distinct(doi_oa)) %>%
+#   ggplot(aes(country, n, fill = hybrid_type)) +
+#   geom_bar(stat = "identity") +
+#   facet_wrap((~publisher.x))
+```
+
