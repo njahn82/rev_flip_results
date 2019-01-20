@@ -40,9 +40,10 @@ my_df <- readxl::read_xlsx("data/master_list.xlsx", sheet= 2) %>%
   rename(prev_pub = `prev. publisher`, born_oa = `Born OA`, flipped_oa = `Flipped OA`)
 ```
 
-### Research question 1: How many journals reverse-flipped from fully open access to toll-access (including hybrid)? 
+### Research question 1: How many OA journals have reverse-flipped to a subscription model? 
+ 
 
-We found `r n_distinct(my_df$journal_name)` journals that converted from fully open access to a subscription-based business model including hybrid open access. Figure presents a breakdown of these journals by the year when this switch occurred. While the earliest reverse flip happened in `r as.character(min(my_df$year_reverse_flipped, na.rm = TRUE))`, the majority of journals changed their business model from 2013 onward (N = `r filter(my_df, !is.na(year_reverse_flipped), year_reverse_flipped > 2012) %>% nrow()`).
+We identified `r n_distinct(my_df$journal_name)` journals that converted from fully open access to a subscription model, including hybrid open access. While we discovered reverse-flips as early as 2005, the majority of journals `r as.character(min(my_df$year_reverse_flipped, na.rm = TRUE))`. While the earliest reverse flip happened in `r as.character(min(my_df$year_reverse_flipped, na.rm = TRUE))`, the majority of journals changed their business model from 2013 onward (see Figure 3).
 
 
 ```{r time, fig.cap= "Number of journals converted from fully open access to a subscription-based business model per year."}
@@ -60,6 +61,7 @@ my_df %>%
   theme(panel.border=element_blank())
 ```
 
+### 
 ### Research Question 2: How many articles did these journals publish between 2000 and 2018?
 
 ```{r}

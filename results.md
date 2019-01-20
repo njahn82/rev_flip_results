@@ -10,9 +10,10 @@ output:
 
 
 
-### Research question 1: How many journals reverse-flipped from fully open access to toll-access (including hybrid)? 
+### Research question 1: How many OA journals have reverse-flipped to a subscription model? 
+ 
 
-We found 154 journals that converted from fully open access to a subscription-based business model including hybrid open access. Figure presents a breakdown of these journals by the year when this switch occurred. While the earliest reverse flip happened in 2005, the majority of journals changed their business model from 2013 onward (N = 92).
+We identified 154 journals that converted from fully open access to a subscription model, including hybrid open access. While we discovered reverse-flips as early as 2005, the majority of journals 2005. While the earliest reverse flip happened in 2005, the majority of journals changed their business model from 2013 onward (see Figure 3).
 
 
 ![Number of journals converted from fully open access to a subscription-based business model per year.](results_files/figure-docx/time-1.png)
