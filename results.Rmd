@@ -40,7 +40,7 @@ my_df <- readxl::read_xlsx("data/master_list.xlsx", sheet= 2) %>%
   rename(prev_pub = `prev. publisher`, born_oa = `Born OA`, flipped_oa = `Flipped OA`)
 ```
 
-### Research question 1: How many OA journals have reverse-flipped to a subscription model? 
+### Research Question 1: How many OA journals have reverse-flipped to a subscription model? 
  
 We identified `r n_distinct(my_df$journal_name)` journals that converted from fully open access to a subscription model, including hybrid open access. While we discovered reverse-flips as early as 2005, the majority of journals `r as.character(min(my_df$year_reverse_flipped, na.rm = TRUE))`. While the earliest reverse flip happened in `r as.character(min(my_df$year_reverse_flipped, na.rm = TRUE))`, the majority of journals changed their business model from 2013 onward (see Figure 3).
 
@@ -80,7 +80,7 @@ library(UpSetR) # https://academic.oup.com/bioinformatics/article/33/18/2938/388
 UpSetR::upset(tt, order.by = "freq")
 ```
 
-### Research Question 2: How many articles did these journals publish between 2000 and 2018?
+#### b) How many articles did these journals publish between 2000 and 2018?
 
 ```{r}
 cr_md <- readr::read_csv("data/cr_md.csv", col_types = cols(.default = "c")) %>%
@@ -91,7 +91,7 @@ cr_md %>%
   mutate(average = n / volumes) -> article_volume
 ```
 
-To obtain the journal publication volume, we retrieved all articles indexed in Crossref from 2000 onward. Articles metadata from `r n_distinct(cr_md$issn)` journals were registered with Crossref, representing `r n_distinct(cr_md$issn) / nrow(my_df) * 100`% of our sample. These journals published `r nrow(cr_md)` articles between 2000 and 2018. Table presents summary statistics for the average yearly publication volume. Figure presents the average yearly journal volume. They show that the size of the journals in terms of the yearly article volume varies considerably, ranging from `r round(min(article_volume$average),0)` to `r round(max(article_volume$average),0)`. Half of the journals studied published `r round(median(article_volume$average),0)` or less articles per year. 
+To obtain the journal publication volume, we retrieved the metadata for all articles indexed in Crossref from the year 2000 onwards. Specifically, Crossref provided the metadata for `r n_distinct(cr_md$issn)` out of `r nrow(my_df)` journals (`r n_distinct(cr_md$issn) / nrow(my_df) * 100`% of our sample). Our analysis shows that between 2000 and 2018, these journals published `r nrow(cr_md)` articles, yet the yearly article volume varies considerably (see Figure 4), ranging from `r round(min(article_volume$average),0)` to `r round(max(article_volume$average),0)` with half of the journals publishing `r round(median(article_volume$average),0)` or fewer articles per year (see Table 1). 
 
 ```{r}
 article_volume %>%
@@ -125,7 +125,7 @@ article_volume %>%
   theme(panel.border=element_blank())
 ```
 
-### Research Question 3: What is the disciplinary distribution of these journals? 
+#### c) Which academic disciplines do the journals belong to?
 
 ```{r}
 cr_md <- readr::read_csv("data/cr_md.csv", col_types = cols(.default = "c")) %>%
@@ -146,7 +146,7 @@ tmp %>%
   summarise(md = median(n)) -> median_change
 ```  
 
-Table presents a breakdown by top-level discipline, highlighting that reverse flipped journal could be found in various fields (needs to be discussed).
+Table presents a breakdown by top-level discipline, highlighting that reverse flipped journal are not limited to one field, but can be found across various disciplines.
 
 ```{r}
 my_df %>%
@@ -169,6 +169,14 @@ my_df %>%
             `Q1` = quantile(age_at_time_of_flip, 1/4),
             `Q3` = quantile(age_at_time_of_flip, 3/4)) -> age_df
 ```
+
+
+#### d) How many journals have been associated with scholarly societies or academic institutions?
+
+Our dataset contains information about whether scholarly societes or academic institutions are related to fully open access journals that were converted to  toll-access. We obtained `r my_df %>% filter(society_affiliation == 1 | other_sci_affiliation == 1) %>% nrow()` (`r my_df %>% filter(society_affiliation == 1 | other_sci_affiliation == 1) %>% nrow() / nrow(my_df) * 100` %) reverse-flip journals that were either published together with a scholarly society (N = `r my_df %>% filter(society_affiliation == 1) %>% nrow()`) or at an academic institution (N = `r my_df %>% filter(other_sci_affiliation == 1) %>% nrow()`). 
+
+### e) Under which publisher did the reverse-flip occur? Who does currently publish the journals?
+
 
 ### Research Question 4: How old were the journals when the reverse flips happened?
 

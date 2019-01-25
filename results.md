@@ -10,7 +10,7 @@ output:
 
 
 
-### Research question 1: How many OA journals have reverse-flipped to a subscription model? 
+### Research Question 1: How many OA journals have reverse-flipped to a subscription model? 
  
 We identified 152 journals that converted from fully open access to a subscription model, including hybrid open access. While we discovered reverse-flips as early as 2005, the majority of journals 2005. While the earliest reverse flip happened in 2005, the majority of journals changed their business model from 2013 onward (see Figure 3).
 
@@ -31,11 +31,11 @@ Of the ` r index_df %>% distinct(issn) %>% nrow()` indexed journals, Crossref an
 
 ![](results_files/figure-docx/unnamed-chunk-3-1.png)<!-- -->
 
-### Research Question 2: How many articles did these journals publish between 2000 and 2018?
+#### b) How many articles did these journals publish between 2000 and 2018?
 
 
 
-To obtain the journal publication volume, we retrieved all articles indexed in Crossref from 2000 onward. Articles metadata from 136 journals were registered with Crossref, representing 89% of our sample. These journals published 190,681 articles between 2000 and 2018. Table presents summary statistics for the average yearly publication volume. Figure presents the average yearly journal volume. They show that the size of the journals in terms of the yearly article volume varies considerably, ranging from 10 to 638. Half of the journals studied published 57 or less articles per year. 
+To obtain the journal publication volume, we retrieved the metadata for all articles indexed in Crossref from the year 2000 onwards. Specifically, Crossref provided the metadata for 136 out of 152 journals (89% of our sample). Our analysis shows that between 2000 and 2018, these journals published 190,681 articles, yet the yearly article volume varies considerably (see Figure 4), ranging from 10 to 638 with half of the journals publishing 57 or fewer articles per year (see Table 1). 
 
 
 Table: Summary statistics of yearly average publication volume per reverse flip journals. Publication volume for 142 journals was obtained using Crossref.
@@ -52,11 +52,11 @@ Q3                                              111
 
 ![Histogram of average journal size in terms of yearly article volume published. Red dashed line represents the median, yellow dashed lined the mean value of the distribution.](results_files/figure-docx/unnamed-chunk-6-1.png)
 
-### Research Question 3: What is the disciplinary distribution of these journals? 
+#### c) Which academic disciplines do the journals belong to?
 
 
 
-Table presents a breakdown by top-level discipline, highlighting that reverse flipped journal could be found in various fields (needs to be discussed).
+Table presents a breakdown by top-level discipline, highlighting that reverse flipped journal are not limited to one field, but can be found across various disciplines.
 
 
 Table: Breakdown of reverse flip journals by discipline
@@ -69,6 +69,12 @@ SSH                           38                 25
 LS                            23                 15
 Total                        152                100
 
+
+
+
+#### d) How many journals have been associated with scholarly societies or academic institutions?
+
+Our dataset contains information about whether scholarly societes or academic institutions are related to fully open access journals that were converted to  toll-access. We obtained 107 (70 %) reverse-flip journals that were either published together with a scholarly society (N = 59) or at an academic institution (N = 48). 
 
 
 ### Research Question 4: How old were the journals when the reverse flips happened?
