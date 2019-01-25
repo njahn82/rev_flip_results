@@ -42,7 +42,6 @@ my_df <- readxl::read_xlsx("data/master_list.xlsx", sheet= 2) %>%
 
 ### Research question 1: How many OA journals have reverse-flipped to a subscription model? 
  
-
 We identified `r n_distinct(my_df$journal_name)` journals that converted from fully open access to a subscription model, including hybrid open access. While we discovered reverse-flips as early as 2005, the majority of journals `r as.character(min(my_df$year_reverse_flipped, na.rm = TRUE))`. While the earliest reverse flip happened in `r as.character(min(my_df$year_reverse_flipped, na.rm = TRUE))`, the majority of journals changed their business model from 2013 onward (see Figure 3).
 
 
@@ -61,7 +60,26 @@ my_df %>%
   theme(panel.border=element_blank())
 ```
 
-### 
+### Research Question 2: To provide a general overview,
+
+#### a) How thoroughly are these journals currently indexed in major bibliometric databases (Web of Science, Scopus, PubMed)?
+ 
+We investigated the coverage of reverse-flip journals in the following four major bibliographic databases: i) Crossref, a large DOI registration agency for scholarly works, ii) Scopus, iii) Journal Citation Report (JCR) listing journals indexed for the Web of Science, and iv) journals indexed in MEDLINE. This analysis is based at the journal-level by matching ISSN variants. We used the most current journal lists and search indexes from January 2019. 
+
+```{r}
+index_df <- readr::read_csv("data/indexing_coverage.csv")
+```
+
+In total, we found `r index_df %>% distinct(issn) %>% nrow()` being indexed by at least one bibliometric databases examined, covering `r index_df %>% distinct(issn) %>% nrow() / nrow(my_df) * 100`% of the journals in our study. Figure presents the number of reverse-flip journals that are indexed by each database and the intersection with other databases. 
+Of the ` r index_df %>% distinct(issn) %>% nrow()` indexed journals, Crossref and Scopus are the most frequent sources which cover reverse-flip journals. Together with the Web of Science (JCR) they share the largest number of journals (N = `r index_df %>% filter(source %in% c("Scopus", "Crossref", "JCR")) %>% group_by(issn) %>% filter(n() == 3) %>% distinct(issn) %>% nrow()`), of which `r index_df %>% filter(source %in% c("Scopus", "Crossref", "JCR", "MEDLINE")) %>% group_by(issn, source) %>% count() %>% ungroup() %>% group_by(issn) %>% count() %>% filter(nn == 4) %>% nrow()` journals are also covered by MEDLINE.
+
+
+```{r}
+tt <- as.data.frame.matrix(table(index_df$issn, index_df$source))
+library(UpSetR) # https://academic.oup.com/bioinformatics/article/33/18/2938/3884387
+UpSetR::upset(tt, order.by = "freq")
+```
+
 ### Research Question 2: How many articles did these journals publish between 2000 and 2018?
 
 ```{r}
