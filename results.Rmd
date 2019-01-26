@@ -173,9 +173,48 @@ my_df %>%
 
 #### d) How many journals have been associated with scholarly societies or academic institutions?
 
-Our dataset contains information about whether scholarly societes or academic institutions are related to fully open access journals that were converted to  toll-access. We obtained `r my_df %>% filter(society_affiliation == 1 | other_sci_affiliation == 1) %>% nrow()` (`r my_df %>% filter(society_affiliation == 1 | other_sci_affiliation == 1) %>% nrow() / nrow(my_df) * 100` %) reverse-flip journals that were either published together with a scholarly society (N = `r my_df %>% filter(society_affiliation == 1) %>% nrow()`) or at an academic institution (N = `r my_df %>% filter(other_sci_affiliation == 1) %>% nrow()`). 
+Our dataset contains information about whether reverse-flipped journals were related to scholarly societes and academic institutions. We obtained `r my_df %>% filter(society_affiliation == 1 | other_sci_affiliation == 1) %>% nrow()` (`r my_df %>% filter(society_affiliation == 1 | other_sci_affiliation == 1) %>% nrow() / nrow(my_df) * 100` %) reverse-flip journals that were either published together with a scholarly society (N = `r my_df %>% filter(society_affiliation == 1) %>% nrow()`) or at an academic institution (N = `r my_df %>% filter(other_sci_affiliation == 1) %>% nrow()`). 
 
 ### e) Under which publisher did the reverse-flip occur? Who does currently publish the journals?
+
+```{r}
+my_df %>%
+  count(publisher, sort = TRUE)
+cr_md %>%
+  select(issn, issued, journal_title, publisher, DOI) %>%
+  # issued to year
+  # to year
+  mutate(year = lubridate::parse_date_time(issued, c('y', 'ymd', 'ym'))) %>%
+  mutate(year = lubridate::year(year)) %>%
+  # filter latest year for every journal (issn)
+  group_by(issn) %>%
+  filter(year == max(year)) %>%
+  ungroup() %>%
+  # count articles per journal and publsiher name
+  group_by(publisher, issn) %>%
+  # get publisher with max article
+  count() %>%
+  ungroup() %>%
+  group_by(issn) %>%
+  filter(n == max(n)) %>%
+  mutate(publisher = ifelse(publisher %in% "Springer Nature America, Inc", "Springer Nature", publisher)) %>%
+  mutate(publisher = ifelse(publisher %in% "Brill Academic Publishers", "Brill", publisher)) %>%
+  mutate(publisher = ifelse(publisher %in% "Informa UK Limited",
+                            "Taylor & Francis", publisher)) %>%
+  mutate(publisher = ifelse(publisher %in% "Walter de Gruyter GmbH",
+                            "De Gruyter", publisher)) %>%
+  mutate(publisher = gsub("Elsevier BV", "Elsevier", publisher)) %>%
+  select(cr_publisher = publisher, issn) -> current_cr_publisher
+my_df %>%
+  select(issn, publisher) %>%
+  left_join(current_cr_publisher, by = "issn") -> publisher_df
+# backup
+writexl::write_xlsx(publisher_df, "data/publisher_tmp.xlsx")
+publisher_df %>%
+  count(publisher, sort = TRUE) -> rev_pub_count
+publisher_df %>%
+  count(cr_publisher, sort = TRUE) 
+```
 
 
 ### Research Question 4: How old were the journals when the reverse flips happened?
