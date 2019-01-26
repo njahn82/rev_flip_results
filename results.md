@@ -26,7 +26,7 @@ We investigated the coverage of reverse-flip journals in the following four majo
 
 
 In total, we found 147 being indexed by at least one bibliometric databases examined, covering 97% of the journals in our study. Figure presents the number of reverse-flip journals that are indexed by each database and the intersection with other databases. 
-Of the ` r index_df %>% distinct(issn) %>% nrow()` indexed journals, Crossref and Scopus are the most frequent sources which cover reverse-flip journals. Together with the Web of Science (JCR) they share the largest number of journals (N = 83), of which 26 journals are also covered by MEDLINE.
+Of the 147 indexed journals, Crossref and Scopus are the most frequent sources which cover reverse-flip journals. Together with the Web of Science (JCR) they share the largest number of journals (N = 83), of which 26 journals are also covered by MEDLINE.
 
 
 ![](results_files/figure-docx/unnamed-chunk-3-1.png)<!-- -->
@@ -38,17 +38,6 @@ Of the ` r index_df %>% distinct(issn) %>% nrow()` indexed journals, Crossref an
 To obtain the journal publication volume, we retrieved the metadata for all articles indexed in Crossref from the year 2000 onwards. Specifically, Crossref provided the metadata for 137 out of 152 journals (90% of our sample). Our analysis shows that between 2000 and 2018, these journals published 190,951 articles, yet the yearly article volume varies considerably (see Figure 4), ranging from 10 to 638 with half of the journals publishing 56 or fewer articles per year (see Table 1). 
 
 
-Table: Summary statistics of yearly average publication volume per reverse flip journals. Publication volume for 142 journals was obtained using Crossref.
-
-                      Average Yearly Article Volume
--------------------  ------------------------------
-Mean                                             98
-Median                                           56
-Standard Deviation                              116
-Minimum                                          10
-Maximum                                         638
-Q1                                               30
-Q3                                              115
 
 ![Histogram of average journal size in terms of yearly article volume published. Red dashed line represents the median, yellow dashed lined the mean value of the distribution.](results_files/figure-docx/unnamed-chunk-6-1.png)
 
@@ -76,39 +65,26 @@ Total                        152                100
 
 Our dataset contains information about whether reverse-flipped journals were related to scholarly societes and academic institutions. We obtained 107 (70 %) reverse-flip journals that were either published together with a scholarly society (N = 59) or at an academic institution (N = 48). 
 
-### e) Under which publisher did the reverse-flip occur? Who does currently publish the journals?
+#### e) Under which publisher did the reverse-flip occur? Who does currently publish the journals?
+
+To investigate the extent of reverse flips across different publishers, we acquired the publisher names for every journal at the time of the reverse flip and for the most current publisher. Table x shows the post-flip and current top  publishers based on the number of journals that were converted from fully OA to subscription access. These six publishers - Elsevier, Springer Nature, Taylor & Francis, De Gruyter, Brill and Wiley - comprised 105 journals at the time of the reverse-flip. 104 reverse-flip journals did belong to the most current journal portfolio investigated. In both cases, these journals represent around 70% of all reverse-flips found. The remaining publishers are categorized as “Other.” The distribution of reverse flips across publishers resembles the general conditions of the scholarly publishing market at-large, which is also dominated by large commercial publishers like Elsevier, Springer Nature, Taylor and Francis, and Wiley.
 
 
-```
-#> # A tibble: 43 x 2
-#>    publisher                      n
-#>    <chr>                      <int>
-#>  1 Springer Nature               45
-#>  2 Elsevier                      35
-#>  3 Taylor & Francis              12
-#>  4 De Gruyter                     5
-#>  5 Wiley                          4
-#>  6 Brill                          3
-#>  7 Duke University Press          3
-#>  8 Emerald                        3
-#>  9 IEEE                           3
-#> 10 Cambridge University Press     2
-#> # ... with 33 more rows
-#> # A tibble: 33 x 2
-#>    cr_publisher                         n
-#>    <chr>                            <int>
-#>  1 Springer Nature                     39
-#>  2 Elsevier                            34
-#>  3 <NA>                                15
-#>  4 Taylor & Francis                    14
-#>  5 De Gruyter                           7
-#>  6 Wiley                                4
-#>  7 Brill                                3
-#>  8 Cambridge University Press (CUP)     3
-#>  9 Emerald                              3
-#> 10 Duke University Press                2
-#> # ... with 23 more rows
-```
+They represent around 70% of all journals in our sample.
+ 
+
+Publisher           OA Journals converted to Toll-Access   Proportion   Current number of reversely-flipped journals   Proportion
+-----------------  -------------------------------------  -----------  ---------------------------------------------  -----------
+Springer Nature                                       45         29.6                                             41         27.0
+Elsevier                                              35         23.0                                             34         22.4
+Taylor & Francis                                      12          7.9                                             14          9.2
+De Gruyter                                             5          3.3                                              7          4.6
+Brill                                                  4          2.6                                              4          2.6
+Wiley                                                  4          2.6                                              4          2.6
+Other                                                 47         30.9                                             48         31.6
+Total                                                152        100.0                                            152        100.0
+
+#### f) How old were the journals at the time of the reverse flip?
 
 
 ### Research Question 4: How old were the journals when the reverse flips happened?
@@ -137,7 +113,7 @@ Figure presents a breakdown of discipline by journal age at the time of the reve
 
 ![Discipline by journal age at the time of reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per Discipline.](results_files/figure-docx/unnamed-chunk-13-1.png)
 
-It seems that for health and life sciences journals (Health) the majority of flips only happened after a period of establishing the journal (>15 years). However, for the physical sciences and mathematics (PSM) as well as the social sciences and humanities (SSH) this process of reconsidering the publishing model seems to have started earlier. For PSM journals about one third already flipped within the first five years of the journal’s lifetime. Overall, this may have resulted from a somewhat lower degree of acceptance of APC-based open access in these disciplines (add REF)
+It seems that for health and life sciences journals (Health) the majority of flips only happened after a period of establishing the journal (>15 years). However, for the physical sciences and mathematics (PSM) as well as the social sciences and humanities (SSH) this process of reconsidering the publishing model seems to have started earlier. For PSM journals about one third already flipped within the first five years of the journal’s lifetime. <!-- Overall, this may have resulted from a somewhat lower degree of acceptance of APC-based open access in these disciplines (add REF)-->
 
 ### Research Question 5: What publishers are now publishing the reverse-flipped journals?
 
