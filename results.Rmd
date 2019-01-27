@@ -337,5 +337,123 @@ ggplot(aes(x = factor(age_at_time_of_flip_cat, levels = c("1-5", "6-15", "> 15")
 
 It seems that for health and life sciences journals (Health) the majority of flips only happened after a period of establishing the journal (>15 years). However, for the physical sciences and mathematics (PSM) as well as the social sciences and humanities (SSH) this process of reconsidering the publishing model seems to have started earlier. For PSM journals about one third already flipped within the first five years of the journal’s lifetime. <!-- Overall, this may have resulted from a somewhat lower degree of acceptance of APC-based open access in these disciplines (add REF)-->
 
+### Research Question 3: Before the reverse flip, 
 
+#### a) How many journals had been subscription venues before converting to OA?
+
+We manually checked the past business models of every journal in our sample. As the journal age suggests, not all journals were born fully open access journals, but underwent several business model changes before the reverse flip. In fact, around `r round(my_df %>% filter(born_oa == "0") %>% nrow() / nrow(my_df) * 100, 0)`% (N = `r my_df %>% filter(born_oa == "0") %>% nrow()`) were subscription-based in the past before converting to fully open access. 
+
+#### b) How many journals were APC-based, and at what price levels?
+
+We investigated whether journals charged authors a publication fee using journal list prices. We were able to obtain information about APC pricing for `r my_df %>% mutate(apc_pre = as.numeric(apc_pre)) %>% filter(!is.na(apc_pre)) %>% nrow()` journals, representing `r my_df %>% mutate(apc_pre = as.numeric(apc_pre)) %>% filter(!is.na(apc_pre)) %>% nrow() / nrow(my_df) *100` % of all reverse-flipped journals studied. Of these, `r my_df %>% mutate(apc_pre = as.numeric(apc_pre)) %>% filter(!is.na(apc_pre), apc_pre > 0) %>% nrow()` were APC-based. List prices varied considerably, ranging from `r my_df %>% mutate(apc_pre = as.numeric(apc_pre)) %>% filter(!is.na(apc_pre), apc_pre > 0) %>% .$apc_pre %>% min()` to `r my_df %>% mutate(apc_pre = as.numeric(apc_pre)) %>% filter(!is.na(apc_pre), apc_pre > 0) %>% .$apc_pre %>% max()` USD. The median fee was `r my_df %>% mutate(apc_pre = as.numeric(apc_pre)) %>% filter(!is.na(apc_pre), apc_pre > 0) %>% .$apc_pre %>% median()` USD.
+
+#### c) Which countries were the journals based in? 
+
+### Research Question 4: After the reverse flip,
+
+#### a) Which access model do the journals operate on?
+
+Table presents the journals' access model after the reverse-flip. Our analysis shows that around `r round(my_df %>% filter(grepl("Hybrid", oa_model, fixed = FALSE, ignore.case = TRUE)) %>% nrow() / nrow(my_df) * 100, 0)` % (N = `r my_df %>% filter(grepl("Hybrid", oa_model, fixed = FALSE, ignore.case = TRUE)) %>% nrow()`) of the journals shifted to a hybrid OA model, while the remaining `r round(my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow() / nrow(my_df) * 100, 0)` % (N = `r my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow()`) transformed to subscription venues. 
+
+offer options to make articles immediately available after a fee was paid, also known as hybrid open access. `r my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow()`  or `r round(my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow() / nrow(my_df) * 100, 0)` % (N = `r my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow()`) journals operated under a subscription-based model only.
+
+```{r}
+my_df %>%
+  mutate(oa_model = gsub("Subscriptions", "Subscription", oa_model)) %>%
+  count(oa_model) %>%
+  mutate(prop  = n / sum(n) * 100) %>% 
+  arrange(desc(prop)) %>%
+  rbind(list("Total", nrow(my_df), 100)) %>%
+  knitr::kable(caption = "Business model of journals after reverse flip", digits = 2, col.names = c("Business model", "Journals", "Proportion"))
+```
+
+
+#### b) Does the publication volume change?
+
+```{r}
+cr_md <- readr::read_csv("data/cr_md.csv", col_types = cols(.default = "c")) %>%
+  mutate(issued_year = lubridate::year(lubridate::parse_date_time(issued, c('y', 'ymd', 'ym')))) %>%
+  count(issn, issued_year) %>%
+  left_join(my_df, by = c("issn")) %>%
+  filter(!is.na(year_reverse_flipped)) %>%
+  mutate(lag = issued_year - year_reverse_flipped) %>%
+  filter(lag %in% -2:2) -> tmp
+tmp %>% 
+  filter(lag %in% c(-2,2)) %>% 
+  group_by(issn) %>% 
+  filter(n() > 1) %>% 
+  ungroup() %>% 
+  group_by(lag) %>% 
+  summarise(md = median(n)) -> median_change
+```  
+
+To determine the variation in publication volume, we studied all journals that had reverse-flipped until 2016 for which Crossref provided article metadata two years before and after the conversion (N = `r tmp %>%  filter(lag %in% c(-2,2)) %>%  group_by(issn) %>%  filter(n() > 1) %>% group_by(issn) %>% summarise(n_distinct(issn)) %>% nrow()`).  For the most part, the article volumes two years before and after the flip reveal little change (see Figure X), yet some individual cases show a noticeable increase. Elsevier's Meta Gene, for example, launched as an OA journal with 16 published articles in 2013; the journal flipped to a hybrid model in 2016, publishing 86 articles that year, and increased its article volume to 201 in 2018.
+
+```{r, fig.cap='Developement of publication volume two years before and after the reverse flip.'}
+tmp %>% 
+  filter(lag %in% c(-2:2)) %>% 
+  group_by(issn) %>% 
+  filter(n() > 4) %>% 
+  mutate(lag = as.factor(lag)) -> tt
+tt %>%
+  ggplot(aes(lag, n, fill = lag)) +
+  geom_boxplot() +
+  coord_cartesian(ylim = 0:400) +
+  xlab("Years since the Reverse Flip") +
+  ylab("Yearly Article Volume") +
+  scale_fill_manual(values = c("#009392","#39b185","#e9e29c","#e88471","#cf597e")) +
+  # remove legend
+  theme_minimal(base_family="Roboto") +
+  theme(plot.margin=margin(30,30,30,30)) +
+  theme(panel.grid.minor=element_blank()) +
+  theme(axis.ticks=element_blank()) +
+  theme(panel.grid.major.x=element_blank()) +
+  theme(panel.border=element_blank()) +
+  guides(fill=FALSE)
+```
+
+There are, however, some cases were article volume increased noticeably. One example is the journal *Meta Gene* launched by Elsevier BV in 2013. Its article volume grew from 86 articles published in the year of the reverse flip (2016) to 201 articles published two years after (2018).
+
+#### c) Do journal-level citation metrics change?
+
+```{r}
+cwts <- readr::read_csv("data/cwts_jn_flipped.csv") 
+# add lag variable
+cwts %>%
+  distinct(issn, Year, .keep_all = TRUE) %>%
+  filter(!is.na(year_reverse_flipped)) %>%
+  mutate(lag = Year - year_reverse_flipped) %>%
+  filter(lag %in% -2:2) -> snip
+snip %>% 
+  # add publisher info
+#  left_join(cr_publishers, by = "issn") %>%
+  filter(lag %in% c(-2:2)) %>%
+  group_by(issn) %>% 
+  filter(n() > 4) %>% 
+  mutate(lag = as.factor(lag)) -> tt
+```
+
+To investigate whether the citation impact changed after the access model conversion, we used the Source Normalized Impact per Paper (SNIP) indicator from the Centre for Science and Technology Studies (CWTS), matching `r n_distinct(cwts$issn)` of `r nrow(my_df)` journals from our sample.
+The most recent SNIP values were reported for 2017; accordingly, we only included journals that flipped until 2015 (N = `r n_distinct(tt$issn)`).
+Figure illustrates the SNIP distribution of reverse-flip journals two years before and after the conversion. Our analysis highlights that there is only little change in SNIP values before and after the business model change.
+
+```{r, fig.cap='Development of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.5'}
+tt %>%
+  ggplot(aes(lag, SNIP.x, fill = lag)) +
+  geom_boxplot() +
+  coord_cartesian(ylim = 0:2.5) +
+  theme_minimal() +
+  xlab("Years since the reverse flip") +
+  ylab("SNIP") +
+  scale_fill_manual(values = c("#009392","#39b185","#e9e29c","#e88471","#cf597e")) +
+  # remove legend
+  theme_minimal(base_family="Roboto") +
+  theme(plot.margin=margin(30,30,30,30)) +
+  theme(panel.grid.minor=element_blank()) +
+  theme(axis.ticks=element_blank()) +
+  theme(panel.grid.major.x=element_blank()) +
+  theme(panel.border=element_blank()) +
+  guides(fill=FALSE)
+
+```
 

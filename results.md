@@ -35,13 +35,13 @@ Of the 147 reverse-flip journals, Crossref and Scopus covered most. Together wit
 
 
 
-To obtain the journal publication volume, we retrieved the metadata for all articles indexed in Crossref from the year 2000 onwards. Specifically, Crossref provided the metadata for 137 out of 152 journals (90% of our sample). Our analysis shows that between 2000 and 2018, these journals published 190,951 articles, yet the yearly article volume varies considerably (see Figure 4), ranging from 10 to 638 with half of the journals publishing 56 or fewer articles per year (see Table 1). 
+To obtain the journal publication volume, we retrieved the metadata for all articles indexed in Crossref from the year 2000 onwards. Specifically, Crossref provided the metadata for 137 out of 152 journals (90% of our sample). Our analysis shows that between 2000 and 2018, these journals published 190,951 articles, yet the yearly article volume varies considerably (see Figure 4), ranging from 10 to 638 with half of the journals publishing 56 or fewer articles per year. 
 
 
 
 ![Histogram of average journal size in terms of yearly article volume published. Red dashed line represents the median, yellow dashed lined the mean value of the distribution.](results_files/figure-docx/unnamed-chunk-6-1.png)
 
-#### c) Which academic disciplines do the journals belong to?
+#### c) To which academic disciplines do the journals belong to?
 
 
 
@@ -78,9 +78,9 @@ Total                                                152        100.0           
 
 #### e) How many journals have been associated with scholarly societies or academic institutions?
 
-Our dataset contains information about whether reverse-flipped journals were related to scholarly societes and academic institutions. We obtained 107 (70 %) reverse-flip journals that were either published together with a scholarly society (N = 59) or at an academic institution (N = 48). 
+Our dataset contains information about whether reverse-flipped journals were related to scholarly societies and academic institutions. We obtained 107 (70 %) reverse-flip journals that were either published together with a scholarly society (N = 59) or at an academic institution (N = 48). 
 
-Figure presents the extent to which journals were related to scholarly societies or academic institutions at the time of the reverse-flip. It shows that the majority of reverse-flip journals from major publishers were affilated with professional associations and other research organsiations.
+Figure presents the extent to which journals were related to scholarly societies or academic institutions at the time of the reverse-flip. It shows that the majority of reverse-flip journals from major publishers were affiliated with professional associations and other research organisations.
 
 ![](results_files/figure-docx/unnamed-chunk-10-1.png)<!-- -->
 
@@ -114,5 +114,53 @@ Figure presents a breakdown of discipline by journal age at the time of the reve
 
 It seems that for health and life sciences journals (Health) the majority of flips only happened after a period of establishing the journal (>15 years). However, for the physical sciences and mathematics (PSM) as well as the social sciences and humanities (SSH) this process of reconsidering the publishing model seems to have started earlier. For PSM journals about one third already flipped within the first five years of the journal’s lifetime. <!-- Overall, this may have resulted from a somewhat lower degree of acceptance of APC-based open access in these disciplines (add REF)-->
 
+### Research Question 3: Before the reverse flip, 
 
+#### a) How many journals had been subscription venues before converting to OA?
+
+We manually checked the past business models of every journal in our sample. As the journal age suggests, not all journals were born fully open access journals, but underwent several business model changes before the reverse flip. In fact, around 62% (N = 95) were subscription-based in the past before converting to fully open access. 
+
+#### b) How many journals were APC-based, and at what price levels?
+
+We investigated whether journals charged authors a publication fee using journal list prices. We were able to obtain information about APC pricing for 105 journals, representing 69 % of all reverse-flipped journals studied. Of these, 32 were APC-based. List prices varied considerably, ranging from 120 to 3,000 USD. The median fee was 1,066 USD.
+
+#### c) Which countries were the journals based in? 
+
+### Research Question 4: After the reverse flip,
+
+#### a) Which access model do the journals operate on?
+
+Table presents the journals' access model after the reverse-flip. Our analysis shows that around 50 % (N = 76) of the journals shifted to a hybrid OA model, while the remaining 50 % (N = 76) transformed to subscription venues. 
+
+offer options to make articles immediately available after a fee was paid, also known as hybrid open access. 76  or 50 % (N = 76) journals operated under a subscription-based model only.
+
+
+Table: Business model of journals after reverse flip
+
+Business model    Journals   Proportion
+---------------  ---------  -----------
+Hybrid                  76           50
+Subscription            76           50
+Total                  152          100
+
+
+#### b) Does the publication volume change?
+
+
+
+To determine the variation in publication volume, we studied all journals that had reverse-flipped until 2016 for which Crossref provided article metadata two years before and after the conversion (N = 94).  For the most part, the article volumes two years before and after the flip reveal little change (see Figure X), yet some individual cases show a noticeable increase. Elsevier's Meta Gene, for example, launched as an OA journal with 16 published articles in 2013; the journal flipped to a hybrid model in 2016, publishing 86 articles that year, and increased its article volume to 201 in 2018.
+
+![Developement of publication volume two years before and after the reverse flip.](results_files/figure-docx/unnamed-chunk-17-1.png)
+
+There are, however, some cases were article volume increased noticeably. One example is the journal *Meta Gene* launched by Elsevier BV in 2013. Its article volume grew from 86 articles published in the year of the reverse flip (2016) to 201 articles published two years after (2018).
+
+#### c) Do journal-level citation metrics change?
+
+
+
+To investigate whether the citation impact changed after the access model conversion, we used the Source Normalized Impact per Paper (SNIP) indicator from the Centre for Science and Technology Studies (CWTS), matching 117 of 152 journals from our sample.
+The most recent SNIP values were reported for 2017; accordingly, we only included journals that flipped until 2015 (N = 82).
+Figure illustrates the SNIP distribution of reverse-flip journals two years before and after the conversion. Our analysis highlights that there is only little change in SNIP values before and after the business model change.
+
+![Development of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.5](results_files/figure-docx/unnamed-chunk-19-1.png)
 
