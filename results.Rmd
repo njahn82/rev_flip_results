@@ -355,7 +355,6 @@ We investigated whether journals charged authors a publication fee using journal
 
 Table presents the journals' access model after the reverse-flip. Our analysis shows that around `r round(my_df %>% filter(grepl("Hybrid", oa_model, fixed = FALSE, ignore.case = TRUE)) %>% nrow() / nrow(my_df) * 100, 0)` % (N = `r my_df %>% filter(grepl("Hybrid", oa_model, fixed = FALSE, ignore.case = TRUE)) %>% nrow()`) of the journals shifted to a hybrid OA model, while the remaining `r round(my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow() / nrow(my_df) * 100, 0)` % (N = `r my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow()`) transformed to subscription venues. 
 
-offer options to make articles immediately available after a fee was paid, also known as hybrid open access. `r my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow()`  or `r round(my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow() / nrow(my_df) * 100, 0)` % (N = `r my_df %>% filter(grepl("Subscription", oa_model, fixed = TRUE)) %>% nrow()`) journals operated under a subscription-based model only.
 
 ```{r}
 my_df %>%
@@ -455,5 +454,118 @@ tt %>%
   theme(panel.border=element_blank()) +
   guides(fill=FALSE)
 
+```
+
+### Research Question 5: For hybrid journals—OA journals that have flipped to hybrid OA directly as well as OA journals that first became subscription venues and then, at a later point, incorporated hybrid OA—,
+
+#### a) How do APC levels differ before and after the flip?
+
+```{r}
+my_df %>%
+  #filter(oa_model == "Hybrid") %>%
+  mutate(
+    `Before Flip` = as.numeric(apc_pre),
+    `After Flip` = as.numeric(apc_post),
+    `Current APC` = as.numeric(apc_now),
+     diff = `After Flip` - `Before Flip`) %>% 
+  filter(!is.na(diff)) %>%
+  select(issn, diff, `Before Flip`, `After Flip`, `Current APC`) %>%
+  gather(3:5, key = "apc_type", value = "apc") %>%
+  filter(apc > 0) %>% 
+  group_by(issn) %>%
+  filter(n() > 2) -> apc_df
+```
+
+We were able to obtain publication fee list prices before and after the flip including the most recent level in 2018 for `r length(unique(apc_df$issn))` journals. Figure compares them with each other, highlighting an considerable increase after the reverse flip.
+
+
+```{r, fig.cap="APC list prices before and after the flip including most current level among reverse-flip journals."}
+apc_df %>% 
+  ggplot(aes(apc_type, apc, fill = apc_type)) +
+  geom_boxplot() +
+  scale_x_discrete(limits = c("Before Flip", "After Flip", "Current APC")) +
+  scale_fill_manual(values = c("#CC6677", "#88CCEE", "#DDCC77")) +
+  theme_minimal() +
+  labs(x = "APC Pricing", y = "List Price") +
+  # remove legend
+  guides(fill=FALSE) +
+  theme_minimal(base_family="Roboto") +
+  theme(plot.margin=margin(30,30,30,30)) +
+  theme(panel.grid.minor=element_blank()) +
+  theme(axis.ticks=element_blank()) +
+  theme(panel.grid.major.x=element_blank()) +
+  theme(panel.border=element_blank())
+```
+
+
+#### b) What is the uptake of hybrid OA articles; Was open access publication in reverse-flip journals enabled by transformative agreements?
+
+
+```{r}
+hybrid <- readr::read_csv("https://github.com/subugoe/hybrid_oa_dashboard/blob/master/data/hybrid_publications.csv?raw=true") 
+my_df %>% 
+  filter(oa_model == "Hybrid") -> apc_df
+hybrid %>%
+  filter(journal_title %in% apc_df$journal_name) %>%
+  distinct(journal_title, issued, yearly_jn_volume, license_ref_n) %>%
+  inner_join(apc_df, by = c("journal_title" = "journal_name")) %>%
+  filter(issued >= year_reverse_flipped) %>%
+  group_by(journal_title) %>%
+  summarise(jn_volume = sum(yearly_jn_volume),
+            hoa = sum(license_ref_n)) %>%
+  mutate(prop = round(hoa/ jn_volume * 100, 2)) -> hybrid_shares
+```
+
+
+Retrieving open content licenses including start date from Crossref, we were able to obtain `r sum(hybrid_shares$hoa)` articles from `r length(unique(hybrid_shares$journal_title))` that were made available immediately as open access articles in the year or after the reverse flip. They represent `r round(sum(hybrid_shares$hoa) / sum(hybrid_shares$jn_volume) * 100, 2)`% of the total article volume studied.
+
+Using data from the Open APC initiative, we finally checked whether institutions have financed hybrid open access articles in reverse-flipped journals. We found evidence for institutional sponsorship for three individual articles in reverse-flip journals, and as part of a transformative agreement "Springer Compact" offered by Springer Nature to individual institutions and countries. Table summaries the total number of articles in reverse-flip journal that were made openly available under "Springer Compact" agreements, as well as its proportion per transformation contract. Although the proportion these articles is marginally, findings suggest that mechanisms were missing that would have helped institutions to prevent funding of open access publication in reverse-flipped journals.
+
+```{r}
+oapc <- readr::read_csv("https://github.com/subugoe/hybrid_oa_dashboard/blob/master/data/oapc_hybrid.csv?raw=true") %>% 
+   group_by(country_name, hybrid_type, publisher) %>% 
+   summarise(n = n())
+hybrid %>%
+  filter(journal_title %in% apc_df$journal_name) %>%
+ # distinct(journal_title, issued, yearly_jn_volume, license_ref_n) %>%
+  inner_join(apc_df, by = c("journal_title" = "journal_name")) %>%
+  filter(issued >= year_reverse_flipped) %>% 
+  filter(!is.na(hybrid_type)) %>%
+  group_by(hybrid_type, country_name, publisher.x) %>%
+  count() %>% 
+  left_join(oapc, by = c("country_name", "hybrid_type", "publisher.x" = "publisher")) %>%
+  mutate(prop = round(n.x / n.y * 100,2)) %>%
+  filter(hybrid_type == "Open APC (Offsetting)") %>%
+  arrange(desc(n.x)) %>%
+  ungroup() %>%
+  select(Sponsor = country_name, `OA Articles in Reverse Flip Journals` = n.x, `All OA Articles` = n.y, `Proportion (in%)` = prop) %>%
+  knitr::kable()
+```
+
+
+#### c) How long are the embargo periods?
+
+```{r}
+embargo <- readxl::read_xlsx("data/master_list.xlsx", sheet = 3) %>%
+  mutate(embargo = as.numeric(`accepted manuscript (post-peer review)`))
+```
+We were able to find the embargo periods for `r embargo %>% filter(!is.na(embargo)) %>% nrow()`) out of `r nrow(embargo)` reverse-flip journals that currently offer a hybrid OA option. The majority of the journals (N=`r embargo %>% filter(embargo == 12) %>% nrow()`) does not allow authors to share their work openly, for example by depositing a copy of the manuscript in an OA repository, until 12 months after it has been published. However, 14% of the journals (N=16) raise the bar to 24 months, while 12% (N=13) do not impose any embargo periods (Figure).
+
+```{r}
+embargo %>%
+  filter(!is.na(embargo)) %>%
+  count(embargo) %>%
+  ggplot(aes(factor(embargo, levels = c("0", "6", "12", "18", "24")), n, fill = embargo)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  theme_minimal() +
+  labs(x = "Embargo (in months)", y = "Journals") +
+  theme_minimal(base_family="Roboto") +
+  theme(plot.margin=margin(30,30,30,30)) +
+  theme(panel.grid.minor=element_blank()) +
+  theme(axis.ticks=element_blank()) +
+  theme(panel.grid.major.y=element_blank()) +
+  theme(panel.border=element_blank()) +
+  scale_fill_viridis_c(option = "C", end = 0, begin = 0.5, guide = FALSE)
 ```
 

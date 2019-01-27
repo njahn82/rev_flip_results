@@ -132,7 +132,6 @@ We investigated whether journals charged authors a publication fee using journal
 
 Table presents the journals' access model after the reverse-flip. Our analysis shows that around 50 % (N = 76) of the journals shifted to a hybrid OA model, while the remaining 50 % (N = 76) transformed to subscription venues. 
 
-offer options to make articles immediately available after a fee was paid, also known as hybrid open access. 76  or 50 % (N = 76) journals operated under a subscription-based model only.
 
 
 Table: Business model of journals after reverse flip
@@ -163,4 +162,42 @@ The most recent SNIP values were reported for 2017; accordingly, we only include
 Figure illustrates the SNIP distribution of reverse-flip journals two years before and after the conversion. Our analysis highlights that there is only little change in SNIP values before and after the business model change.
 
 ![Development of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.5](results_files/figure-docx/unnamed-chunk-19-1.png)
+
+### Research Question 5: For hybrid journals—OA journals that have flipped to hybrid OA directly as well as OA journals that first became subscription venues and then, at a later point, incorporated hybrid OA—,
+
+#### a) How do APC levels differ before and after the flip?
+
+
+
+We were able to obtain publication fee list prices before and after the flip including the most recent level in 2018 for 31 journals. Figure compares them with each other, highlighting an considerable increase after the reverse flip.
+
+
+![APC list prices before and after the flip including most current level among reverse-flip journals.](results_files/figure-docx/unnamed-chunk-21-1.png)
+
+
+#### b) What is the uptake of hybrid OA articles; Was open access publication in reverse-flip journals enabled by transformative aggrements
+
+
+
+
+Retrieving open content licenses including start date from Crossref, we were able to obtain 416 articles from 21 that were made available immediately as open access articles in the year or after the reverse flip. They represent 5.4% of the total article volume studied.
+
+Using data from the Open APC initiative, we finally checked whether institutions have financed hybrid open access articles in reverse-flipped journals. We found evidence for institutional sponsorship for three individual articles in reverse-flip journals, and as part of a transformative agreement "Springer Compact" offered by Springer Nature to individual institutions and countries. Table summaries the total number of articles in reverse-flip journal that were made openly available under "Springer Compact" agreements, as well as its proportion per transformation contract. Although the proportion these articles is marginally, findings suggest that mechanisms were missing that would have helped institutions to prevent funding of open access publication in reverse-flipped journals.
+
+
+Sponsor           OA Articles in Reverse Flip Journals   All OA Articles   Proportion (in%)
+---------------  -------------------------------------  ----------------  -----------------
+United Kingdom                                      20             10289               0.19
+Sweden                                              10              3285               0.30
+Austria                                              5              1721               0.29
+Germany                                              3               621               0.48
+Netherlands                                          2              6085               0.03
+
+
+#### c) How long are the embargo periods?
+
+
+We were able to find the embargo periods for 112) out of 154 reverse-flip journals that currently offer a hybrid OA option. The majority of the journals (N=73) does not allow authors to share their work openly, for example by depositing a copy of the manuscript in an OA repository, until 12 months after it has been published. However, 14% of the journals (N=16) raise the bar to 24 months, while 12% (N=13) do not impose any embargo periods (Figure).
+
+![](results_files/figure-docx/unnamed-chunk-25-1.png)<!-- -->
 
