@@ -42,10 +42,10 @@ my_df <- readxl::read_xlsx("data/master_list.xlsx", sheet= 2) %>%
 
 ### Research Question 1: How many OA journals have reverse-flipped to a subscription model? 
  
-We identified `r n_distinct(my_df$journal_name)` journals that converted from fully open access to a subscription model, including hybrid open access. While we discovered reverse-flips as early as 2005, the majority of journals changed their business model from 2013 onward (see Figure 3).
+We identified `r n_distinct(my_df$journal_name)` journals that reverse-flipped from fully OA to a subscription model, including hybrid OA. While we discovered reverse-flips as early as 2005, the majority of journals changed their business model from 2013 onward (see Figure 3).
 
 
-```{r time, fig.cap= "Number of journals converted from fully open access to a subscription-based business model per year."}
+```{r time, fig.cap= "Number of journals converted from fully open access to a subscription-based business model per year"}
 my_df %>%
   filter(!is.na(year_reverse_flipped)) %>%
   ggplot(aes(as.factor(year_reverse_flipped))) +
@@ -64,17 +64,15 @@ my_df %>%
 
 #### a) How thoroughly are these journals currently indexed in major bibliometric databases (Web of Science, Scopus, PubMed)?
  
-We investigated the coverage of reverse-flip journals in the following four major bibliometric databases: Crossref, a large DOI registration agency for scholarly works, Scopus, Journal Citation Report (JCR) listing journals indexed in the Web of Science, and MEDLINE. This analysis is based at the journal-level by matching ISSN variants. We used the most current available journal lists and search indexes at the time of our analysis in January 2019. 
-
 ```{r}
 index_df <- readr::read_csv("data/indexing_coverage.csv")
 ```
 
-In total, we found `r index_df %>% distinct(issn) %>% nrow()` journals that were indexed by at least one bibliometric databases examined, covering `r index_df %>% distinct(issn) %>% nrow() / nrow(my_df) * 100`% of the journals in our study. Figure presents the number of reverse-flip journals that were indexed by each database together with the intersections with the other databases using the UpSet technique (<https://doi.org/10.1093/bioinformatics/btx364>). 
+We investigated the coverage of reverse-flip journals in four major bibliometric databases -- Crossref, a large DOI registration agency for scholarly works, Scopus, Journal Citation Report (JCR) listing journals indexed in the Web of Science, and MEDLINE -- to examine how discoverable articles from these journals are. Using the most up-to-date  journal lists and search indexes available as of January 2019, we matched the journals’ ISSN variants, and found
+that `r index_df %>% distinct(issn) %>% nrow()` journals were indexed by at least one these bibliometric databases, covering `r index_df %>% distinct(issn) %>% nrow() / nrow(my_df) * 100`% of our sample. Figure visualizes the overlap and oversight of reverse-flip coverage between the different databases using the UpSet technique (<https://doi.org/10.1093/bioinformatics/btx364>). 
 Of the `r index_df %>% distinct(issn) %>% nrow()` reverse-flip journals, Crossref and Scopus covered most. Together with the Web of Science (JCR) they shared the largest number of journals (N = `r index_df %>% filter(source %in% c("Scopus", "Crossref", "JCR")) %>% group_by(issn) %>% filter(n() == 3) %>% distinct(issn) %>% nrow()`), of which `r index_df %>% filter(source %in% c("Scopus", "Crossref", "JCR", "MEDLINE")) %>% group_by(issn, source) %>% count() %>% ungroup() %>% group_by(issn) %>% count() %>% filter(nn == 4) %>% nrow()` journals were also indexed by MEDLINE.
 
-
-```{r}
+```{r, fig.cap="Inclusion of reverse-flip journals in major bibliographic databases"}
 tt <- as.data.frame.matrix(table(index_df$issn, index_df$source))
 library(UpSetR) # https://academic.oup.com/bioinformatics/article/33/18/2938/3884387
 UpSetR::upset(tt, order.by = "freq")
@@ -91,7 +89,7 @@ cr_md %>%
   mutate(average = n / volumes) -> article_volume
 ```
 
-To obtain the journal publication volume, we retrieved the metadata for all articles indexed in Crossref from the year 2000 onwards. Specifically, Crossref provided the metadata for `r n_distinct(cr_md$issn)` out of `r nrow(my_df)` journals (`r n_distinct(cr_md$issn) / nrow(my_df) * 100`% of our sample). Our analysis shows that between 2000 and 2018, these journals published `r nrow(cr_md)` articles, yet the yearly article volume varies considerably (see Figure 4), ranging from `r round(min(article_volume$average),0)` to `r round(max(article_volume$average),0)` with half of the journals publishing `r round(median(article_volume$average),0)` or fewer articles per year. 
+To obtain the journal publication volume, we retrieved the metadata for all articles indexed in Crossref from the year 2000 onwards. Specifically, Crossref provided the metadata for `r n_distinct(cr_md$issn)` out of `r nrow(my_df)` journals (`r n_distinct(cr_md$issn) / nrow(my_df) * 100`% of our sample). Our analysis shows that between 2000 and 2018, these journals published `r nrow(cr_md)` articles, yet the annual article volume varies considerably between the journals (see Figure ), ranging from `r round(min(article_volume$average),0)` - `r round(max(article_volume$average),0)` with half of the journals publishing `r round(median(article_volume$average),0)` or fewer articles per year. 
 
 ```{r}
 # article_volume %>%
@@ -106,7 +104,7 @@ To obtain the journal publication volume, we retrieved the metadata for all arti
 #   knitr::kable(caption = "Summary statistics of yearly average publication volume per reverse flip journals. Publication volume for 142 journals was obtained using Crossref.", digits = 0)
 ```
 
-```{r, fig.cap="Histogram of average journal size in terms of yearly article volume published. Red dashed line represents the median, yellow dashed lined the mean value of the distribution."}
+```{r, fig.cap="Histogram of the average article volume per year. The red dashed line represents the median and the yellow dashed line shows the mean value of the distribution"}
 article_volume %>%
   ggplot(aes(x = average)) +
   geom_histogram(bins = 15, fill="#56B4E9", alpha=0.5, color = "#56B4E9") +
@@ -115,9 +113,9 @@ article_volume %>%
   geom_vline(aes(xintercept = median(average, na.rm = T)),
              colour = "red", linetype ="dashed", size = .8) +
   theme_minimal() +
-  labs(x = "Average Yearly Journal Volume", y = "Number of Journals") +
+  labs(x = "Average Journal Volume", y = "Number of Journals") +
     theme_minimal(base_family="Roboto") +
-  scale_x_continuous(breaks = c(0, 100, 200, 300, 400, 500, 600)) +
+  scale_x_continuous(breaks = seq(0,600, by = 50)) +
   theme(plot.margin=margin(30,30,30,30)) +
   theme(panel.grid.minor=element_blank()) +
   theme(axis.ticks=element_blank()) +
@@ -125,7 +123,7 @@ article_volume %>%
   theme(panel.border=element_blank())
 ```
 
-#### c) To which academic disciplines do the journals belong to?
+#### c) Which academic disciplines do the journals belong to?
 
 ```{r}
 cr_md <- readr::read_csv("data/cr_md.csv", col_types = cols(.default = "c")) %>%
@@ -150,6 +148,12 @@ Table presents a breakdown by top-level discipline, highlighting that reverse fl
 
 ```{r}
 my_df %>%
+ mutate(Discipline = case_when(
+  Discipline == "SSH" ~ "Social Sciences and Humanities",
+  Discipline == "PSM" ~ "Physical Sciences and Mathematics",
+  Discipline == "Health" ~ "Health Sciences",
+  Discipline == "LS" ~ "Life Sciences"
+)) %>%
   count(Discipline) %>%
   mutate(prop = n / sum(n) * 100) %>%
   arrange(desc(prop)) %>%
@@ -158,9 +162,9 @@ my_df %>%
 ```
 
 
-#### d) Under which publisher did the reverse-flip occur? Who does currently publish the journals?
+#### d) Under which publisher did the reverse flip occur? Who currently publishes the journals?
 
-To investigate the extent of reverse flips across different publishers, we acquired the publisher names for every journal at the time of the reverse flip and that of the most current volume. Table x shows the post-flip and current top  publishers based on the number of journals that were converted from fully OA to subscription access. These six publishers - Elsevier, Springer Nature, Taylor & Francis, De Gruyter, Brill and Wiley - comprised 105 journals at the time of the reverse-flip and 104 at the time of the most recent volume, representing around 70% of all reverse-flips journals investigated. The remaining publishers are categorized as "Other". The distribution of reverse flips across publishers resembles the general conditions of the scholarly publishing market at-large, which is also dominated by large commercial publishers like Elsevier, Springer Nature, Taylor and Francis, and Wiley.
+To investigate the extent of reverse flips across different publishers, we acquired the publisher names for every journal at the time of the reverse flip and that of the most current volume. Table x shows the top publishers -- post-flip and currently -- based on the number of journals that were converted from fully OA to subscription access. We found that around 70% of all reverse flips in our sample  (N=105 and N=104 respectively) can be attributed to six  publishers alone -- Elsevier, Springer Nature, Taylor & Francis, De Gruyter, Brill and Wiley. The remaining publishers are categorized as "Other". <!-- The distribution of reverse flips across publishers resembles the general conditions of the scholarly publishing market at-large, which is also dominated by large commercial publishers like Elsevier, Springer Nature, Taylor & Francis, and Wiley. -->
 
 
 ```{r}
@@ -217,14 +221,14 @@ publisher_df %>%
   select(`Publisher` = cr_publisher, 
          `OA Journals converted to Toll-Access` = n_rev,
          `Proportion` = n_rev_prop,
-         `Current number of reversely-flipped journals` = n_cr,
+         `Current number of reverse-flip journals` = n_cr,
          `Proportion` = n_cr_prop) %>%
   knitr::kable()
 ```
 
-#### e) How many journals have been associated with scholarly societies or academic institutions?
+#### e) How many journals have been associated with scholarly societies or research institutions?
 
-Our dataset contains information about whether reverse-flipped journals were related to scholarly societies and academic institutions. We obtained `r my_df %>% filter(society_affiliation == 1 | other_sci_affiliation == 1) %>% nrow()` (`r my_df %>% filter(society_affiliation == 1 | other_sci_affiliation == 1) %>% nrow() / nrow(my_df) * 100` %) reverse-flip journals that were either published together with a scholarly society (N = `r my_df %>% filter(society_affiliation == 1) %>% nrow()`) or at an academic institution (N = `r my_df %>% filter(other_sci_affiliation == 1) %>% nrow()`). 
+We also collected information about whether reverse-flipped journals were related to scholarly societies or research institutions. We obtained `r my_df %>% filter(society_affiliation == 1 | other_sci_affiliation == 1) %>% nrow()` (`r my_df %>% filter(society_affiliation == 1 | other_sci_affiliation == 1) %>% nrow() / nrow(my_df) * 100` %) reverse-flip journals that were affiliated with a scholarly society (N = `r my_df %>% filter(society_affiliation == 1) %>% nrow()`) or research institution (N = `r my_df %>% filter(other_sci_affiliation == 1) %>% nrow()`). 
 
 Figure presents the extent to which journals were related to scholarly societies or academic institutions at the time of the reverse-flip. It shows that the majority of reverse-flip journals from major publishers were affiliated with professional associations and other research organisations.
 

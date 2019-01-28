@@ -12,36 +12,34 @@ output:
 
 ### Research Question 1: How many OA journals have reverse-flipped to a subscription model? 
  
-We identified 152 journals that converted from fully open access to a subscription model, including hybrid open access. While we discovered reverse-flips as early as 2005, the majority of journals changed their business model from 2013 onward (see Figure 3).
+We identified 152 journals that reverse-flipped from fully OA to a subscription model, including hybrid OA. While we discovered reverse-flips as early as 2005, the majority of journals changed their business model from 2013 onward (see Figure 3).
 
 
-![Number of journals converted from fully open access to a subscription-based business model per year.](results_files/figure-docx/time-1.png)
+![Number of journals converted from fully open access to a subscription-based business model per year](results_files/figure-docx/time-1.png)
 
 ### Research Question 2: To provide a general overview,
 
 #### a) How thoroughly are these journals currently indexed in major bibliometric databases (Web of Science, Scopus, PubMed)?
  
-We investigated the coverage of reverse-flip journals in the following four major bibliometric databases: Crossref, a large DOI registration agency for scholarly works, Scopus, Journal Citation Report (JCR) listing journals indexed in the Web of Science, and MEDLINE. This analysis is based at the journal-level by matching ISSN variants. We used the most current available journal lists and search indexes at the time of our analysis in January 2019. 
 
 
-
-In total, we found 147 journals that were indexed by at least one bibliometric databases examined, covering 97% of the journals in our study. Figure presents the number of reverse-flip journals that were indexed by each database together with the intersections with the other databases using the UpSet technique (<https://doi.org/10.1093/bioinformatics/btx364>). 
+We investigated the coverage of reverse-flip journals in four major bibliometric databases -- Crossref, a large DOI registration agency for scholarly works, Scopus, Journal Citation Report (JCR) listing journals indexed in the Web of Science, and MEDLINE -- to examine how discoverable articles from these journals are. Using the most up-to-date  journal lists and search indexes available as of January 2019, we matched the journals’ ISSN variants, and found
+that 147 journals were indexed by at least one these bibliometric databases, covering 97% of our sample. Figure visualizes the overlap and oversight of reverse-flip coverage between the different databases using the UpSet technique (<https://doi.org/10.1093/bioinformatics/btx364>). 
 Of the 147 reverse-flip journals, Crossref and Scopus covered most. Together with the Web of Science (JCR) they shared the largest number of journals (N = 83), of which 26 journals were also indexed by MEDLINE.
 
-
-![](results_files/figure-docx/unnamed-chunk-3-1.png)<!-- -->
+![Inclusion of reverse-flip journals in major bibliographic databases](results_files/figure-docx/unnamed-chunk-3-1.png)
 
 #### b) How many articles did these journals publish between 2000 and 2018?
 
 
 
-To obtain the journal publication volume, we retrieved the metadata for all articles indexed in Crossref from the year 2000 onwards. Specifically, Crossref provided the metadata for 137 out of 152 journals (90% of our sample). Our analysis shows that between 2000 and 2018, these journals published 190,951 articles, yet the yearly article volume varies considerably (see Figure 4), ranging from 10 to 638 with half of the journals publishing 56 or fewer articles per year. 
+To obtain the journal publication volume, we retrieved the metadata for all articles indexed in Crossref from the year 2000 onwards. Specifically, Crossref provided the metadata for 137 out of 152 journals (90% of our sample). Our analysis shows that between 2000 and 2018, these journals published 190,951 articles, yet the annual article volume varies considerably between the journals (see Figure ), ranging from 10 - 638 with half of the journals publishing 56 or fewer articles per year. 
 
 
 
-![Histogram of average journal size in terms of yearly article volume published. Red dashed line represents the median, yellow dashed lined the mean value of the distribution.](results_files/figure-docx/unnamed-chunk-6-1.png)
+![Histogram of the average article volume per year. The red dashed line represents the median and the yellow dashed line shows the mean value of the distribution](results_files/figure-docx/unnamed-chunk-6-1.png)
 
-#### c) To which academic disciplines do the journals belong to?
+#### c) Which academic disciplines do the journals belong to?
 
 
 
@@ -50,18 +48,18 @@ Table presents a breakdown by top-level discipline, highlighting that reverse fl
 
 Table: Breakdown of reverse flip journals by discipline
 
-Discipline    Reverse-flip Journals   Proportion (in %)
------------  ----------------------  ------------------
-PSM                              52                  34
-Health                           39                  26
-SSH                              38                  25
-LS                               23                  15
-Total                           152                 100
+Discipline                           Reverse-flip Journals   Proportion (in %)
+----------------------------------  ----------------------  ------------------
+Physical Sciences and Mathematics                       52                  34
+Health Sciences                                         39                  26
+Social Sciences and Humanities                          38                  25
+Life Sciences                                           23                  15
+Total                                                  152                 100
 
 
-#### d) Under which publisher did the reverse-flip occur? Who does currently publish the journals?
+#### d) Under which publisher did the reverse flip occur? Who currently publishes the journals?
 
-To investigate the extent of reverse flips across different publishers, we acquired the publisher names for every journal at the time of the reverse flip and that of the most current volume. Table x shows the post-flip and current top  publishers based on the number of journals that were converted from fully OA to subscription access. These six publishers - Elsevier, Springer Nature, Taylor & Francis, De Gruyter, Brill and Wiley - comprised 105 journals at the time of the reverse-flip and 104 at the time of the most recent volume, representing around 70% of all reverse-flips journals investigated. The remaining publishers are categorized as "Other". The distribution of reverse flips across publishers resembles the general conditions of the scholarly publishing market at-large, which is also dominated by large commercial publishers like Elsevier, Springer Nature, Taylor and Francis, and Wiley.
+To investigate the extent of reverse flips across different publishers, we acquired the publisher names for every journal at the time of the reverse flip and that of the most current volume. Table x shows the top publishers -- post-flip and currently -- based on the number of journals that were converted from fully OA to subscription access. We found that around 70% of all reverse flips in our sample  (N=105 and N=104 respectively) can be attributed to six  publishers alone -- Elsevier, Springer Nature, Taylor & Francis, De Gruyter, Brill and Wiley. The remaining publishers are categorized as "Other". <!-- The distribution of reverse flips across publishers resembles the general conditions of the scholarly publishing market at-large, which is also dominated by large commercial publishers like Elsevier, Springer Nature, Taylor and Francis, and Wiley. -->
 
 
 
@@ -175,7 +173,8 @@ We were able to obtain publication fee list prices before and after the flip inc
 ![APC list prices before and after the flip including most current level among reverse-flip journals.](results_files/figure-docx/unnamed-chunk-21-1.png)
 
 
-#### b) What is the uptake of hybrid OA articles; Was open access publication in reverse-flip journals enabled by transformative aggrements
+#### b) What is the uptake of hybrid OA articles; Was open access publication in reverse-flip journals enabled by transformative agreements?
+
 
 
 
