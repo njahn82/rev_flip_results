@@ -74,15 +74,20 @@ Wiley                                                  4          2.6           
 Other                                                 47         30.9                                        48         31.6
 Total                                                152        100.0                                       152        100.0
 
-#### e) How many journals have been associated with scholarly societies or research institutions?
+#### e) How many journals have been associated with scholarly societies or research institutions?  In which countries are these societies and institutions based?
 
-We also collected information about whether reverse-flipped journals were related to scholarly societies or research institutions. We obtained 107 (70 %) reverse-flip journals that were affiliated with a scholarly society (N = 59) or research institution (N = 48). 
+
+We also collected information about whether reverse-flipped journals were related to scholarly societies or research institutions. We obtained 107 (70 %) reverse-flip journals that were affiliated with a scholarly society (N = 58) or research institution (N = 49). 
 
 visualizes the relationships of journals to scholarly societies and research organizations by publishe
 
 Figure visualizes the relationships of journals to scholarly societies and research organizations by publisher showing that the majority of reverse-flip journals from major publishers were not in-house venues, but journals affiliated with scholarly associations and other research organizations.
 
 ![](results_files/figure-docx/unnamed-chunk-10-1.png)<!-- -->
+
+Figure presents the countries where the scholarly societies and research organizations are located by publisher.
+
+
 
 #### f) How old were the journals at the time of the reverse flip?
 
@@ -105,12 +110,12 @@ Q3                                      39
 
 Figure presents the annual distribution of journals that converted from fully OA to a subscription-based business model grouped by journal age at the time of the flip
 
-![Number of journals that converted from fully OA to a subscription-based business model per year, grouped by journal age at the time of the reverse flip](results_files/figure-docx/unnamed-chunk-13-1.png)
+![Number of journals that converted from fully OA to a subscription-based business model per year, grouped by journal age at the time of the reverse flip](results_files/figure-docx/unnamed-chunk-14-1.png)
 
 Figure presents a breakdown of discipline by journal age at the time of the reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per discipline. 
 
 
-![Discipline by journal age at the time of reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per Discipline.](results_files/figure-docx/unnamed-chunk-14-1.png)
+![Discipline by journal age at the time of reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per Discipline.](results_files/figure-docx/unnamed-chunk-15-1.png)
 
 It seems that for health and life sciences journals (Health) the majority of flips only happened after a period of establishing the journal (>15 years). However, for the physical sciences and mathematics (PSM) as well as the social sciences and humanities (SSH) this process of reconsidering the publishing model seems to have started earlier. For PSM journals about one third already flipped within the first five years of the journal’s lifetime. <!-- Overall, this may have resulted from a somewhat lower degree of acceptance of APC-based open access in these disciplines (add REF)-->
 
@@ -124,7 +129,7 @@ We manually checked the past business models of every journal in our sample. As 
 
 We investigated whether journals charged authors a publication fee using journal list prices. We were able to obtain information about APC pricing for 105 journals, representing 69 % of all reverse-flipped journals studied. Of these, 32 were APC-based. List prices varied considerably, ranging from 120 to 3,000 USD. The median fee was 1,066 USD.
 
-#### c) Which countries were the journals based in? 
+
 
 ### Research Question 4: After the reverse flip,
 
@@ -134,13 +139,13 @@ Table presents the journals' access model after the reverse flip. Our analysis s
 
 
 
-Table: Business model of journals after reverse flip
+Table: Access model of journals after reverse flip
 
-Business model    Journals   Proportion
----------------  ---------  -----------
-Hybrid                  76           50
-Subscription            76           50
-Total                  152          100
+Access model    Journals   Proportion
+-------------  ---------  -----------
+Hybrid                76           50
+Subscription          76           50
+Total                152          100
 
 
 #### b) Does the publication volume change?
@@ -149,7 +154,7 @@ Total                  152          100
 
 To determine the variation in publication volume, we studied all journals that had reverse-flipped until 2016 for which Crossref provided article metadata two years before and after the conversion (N = 94).  For the most part, the article volumes two years before and after the flip reveal little change (see Figure X), yet some individual cases show a noticeable increase. Elsevier's Meta Gene, for example, launched as an OA journal with 16 published articles in 2013; the journal flipped to a hybrid model in 2016, publishing 86 articles that year, and increased its article volume to 201 in 2018.
 
-![Developement of publication volume two years before and after the reverse flip.](results_files/figure-docx/unnamed-chunk-17-1.png)
+![Developement of publication volume two years before and after the reverse flip.](results_files/figure-docx/unnamed-chunk-18-1.png)
 
 There are, however, some cases were article volume increased noticeably. One example is the journal *Meta Gene* launched by Elsevier BV in 2013. Its article volume grew from 86 articles published in the year of the reverse flip (2016) to 201 articles published two years after (2018).
 
@@ -161,7 +166,7 @@ To investigate whether the citation impact changed after the access model conver
 The most recent SNIP values were reported for 2017; accordingly, we only included journals that flipped until 2015 (N = 82).
 Figure illustrates the SNIP distribution of reverse-flip journals two years before and after the conversion. Our analysis highlights that there is only little change in SNIP values before and after the business model change.
 
-![Development of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.5](results_files/figure-docx/unnamed-chunk-19-1.png)
+![Development of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.5](results_files/figure-docx/unnamed-chunk-20-1.png)
 
 ### Research Question 5: For hybrid journals—OA journals that have flipped to hybrid OA directly as well as OA journals that first became subscription venues and then, at a later point, incorporated hybrid OA—,
 
@@ -169,10 +174,10 @@ Figure illustrates the SNIP distribution of reverse-flip journals two years befo
 
 
 
-We were able to obtain publication fee list prices before and after the flip including the most recent level in 2018 for 31 journals. Figure compares them with each other, highlighting an considerable increase after the reverse flip.
+We were able to obtain publication fee list prices before and after the flip including the most recent level in 2018 for 60 journals. Figure compares them with each other, highlighting an considerable increase after the reverse flip.
 
 
-![APC list prices before and after the flip including most current level among reverse-flip journals.](results_files/figure-docx/unnamed-chunk-21-1.png)
+![APC list prices before and after the flip including most current level among reverse-flip journals. Please not that also ](results_files/figure-docx/unnamed-chunk-22-1.png)
 
 
 #### b) What is the uptake of hybrid OA articles; Was OA publishing in reverse-flip journals enabled by transformative agreements?
@@ -183,7 +188,7 @@ We were able to obtain publication fee list prices before and after the flip inc
 
 Retrieving open content licenses including start date from Crossref, we were able to obtain 416 articles from 21 that were made available immediately as open access articles in the year or after the reverse flip. They represent 5.4% of the total article volume studied.
 
-Using data from the Open APC initiative, we finally checked whether institutions have financed hybrid open access articles in reverse-flipped journals. We found evidence for institutional sponsorship for three individual articles in reverse-flip journals, and as part of a transformative agreement "Springer Compact" offered by Springer Nature to individual institutions and countries. Table summaries the total number of articles in reverse-flip journal that were made openly available under "Springer Compact" agreements, as well as its proportion per transformation contract. Although the proportion these articles is marginally, findings suggest that mechanisms were missing that would have helped institutions to prevent funding of open access publication in reverse-flipped journals.
+Using data from the Open APC initiative, we then checked whether academic institutions had financed hybrid OA articles in reverse-flip journals. We found evidence for institutional sponsorship for three articles in these journals, and as part of the transformative agreement “Springer Compact" between Springer Nature and individual institutions and countries. Table summarizes the total number of articles in reverse-flip journals that were made openly available through “Springer Compact” as well as its proportion per transformation contract. Although the proportion of these articles is marginal, our findings suggest that control mechanisms that help institutions to prevent funding of OA publications in reverse-flipped journals are not in place.
 
 
 Sponsor           OA Articles in Reverse Flip Journals   All OA Articles   Proportion (in%)
@@ -200,5 +205,5 @@ Netherlands                                          2              6085        
 
 We were able to find the embargo periods for 112) out of 154 reverse-flip journals that currently offer a hybrid OA option. The majority of the journals (N=73) does not allow authors to share their work openly, for example by depositing a copy of the manuscript in an OA repository, until 12 months after it has been published. However, 14% of the journals (N=16) raise the bar to 24 months, while 12% (N=13) do not impose any embargo periods (Figure).
 
-![](results_files/figure-docx/unnamed-chunk-25-1.png)<!-- -->
+![](results_files/figure-docx/unnamed-chunk-26-1.png)<!-- -->
 

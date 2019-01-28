@@ -37,7 +37,7 @@ my_df <- readxl::read_xlsx("data/master_list.xlsx", sheet= 2) %>%
   mutate(issn = ifelse(issn == "0037-8615", "1405-213X", issn)) %>%
   # create id column
   mutate(id = paste(row.names(.), issn, sep = "/")) %>%
-  rename(prev_pub = `prev. publisher`, born_oa = `Born OA`, flipped_oa = `Flipped OA`)
+  rename(born_oa = `Born OA`, flipped_oa = `Flipped OA`)
 ```
 
 ### Research Question 1: How many OA journals have reverse-flipped to a subscription model? 
@@ -226,7 +226,8 @@ publisher_df %>%
   knitr::kable()
 ```
 
-#### e) How many journals have been associated with scholarly societies or research institutions?
+#### e) How many journals have been associated with scholarly societies or research institutions?  In which countries are these societies and institutions based?
+
 
 We also collected information about whether reverse-flipped journals were related to scholarly societies or research institutions. We obtained `r my_df %>% filter(society_affiliation == 1 | other_sci_affiliation == 1) %>% nrow()` (`r my_df %>% filter(society_affiliation == 1 | other_sci_affiliation == 1) %>% nrow() / nrow(my_df) * 100` %) reverse-flip journals that were affiliated with a scholarly society (N = `r my_df %>% filter(society_affiliation == 1) %>% nrow()`) or research institution (N = `r my_df %>% filter(other_sci_affiliation == 1) %>% nrow()`). 
 
@@ -249,19 +250,48 @@ ggplot(society_df, aes (publisher, ..count..,
   geom_bar(position = position_stack(reverse = TRUE)) +
   coord_flip() +
   scale_x_discrete(limits = rev(positions)) +
-  scale_fill_manual("Relation",
+  scale_fill_manual("Affiliation",
                     values = c(
                       "Society" = "#23445D",
                       "Institutional" = "#AE4132",
                       "No relation" = "grey60")) +
   theme_minimal() +
-  labs(y = "Reverse-flip Journals", x = "Publisher") +
+  labs(y = "Number of Reverse-Flip Journals", x = "Publisher") +
   theme(plot.margin=margin(30,30,30,30)) +
   theme(panel.grid.minor=element_blank()) +
   theme(axis.ticks=element_blank()) +
   theme(panel.grid.major.y=element_blank()) +
   theme(panel.border=element_blank()) +
   theme(legend.position="top")
+```
+
+Figure presents the countries where the scholarly societies and research organizations are located by publisher.
+
+```{r fig.width=6, fig.height=12}
+society_df %>%
+  filter(!journal_location %in% c("-", "N/A")) %>%
+  mutate(publisher = factor(publisher, levels = positions)) %>%
+  ggplot(aes(journal_location, ..count.., , fill = factor(relation, 
+                                     c("Society", "Institutional", "No relation")))) +
+  geom_bar(position = position_stack(reverse = TRUE)) +
+  coord_flip() +
+  facet_wrap(~publisher, scales = "free_y", ncol = 3) +
+  theme_minimal() +
+  labs(x = "Journal Location", y = "Number of Reverse-Flip Journals") +
+  scale_fill_manual("Affiliation",
+                    values = c(
+                      "Society" = "#23445D",
+                      "Institutional" = "#AE4132",
+                      "No relation" = "grey60")) +
+  theme_minimal(base_family="Roboto") +
+  theme(plot.margin=margin(30,30,30,30)) +
+  theme(panel.grid.minor=element_blank()) +
+  theme(axis.ticks=element_blank()) +
+  theme(panel.grid.major.x=element_blank()) +
+  theme(panel.border=element_blank()) +
+  theme(legend.position = "top",
+          legend.justification = "right") -> p
+ggsave("country_plot.png", p, width = 10, height = 10, dpi = 300)
 ```
 
 #### f) How old were the journals at the time of the reverse flip?
@@ -353,7 +383,7 @@ We manually checked the past business models of every journal in our sample. As 
 
 We investigated whether journals charged authors a publication fee using journal list prices. We were able to obtain information about APC pricing for `r my_df %>% mutate(apc_pre = as.numeric(apc_pre)) %>% filter(!is.na(apc_pre)) %>% nrow()` journals, representing `r my_df %>% mutate(apc_pre = as.numeric(apc_pre)) %>% filter(!is.na(apc_pre)) %>% nrow() / nrow(my_df) *100` % of all reverse-flipped journals studied. Of these, `r my_df %>% mutate(apc_pre = as.numeric(apc_pre)) %>% filter(!is.na(apc_pre), apc_pre > 0) %>% nrow()` were APC-based. List prices varied considerably, ranging from `r my_df %>% mutate(apc_pre = as.numeric(apc_pre)) %>% filter(!is.na(apc_pre), apc_pre > 0) %>% .$apc_pre %>% min()` to `r my_df %>% mutate(apc_pre = as.numeric(apc_pre)) %>% filter(!is.na(apc_pre), apc_pre > 0) %>% .$apc_pre %>% max()` USD. The median fee was `r my_df %>% mutate(apc_pre = as.numeric(apc_pre)) %>% filter(!is.na(apc_pre), apc_pre > 0) %>% .$apc_pre %>% median()` USD.
 
-#### c) Which countries were the journals based in? 
+
 
 ### Research Question 4: After the reverse flip,
 
@@ -467,26 +497,26 @@ tt %>%
 #### a) How do APC levels differ before and after the flip?
 
 ```{r}
-my_df %>%
-  #filter(oa_model == "Hybrid") %>%
+apcs <- readxl::read_xlsx("data/master_list.xlsx", sheet = 3) %>%
+  filter(lisa_cases == 1) %>%
   mutate(
     `Before Flip` = as.numeric(apc_pre),
     `After Flip` = as.numeric(apc_post),
     `Current APC` = as.numeric(apc_now),
      diff = `After Flip` - `Before Flip`) %>% 
   filter(!is.na(diff)) %>%
-  select(issn, diff, `Before Flip`, `After Flip`, `Current APC`) %>%
+  select(journal_name, diff, `Before Flip`, `After Flip`, `Current APC`) %>%
   gather(3:5, key = "apc_type", value = "apc") %>%
-  filter(apc > 0) %>% 
-  group_by(issn) %>%
-  filter(n() > 2) -> apc_df
+ # filter(apc > 0) %>% 
+  group_by(journal_name) %>%
+  filter(n() > 2)
 ```
 
-We were able to obtain publication fee list prices before and after the flip including the most recent level in 2018 for `r length(unique(apc_df$issn))` journals. Figure compares them with each other, highlighting an considerable increase after the reverse flip.
+We were able to obtain publication fee list prices before and after the flip including the most recent level in 2018 for `r length(unique(apcs$journal_name))` journals. Figure compares them with each other, highlighting an considerable increase after the reverse flip.
 
 
-```{r, fig.cap="APC list prices before and after the flip including most current level among reverse-flip journals."}
-apc_df %>% 
+```{r, fig.cap="APC list prices before and after the flip including most current level among reverse-flip journals. Please not that also "}
+apcs %>% 
   ggplot(aes(apc_type, apc, fill = apc_type)) +
   geom_boxplot() +
   scale_x_discrete(limits = c("Before Flip", "After Flip", "Current APC")) +
@@ -554,7 +584,7 @@ hybrid %>%
 #### c) How long are the embargo periods?
 
 ```{r}
-embargo <- readxl::read_xlsx("data/master_list.xlsx", sheet = 3) %>%
+embargo <- readxl::read_xlsx("data/master_list.xlsx", sheet = 4) %>%
   mutate(embargo = as.numeric(`accepted manuscript (post-peer review)`))
 ```
 We were able to find the embargo periods for `r embargo %>% filter(!is.na(embargo)) %>% nrow()`) out of `r nrow(embargo)` reverse-flip journals that currently offer a hybrid OA option. The majority of the journals (N=`r embargo %>% filter(embargo == 12) %>% nrow()`) does not allow authors to share their work openly, for example by depositing a copy of the manuscript in an OA repository, until 12 months after it has been published. However, 14% of the journals (N=16) raise the bar to 24 months, while 12% (N=13) do not impose any embargo periods (Figure).
