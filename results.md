@@ -59,26 +59,28 @@ Total                                                  152                 100
 
 #### d) Under which publisher did the reverse flip occur? Who currently publishes the journals?
 
-To investigate the extent of reverse flips across different publishers, we acquired the publisher names for every journal at the time of the reverse flip and that of the most current volume. Table x shows the top publishers -- post-flip and currently -- based on the number of journals that were converted from fully OA to subscription access. We found that around 70% of all reverse flips in our sample  (N=105 and N=104 respectively) can be attributed to six  publishers alone -- Elsevier, Springer Nature, Taylor & Francis, De Gruyter, Brill and Wiley. The remaining publishers are categorized as "Other". <!-- The distribution of reverse flips across publishers resembles the general conditions of the scholarly publishing market at-large, which is also dominated by large commercial publishers like Elsevier, Springer Nature, Taylor and Francis, and Wiley. -->
+To investigate the extent of reverse flips across different publishers, we acquired the publisher names for every journal at the time of the reverse flip and that of the most current volume. Table x shows the top publishers -- post-flip and currently -- based on the number of journals that were converted from fully OA to subscription access. We found that around 70% of all reverse flips in our sample  (N=105 and N=104 respectively) can be attributed to six  publishers alone -- Elsevier, Springer Nature, Taylor & Francis, De Gruyter, Brill and Wiley. The remaining publishers are categorized as "Other". <!-- The distribution of reverse flips across publishers resembles the general conditions of the scholarly publishing market at-large, which is also dominated by large commercial publishers like Elsevier, Springer Nature, Taylor & Francis, and Wiley. -->
 
 
 
-Publisher           OA Journals converted to Toll-Access   Proportion   Current number of reversely-flipped journals   Proportion
------------------  -------------------------------------  -----------  ---------------------------------------------  -----------
-Springer Nature                                       45         29.6                                             41         27.0
-Elsevier                                              35         23.0                                             34         22.4
-Taylor & Francis                                      12          7.9                                             14          9.2
-De Gruyter                                             5          3.3                                              7          4.6
-Brill                                                  4          2.6                                              4          2.6
-Wiley                                                  4          2.6                                              4          2.6
-Other                                                 47         30.9                                             48         31.6
-Total                                                152        100.0                                            152        100.0
+Publisher           OA Journals converted to Toll-Access   Proportion   Current number of reverse-flip journals   Proportion
+-----------------  -------------------------------------  -----------  ----------------------------------------  -----------
+Springer Nature                                       45         29.6                                        41         27.0
+Elsevier                                              35         23.0                                        34         22.4
+Taylor & Francis                                      12          7.9                                        14          9.2
+De Gruyter                                             5          3.3                                         7          4.6
+Brill                                                  4          2.6                                         4          2.6
+Wiley                                                  4          2.6                                         4          2.6
+Other                                                 47         30.9                                        48         31.6
+Total                                                152        100.0                                       152        100.0
 
-#### e) How many journals have been associated with scholarly societies or academic institutions?
+#### e) How many journals have been associated with scholarly societies or research institutions?
 
-Our dataset contains information about whether reverse-flipped journals were related to scholarly societies and academic institutions. We obtained 107 (70 %) reverse-flip journals that were either published together with a scholarly society (N = 59) or at an academic institution (N = 48). 
+We also collected information about whether reverse-flipped journals were related to scholarly societies or research institutions. We obtained 107 (70 %) reverse-flip journals that were affiliated with a scholarly society (N = 59) or research institution (N = 48). 
 
-Figure presents the extent to which journals were related to scholarly societies or academic institutions at the time of the reverse-flip. It shows that the majority of reverse-flip journals from major publishers were affiliated with professional associations and other research organisations.
+visualizes the relationships of journals to scholarly societies and research organizations by publishe
+
+Figure visualizes the relationships of journals to scholarly societies and research organizations by publisher showing that the majority of reverse-flip journals from major publishers were not in-house venues, but journals affiliated with scholarly associations and other research organizations.
 
 ![](results_files/figure-docx/unnamed-chunk-10-1.png)<!-- -->
 
@@ -86,7 +88,7 @@ Figure presents the extent to which journals were related to scholarly societies
 
 
 
-Table provides summary statistics about the journal age at the year of the reverse flip. Large age differences can be observed, ranging from one year of existences to 124 years. Around 43% (N = 66) of all journals found started before 1990. These findings suggest that not all journals in our sample were born fully open access or online journals, but some might underwent more than one business model change in the course of history.
+Table provides summary statistics about the journal age at the year of the reverse flip, revealing Large age differences that range from 1-124 years of publishing. Around 43% (N = 66) of all reverse-flip launched before 1990. These findings suggest that not all journals in our sample were born OA or online journals, but, in fact, some venues might have undergone more than one business model change in their publishing history.
 
 
 Table: Summary statistics for journal age at time of reverse flip
@@ -101,9 +103,9 @@ Maximum                                124
 Q1                                       7
 Q3                                      39
 
-Figure presents the number of journals converted from fully open access to a subscription-based business model per year grouped by journal age when the reverse flip happened.
+Figure presents the annual distribution of journals that converted from fully OA to a subscription-based business model grouped by journal age at the time of the flip
 
-![Number of journals converted from fully open access to a subscription-based business model per year, grouped by journal age at time of reverse flip.](results_files/figure-docx/unnamed-chunk-13-1.png)
+![Number of journals that converted from fully OA to a subscription-based business model per year, grouped by journal age at the time of the reverse flip](results_files/figure-docx/unnamed-chunk-13-1.png)
 
 Figure presents a breakdown of discipline by journal age at the time of the reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per discipline. 
 
@@ -128,7 +130,7 @@ We investigated whether journals charged authors a publication fee using journal
 
 #### a) Which access model do the journals operate on?
 
-Table presents the journals' access model after the reverse-flip. Our analysis shows that around 50 % (N = 76) of the journals shifted to a hybrid OA model, while the remaining 50 % (N = 76) transformed to subscription venues. 
+Table presents the journals' access model after the reverse flip. Our analysis shows that around 50 % (N = 76) of the journals shifted to a hybrid OA model, while the remaining 50 % (N = 76) transformed to subscription venues. However, more than half (N=45) of the subscription journals eventually shifted to hybrid OA (e.g., all Taylor and Francis journals, 12 out of 13 Springer Nature journals, and 8 out of 20 Elsevier journals), and only one journal, the Journal of Language Contact: Evolution of Languages, Contact and Discourse published by Brill, flipped to OA again.
 
 
 
@@ -173,7 +175,7 @@ We were able to obtain publication fee list prices before and after the flip inc
 ![APC list prices before and after the flip including most current level among reverse-flip journals.](results_files/figure-docx/unnamed-chunk-21-1.png)
 
 
-#### b) What is the uptake of hybrid OA articles; Was open access publication in reverse-flip journals enabled by transformative agreements?
+#### b) What is the uptake of hybrid OA articles; Was OA publishing in reverse-flip journals enabled by transformative agreements?
 
 
 
