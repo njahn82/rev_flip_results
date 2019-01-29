@@ -172,12 +172,9 @@ Figure illustrates the SNIP distribution of reverse-flip journals two years befo
 
 #### a) How do APC levels differ before and after the flip?
 
+![Scatterplot of APC list prices in USD based on pricing information for the year before the reverse-flip and for journals offering an hybrid open access option at the second half of 2018. Fully OA journals denoted with 0 did not charge an APC.](results_files/figure-docx/unnamed-chunk-21-1.png)
 
-
-We were able to obtain publication fee list prices before and after the flip including the most recent level in 2018 for 60 journals. Figure compares them with each other, highlighting an considerable increase after the reverse flip.
-
-
-![APC list prices before and after the flip including most current level among reverse-flip journals. Please not that also ](results_files/figure-docx/unnamed-chunk-22-1.png)
+We were able to obtain publication fee list prices before and after the flip including the most recent level in 2018. While  32 fully open access journals charged author fees before the reverse-flip, 118 journals offered paid hybrid open access options at the time of analysis. Figure compares APC list prices in USD with each other, highlighting an considerable increase after the reverse flip. It also shows that many journals affiliated with scholarly societies and research institutions introduced or raised their APCs for open access publishing.
 
 
 #### b) What is the uptake of hybrid OA articles; Was OA publishing in reverse-flip journals enabled by transformative agreements?
@@ -205,5 +202,5 @@ Netherlands                                          2              6085        
 
 We were able to find the embargo periods for 112) out of 154 reverse-flip journals that currently offer a hybrid OA option. The majority of the journals (N=73) does not allow authors to share their work openly, for example by depositing a copy of the manuscript in an OA repository, until 12 months after it has been published. However, 14% of the journals (N=16) raise the bar to 24 months, while 12% (N=13) do not impose any embargo periods (Figure).
 
-![](results_files/figure-docx/unnamed-chunk-26-1.png)<!-- -->
+![](results_files/figure-docx/unnamed-chunk-25-1.png)<!-- -->
 
