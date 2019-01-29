@@ -87,7 +87,7 @@ Figure visualizes the relationships of journals to scholarly societies and resea
 
 Figure presents the countries where the scholarly societies and research organizations are located by publisher.
 
-
+![](results_files/figure-docx/fig_7-1.png)<!-- -->
 
 #### f) How old were the journals at the time of the reverse flip?
 

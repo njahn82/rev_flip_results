@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
   echo = FALSE,
   fig.width = 6,
   fig.asp = 0.618,
-  dpi = 300,
+  dpi = 450,
   fig.align = "center"
 )
 options(scipen = 999, digits = 2)
@@ -269,29 +269,33 @@ Figure presents the countries where the scholarly societies and research organiz
 
 ```{r fig_7, fig.width=6, fig.height=12}
 society_df %>%
-  filter(!journal_location %in% c("-", "N/A")) %>%
-  mutate(publisher = factor(publisher, levels = positions)) %>%
-  ggplot(aes(journal_location, ..count.., , fill = factor(relation, 
+  filter(!journal_location %in% c("-", "N/A")) %>% 
+  mutate(country = forcats::fct_lump(journal_location, 8)) %>%
+  mutate(publisher = factor(publisher, levels = positions)) -> tt
+
+country_tt_positions <- levels(tt$country)
+ggplot(tt, aes(country, ..count.., fill = factor(relation, 
                                      c("Society", "Institutional", "No relation")))) +
   geom_bar(position = position_stack(reverse = TRUE)) +
+  scale_x_discrete(limits = rev(country_tt_positions)) + 
   coord_flip() +
-  facet_wrap(~publisher, scales = "free_y", ncol = 3) +
-  theme_minimal() +
-  labs(x = "Journal Location", y = "Number of Reverse-Flip Journals") +
+  facet_wrap(~publisher) +
+  scale_y_continuous(breaks= scales::pretty_breaks()) +
   scale_fill_manual("Affiliation",
                     values = c(
                       "Society" = "#23445D",
                       "Institutional" = "#AE4132",
                       "No relation" = "grey60")) +
-  theme_minimal(base_family="Roboto") +
+  theme_minimal() +
+  labs(y = "Number of Reverse-Flip Journals", x = "Publisher") +
   theme(plot.margin=margin(30,30,30,30)) +
   theme(panel.grid.minor=element_blank()) +
   theme(axis.ticks=element_blank()) +
-  theme(panel.grid.major.x=element_blank()) +
+  theme(panel.grid.major.y=element_blank()) +
   theme(panel.border=element_blank()) +
-  theme(legend.position = "top",
-          legend.justification = "right") -> p
-ggsave("country_plot.png", p, width = 10, height = 10, dpi = 300)
+  theme(legend.position="top") -> p
+p
+ggsave("country_plot.png", p, width = 8, height = 6, dpi = 300)
 ```
 
 #### f) How old were the journals at the time of the reverse flip?
@@ -328,7 +332,7 @@ my_df %>%
 ggplot(my_df_tt, aes(as.factor(year_reverse_flipped), 
                      fill = factor(age_at_time_of_flip_cat, levels = c("1-5", "6-15", "> 15")))) +
   geom_histogram(stat = "count") +
-  scale_fill_manual("Journal Age at Year of Flip", values = c("#fcde9c","#e34f6f","#7c1d6f")) +
+  scale_fill_manual("Journal Age at Reverse Flip (in Years)", values = c("#fcde9c","#e34f6f","#7c1d6f")) +
   theme_minimal() +
   labs(x = "Year of Reverse Flip", y = "Number of Journals") +
     theme_minimal(base_family="Roboto") +
@@ -355,12 +359,12 @@ year_all <- my_df_tt %>%
 my_df_tt %>%
   count(age_at_time_of_flip_cat, Discipline) %>% 
 ggplot(aes(x = factor(age_at_time_of_flip_cat, levels = c("1-5", "6-15", "> 15")), y = n)) +
-  geom_bar(data = year_all, aes(fill = "All Reverse Flipped Journals"), color = "transparent", stat = "identity") +
-  geom_bar(aes(fill = "per Discipline"), color = "transparent", stat = "identity") +
+  geom_bar(data = year_all, aes(fill = "All Reverse Flips"), color = "transparent", stat = "identity") +
+  geom_bar(aes(fill = "Reverse Flips per Discipline"), color = "transparent", stat = "identity") +
   facet_wrap(~Discipline, nrow = 1) +
   scale_fill_manual(values = c("#b3b3b3a0", "#56B4E9"), name = "") +
   theme_minimal() +
-  labs(x = "Journal Age at Time of Flip", y = "Journals") +
+  labs(x = "Journal Age at Reverse Flip", y = "Number of Journals") +
   theme_minimal(base_family="Roboto") +
   theme(plot.margin=margin(30,30,30,30)) +
   theme(panel.grid.minor=element_blank()) +
@@ -501,15 +505,15 @@ tt %>%
 ggplot(society_df, 
        aes(as.numeric(apc_pre), as.numeric(apc_now))) + 
   geom_point(aes(color = factor(relation, 
-                                     c("Society", "Institutional", "No relation"))), alpha = 0.7) +
-  coord_equal(ratio=1) +
+                                     c("Society", "Institutional", "No relation"))), alpha = 0.7, size = 2) +
+#  coord_equal(ratio=1) +
   scale_color_manual("Affiliation",
                     values = c(
                       "Society" = "#23445D",
                       "Institutional" = "#AE4132",
                       "No relation" = "grey60")) +
   labs(x = "Fully OA APC", y = "Hybrid OA APC") +
-  scale_x_continuous(limits = c(0,4000)) +
+#  scale_x_continuous(limits = c(0,4000)) +
   theme_minimal(base_family="Roboto") +
   theme(plot.margin=margin(30,30,30,30)) +
   theme(panel.grid.minor=element_blank()) +
