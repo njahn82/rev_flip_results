@@ -45,7 +45,7 @@ my_df <- readxl::read_xlsx("data/master_list.xlsx", sheet= 2) %>%
 We identified `r n_distinct(my_df$journal_name)` journals that reverse-flipped from fully OA to a subscription model, including hybrid OA. While we discovered reverse-flips as early as 2005, the majority of journals changed their business model from 2013 onward (see Figure 3).
 
 
-```{r time, fig.cap= "Number of journals converted from fully open access to a subscription-based business model per year"}
+```{r fig_3, fig.cap= "Number of journals that reverse-flipped from fully open access (OA) to a subscription-based access model (incl. hybrid OA) per year"}
 my_df %>%
   filter(!is.na(year_reverse_flipped)) %>%
   ggplot(aes(as.factor(year_reverse_flipped))) +
@@ -72,7 +72,7 @@ We investigated the coverage of reverse-flip journals in four major bibliometric
 that `r index_df %>% distinct(issn) %>% nrow()` journals were indexed by at least one these bibliometric databases, covering `r index_df %>% distinct(issn) %>% nrow() / nrow(my_df) * 100`% of our sample. Figure visualizes the overlap and oversight of reverse-flip coverage between the different databases using the UpSet technique (<https://doi.org/10.1093/bioinformatics/btx364>). 
 Of the `r index_df %>% distinct(issn) %>% nrow()` reverse-flip journals, Crossref and Scopus covered most. Together with the Web of Science (JCR) they shared the largest number of journals (N = `r index_df %>% filter(source %in% c("Scopus", "Crossref", "JCR")) %>% group_by(issn) %>% filter(n() == 3) %>% distinct(issn) %>% nrow()`), of which `r index_df %>% filter(source %in% c("Scopus", "Crossref", "JCR", "MEDLINE")) %>% group_by(issn, source) %>% count() %>% ungroup() %>% group_by(issn) %>% count() %>% filter(nn == 4) %>% nrow()` journals were also indexed by MEDLINE.
 
-```{r, fig.cap="Inclusion of reverse-flip journals in major bibliographic databases"}
+```{r fig_4, fig.cap="Inclusion of reverse-flip journals in major bibliographic databases—Crossref, Scopus, Journal Citation Report (JCR), and MEDLINE"}
 tt <- as.data.frame.matrix(table(index_df$issn, index_df$source))
 library(UpSetR) # https://academic.oup.com/bioinformatics/article/33/18/2938/3884387
 UpSetR::upset(tt, order.by = "freq")
@@ -104,7 +104,7 @@ To obtain the journal publication volume, we retrieved the metadata for all arti
 #   knitr::kable(caption = "Summary statistics of yearly average publication volume per reverse flip journals. Publication volume for 142 journals was obtained using Crossref.", digits = 0)
 ```
 
-```{r, fig.cap="Histogram of the average article volume per year. The red dashed line represents the median and the yellow dashed line shows the mean value of the distribution"}
+```{r fig_5, fig.cap="Histogram of the average article volume per year. The red dashed line represents the median and the yellow dashed line shows the mean value of the distribution"}
 article_volume %>%
   ggplot(aes(x = average)) +
   geom_histogram(bins = 15, fill="#56B4E9", alpha=0.5, color = "#56B4E9") +
@@ -235,7 +235,7 @@ visualizes the relationships of journals to scholarly societies and research org
 
 Figure visualizes the relationships of journals to scholarly societies and research organizations by publisher showing that the majority of reverse-flip journals from major publishers were not in-house venues, but journals affiliated with scholarly associations and other research organizations.
 
-```{r}
+```{r fig_6, fig.cap="Reverse-flip journals affiliated with scholarly societies and research institutions per publisher"}
 my_df %>%
     mutate(publisher = ifelse(publisher %in% "Brill Academic Publishers", "Brill", publisher)) %>%
   mutate(publisher = forcats::fct_lump(publisher, 6)) %>%
@@ -267,7 +267,7 @@ ggplot(society_df, aes (publisher, ..count..,
 
 Figure presents the countries where the scholarly societies and research organizations are located by publisher.
 
-```{r fig.width=6, fig.height=12}
+```{r fig_7, fig.width=6, fig.height=12}
 society_df %>%
   filter(!journal_location %in% c("-", "N/A")) %>%
   mutate(publisher = factor(publisher, levels = positions)) %>%
@@ -319,7 +319,7 @@ age_df %>%
 
 Figure presents the annual distribution of journals that converted from fully OA to a subscription-based business model grouped by journal age at the time of the flip
 
-```{r, fig.cap="Number of journals that converted from fully OA to a subscription-based business model per year, grouped by journal age at the time of the reverse flip"}
+```{r fig_8, fig.cap="Number of journals that converted from fully OA to a subscription-based business model per year, grouped by journal age at the time of the reverse flip"}
 my_df %>%
   mutate(age_at_time_of_flip = year_reverse_flipped - year_founded) %>%
   mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip < 6, "1-5", NA)) %>%
@@ -343,7 +343,7 @@ ggplot(my_df_tt, aes(as.factor(year_reverse_flipped),
 Figure presents a breakdown of discipline by journal age at the time of the reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per discipline. 
 
 
-```{r, fig.cap='Discipline by journal age at the time of reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per Discipline.'}
+```{r fig_9, fig.cap='Discipline by journal age at the time of reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per Discipline.'}
 # Motivation: https://serialmentor.com/dataviz/nested-proportions.html
 my_df %>%
   mutate(age_at_time_of_flip = year_reverse_flipped - year_founded) %>%
@@ -424,7 +424,7 @@ tmp %>%
 
 To determine the variation in publication volume, we studied all journals that had reverse-flipped until 2016 for which Crossref provided article metadata two years before and after the conversion (N = `r tmp %>%  filter(lag %in% c(-2,2)) %>%  group_by(issn) %>%  filter(n() > 1) %>% group_by(issn) %>% summarise(n_distinct(issn)) %>% nrow()`).  For the most part, the article volumes two years before and after the flip reveal little change (see Figure X), yet some individual cases show a noticeable increase. Elsevier's Meta Gene, for example, launched as an OA journal with 16 published articles in 2013; the journal flipped to a hybrid model in 2016, publishing 86 articles that year, and increased its article volume to 201 in 2018.
 
-```{r, fig.cap='Developement of publication volume two years before and after the reverse flip.'}
+```{r fig_10, fig.cap='Developement of publication volume two years before and after the reverse flip.'}
 tmp %>% 
   filter(lag %in% c(-2:2)) %>% 
   group_by(issn) %>% 
