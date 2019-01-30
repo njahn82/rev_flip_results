@@ -27,7 +27,7 @@ We investigated the coverage of reverse-flip journals in four major bibliometric
 that 147 journals were indexed by at least one these bibliometric databases, covering 97% of our sample. Figure visualizes the overlap and oversight of reverse-flip coverage between the different databases using the UpSet technique (<https://doi.org/10.1093/bioinformatics/btx364>). 
 Of the 147 reverse-flip journals, Crossref and Scopus covered most. Together with the Web of Science (JCR) they shared the largest number of journals (N = 83), of which 26 journals were also indexed by MEDLINE.
 
-![Inclusion of reverse-flip journals in major bibliographic databases—Crossref, Scopus, Journal Citation Report (JCR), and MEDLINE](results_files/figure-docx/fig_4-1.png)
+![Inclusion of reverse-flip journals in major bibliographic databases<U+2014>Crossref, Scopus, Journal Citation Report (JCR), and MEDLINE](results_files/figure-docx/fig_4-1.png)
 
 #### b) How many articles did these journals publish between 2000 and 2018?
 

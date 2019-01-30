@@ -267,27 +267,25 @@ ggplot(society_df, aes (publisher, ..count..,
 
 Figure presents the countries where the scholarly societies and research organizations are located by publisher.
 
-```{r fig_7, fig.width=6, fig.height=12}
+```{r fig_7}
 society_df %>%
   filter(!journal_location %in% c("-", "N/A")) %>% 
   mutate(country = forcats::fct_lump(journal_location, 8)) %>%
   mutate(publisher = factor(publisher, levels = positions)) -> tt
-
-country_tt_positions <- levels(tt$country)
-ggplot(tt, aes(country, ..count.., fill = factor(relation, 
-                                     c("Society", "Institutional", "No relation")))) +
+society_df %>%
+  count(journal_location, sort = TRUE) %>%
+  slice(2:9) %>%
+  .$journal_location -> country_tt
+country_tt_positions <- levels(c( "Other", country_tt))
+ggplot(tt, aes(country, ..count.., fill = publisher)) +
   geom_bar(position = position_stack(reverse = TRUE)) +
-  scale_x_discrete(limits = rev(country_tt_positions)) + 
+  #scale_x_discrete(limits = rev(country_tt_positions)) + 
   coord_flip() +
-  facet_wrap(~publisher) +
+  scale_x_discrete(limits = c("Other", rev(country_tt)))  +
+  scale_fill_manual("Publisher", values = c("#068E8C",  "#E5BA52", "#C82E6B", "#364285", "#00A757", "#D86F27", "#991B37")) +
   scale_y_continuous(breaks= scales::pretty_breaks()) +
-  scale_fill_manual("Affiliation",
-                    values = c(
-                      "Society" = "#23445D",
-                      "Institutional" = "#AE4132",
-                      "No relation" = "grey60")) +
   theme_minimal() +
-  labs(y = "Number of Reverse-Flip Journals", x = "Publisher") +
+  labs(y = "Number of Reverse-Flip Journals", x = "Country") +
   theme(plot.margin=margin(30,30,30,30)) +
   theme(panel.grid.minor=element_blank()) +
   theme(axis.ticks=element_blank()) +
@@ -295,7 +293,6 @@ ggplot(tt, aes(country, ..count.., fill = factor(relation,
   theme(panel.border=element_blank()) +
   theme(legend.position="top") -> p
 p
-ggsave("country_plot.png", p, width = 8, height = 6, dpi = 300)
 ```
 
 #### f) How old were the journals at the time of the reverse flip?
