@@ -166,13 +166,13 @@ To investigate whether the citation impact changed after the access model conver
 The most recent SNIP values were reported for 2017; accordingly, we only included journals that flipped until 2015 (N = 82).
 Figure illustrates the SNIP distribution of reverse-flip journals two years before and after the conversion. Our analysis highlights that there is only little change in SNIP values before and after the business model change.
 
-![Development of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.5](results_files/figure-docx/unnamed-chunk-13-1.png)
+![Development of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.5](results_files/figure-docx/fig_11-1.png)
 
 ### Research Question 5: For hybrid journals—OA journals that have flipped to hybrid OA directly as well as OA journals that first became subscription venues and then, at a later point, incorporated hybrid OA—,
 
 #### a) How do APC levels differ before and after the flip?
 
-![Scatterplot of APC list prices in USD based on pricing information for the year before the reverse-flip and for journals offering an hybrid open access option at the second half of 2018. Fully OA journals denoted with 0 did not charge an APC.](results_files/figure-docx/unnamed-chunk-14-1.png)
+![Scatterplot of APC list prices in USD based on pricing information for the year before the reverse-flip and for journals offering an hybrid open access option at the second half of 2018. Fully OA journals denoted with 0 did not charge an APC.](results_files/figure-docx/fig_12-1.png)
 
 We were able to obtain publication fee list prices before and after the flip including the most recent level in 2018. While  32 fully open access journals charged author fees before the reverse-flip, 118 journals offered paid hybrid open access options at the time of analysis. Figure compares APC list prices in USD with each other, highlighting an considerable increase after the reverse flip. It also shows that many journals affiliated with scholarly societies and research institutions introduced or raised their APCs for open access publishing.
 
@@ -202,5 +202,5 @@ Netherlands                                          2              6085        
 
 We were able to find the embargo periods for 112) out of 154 reverse-flip journals that currently offer a hybrid OA option. The majority of the journals (N=73) does not allow authors to share their work openly, for example by depositing a copy of the manuscript in an OA repository, until 12 months after it has been published. However, 14% of the journals (N=16) raise the bar to 24 months, while 12% (N=13) do not impose any embargo periods (Figure).
 
-![](results_files/figure-docx/unnamed-chunk-18-1.png)<!-- -->
+![](results_files/figure-docx/fig_13-1.png)<!-- -->
 
