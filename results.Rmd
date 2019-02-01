@@ -113,7 +113,7 @@ article_volume %>%
   geom_vline(aes(xintercept = median(average, na.rm = T)),
              colour = "red", linetype ="dashed", size = .8) +
   theme_minimal() +
-  labs(x = "Average Journal Volume", y = "Number of Journals") +
+  labs(x = "Average Article Volume", y = "Number of Journals") +
     theme_minimal(base_family="Roboto") +
   scale_x_continuous(breaks = seq(0,600, by = 50)) +
   theme(plot.margin=margin(30,30,30,30)) +
@@ -324,12 +324,16 @@ Figure presents the annual distribution of journals that converted from fully OA
 my_df %>%
   mutate(age_at_time_of_flip = year_reverse_flipped - year_founded) %>%
   mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip < 6, "1-5", NA)) %>%
-  mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip > 5, "6-15", age_at_time_of_flip_cat)) %>%
-  mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip > 15, "> 15", age_at_time_of_flip_cat)) -> my_df_tt
-ggplot(my_df_tt, aes(as.factor(year_reverse_flipped), 
-                     fill = factor(age_at_time_of_flip_cat, levels = c("1-5", "6-15", "> 15")))) +
-  geom_histogram(stat = "count") +
-  scale_fill_manual("Journal Age at Reverse Flip (in Years)", values = c("#fcde9c","#e34f6f","#7c1d6f")) +
+  mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip > 5, "6-10", age_at_time_of_flip_cat)) %>%
+  mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip > 9, "11-15", age_at_time_of_flip_cat)) %>%
+  mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip > 15, "> 15", age_at_time_of_flip_cat)) %>%
+  mutate(age_at_time_of_flip_cat = factor(age_at_time_of_flip_cat,
+                                            levels = c("1-5", "6-10", "11-15", "> 15"))) -> my_df_tt
+ggplot(my_df_tt, aes(as.factor(year_reverse_flipped), ..count.., 
+                     fill = age_at_time_of_flip_cat)) +
+  geom_bar() + 
+  scale_fill_manual("Journal Age at Reverse Flip (in Years)", 
+                    values = c("1-5" = "#fcde9c", "6-10" = "#f0746e", "11-15" = "#dc3977", "> 15" = "#7c1d6f")) +
   theme_minimal() +
   labs(x = "Year of Reverse Flip", y = "Number of Journals") +
     theme_minimal(base_family="Roboto") +
