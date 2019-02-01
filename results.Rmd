@@ -350,17 +350,13 @@ Figure presents a breakdown of discipline by journal age at the time of the reve
 
 ```{r fig_9, fig.cap='Discipline by journal age at the time of reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per Discipline.'}
 # Motivation: https://serialmentor.com/dataviz/nested-proportions.html
-my_df %>%
-  mutate(Discipline = fct_infreq(Discipline)) %>%
-  mutate(age_at_time_of_flip = year_reverse_flipped - year_founded) %>%
-  mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip < 6, "1-5", NA)) %>%
-  mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip > 5, "6-15", age_at_time_of_flip_cat)) %>%
-  mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip > 15, "> 15", age_at_time_of_flip_cat)) -> my_df_tt
+my_df_tt %>%
+  mutate(Discipline = fct_infreq(Discipline)) -> my_df_tt
 year_all <- my_df_tt %>%
   count(age_at_time_of_flip_cat)
 my_df_tt %>%
   count(age_at_time_of_flip_cat, Discipline) %>% 
-ggplot(aes(x = factor(age_at_time_of_flip_cat, levels = c("1-5", "6-15", "> 15")), y = n)) +
+ggplot(aes(x = factor(age_at_time_of_flip_cat), y = n)) +
   geom_bar(data = year_all, aes(fill = "All Reverse Flips"), color = "transparent", stat = "identity") +
   geom_bar(aes(fill = "Reverse Flips per Discipline"), color = "transparent", stat = "identity") +
   facet_wrap(~Discipline, nrow = 1) +
@@ -368,7 +364,7 @@ ggplot(aes(x = factor(age_at_time_of_flip_cat, levels = c("1-5", "6-15", "> 15")
   theme_minimal() +
   labs(x = "Journal Age at Reverse Flip", y = "Number of Journals") +
   theme_minimal(base_family="Roboto") +
-  theme(plot.margin=margin(30,30,30,30)) +
+  theme(plot.margin=margin(5,5,5,5)) +
   theme(panel.grid.minor=element_blank()) +
   theme(axis.ticks=element_blank()) +
   theme(panel.grid.major.x=element_blank()) +
@@ -533,9 +529,10 @@ We were able to obtain publication fee list prices before and after the flip inc
 
 
 ```{r}
-hybrid <- readr::read_csv("https://github.com/subugoe/hybrid_oa_dashboard/blob/master/data/hybrid_publications.csv?raw=true") 
-my_df %>% 
-  filter(oa_model == "Hybrid") -> apc_df
+hybrid <- readr::read_csv("data/hybrid_publications.csv") 
+my_df %>%
+  select(journal_name, year_reverse_flipped) %>%
+  distinct() -> apc_df
 hybrid %>%
   filter(journal_title %in% apc_df$journal_name) %>%
   distinct(journal_title, issued, yearly_jn_volume, license_ref_n) %>%
@@ -548,12 +545,12 @@ hybrid %>%
 ```
 
 
-Retrieving open content licenses including start date from Crossref, we were able to obtain `r sum(hybrid_shares$hoa)` articles from `r length(unique(hybrid_shares$journal_title))` that were made available immediately as open access articles in the year or after the reverse flip. They represent `r round(sum(hybrid_shares$hoa) / sum(hybrid_shares$jn_volume) * 100, 2)`% of the total article volume studied.
+Retrieving open content licenses including start date from Crossref, we were able to obtain `r sum(hybrid_shares$hoa)` articles from `r length(unique(hybrid_shares$journal_title))` reverse flip journals that were made available immediately as open access articles in the year or after the reverse flip. They represent `r round(sum(hybrid_shares$hoa) / sum(hybrid_shares$jn_volume) * 100, 2)`% of the total article volume of these journals.
 
 Using data from the Open APC initiative, we then checked whether academic institutions had financed hybrid OA articles in reverse-flip journals. We found evidence for institutional sponsorship for three articles in these journals, and as part of the transformative agreement “Springer Compact" between Springer Nature and individual institutions and countries. Table summarizes the total number of articles in reverse-flip journals that were made openly available through “Springer Compact” as well as its proportion per transformation contract. Although the proportion of these articles is marginal, our findings suggest that control mechanisms that help institutions to prevent funding of OA publications in reverse-flipped journals are not in place.
 
 ```{r}
-oapc <- readr::read_csv("https://github.com/subugoe/hybrid_oa_dashboard/blob/master/data/oapc_hybrid.csv?raw=true") %>% 
+oapc <- readr::read_csv("data/oapc_hybrid.csv") %>% 
    group_by(country_name, hybrid_type, publisher) %>% 
    summarise(n = n())
 hybrid %>%
@@ -561,10 +558,10 @@ hybrid %>%
  # distinct(journal_title, issued, yearly_jn_volume, license_ref_n) %>%
   inner_join(apc_df, by = c("journal_title" = "journal_name")) %>%
   filter(issued >= year_reverse_flipped) %>% 
-  filter(!is.na(hybrid_type)) %>%
-  group_by(hybrid_type, country_name, publisher.x) %>%
+ # filter(!is.na(hybrid_type)) %>%
+  group_by(hybrid_type, country_name, publisher) %>%
   count() %>% 
-  left_join(oapc, by = c("country_name", "hybrid_type", "publisher.x" = "publisher")) %>%
+  left_join(oapc, by = c("country_name", "hybrid_type", "publisher" = "publisher")) %>%
   mutate(prop = round(n.x / n.y * 100,2)) %>%
   filter(hybrid_type == "Open APC (Offsetting)") %>%
   arrange(desc(n.x)) %>%
