@@ -161,6 +161,50 @@ my_df %>%
   knitr::kable(col.names = c("Discipline", "Reverse-flip Journals", "Proportion (in %)"), digits = 2, caption = "Breakdown of reverse flip journals by discipline")
 ```
 
+```{r}
+cr_md <- readr::read_csv("data/cr_md.csv", col_types = cols(.default = "c")) %>%
+  mutate(issued_year = lubridate::year(lubridate::parse_date_time(issued, c('y', 'ymd', 'ym'))))
+cr_md %>%
+  group_by(issn) %>% 
+  summarise(volumes = n_distinct(issued_year), n = sum(n_distinct(DOI))) %>% 
+  mutate(average = n / volumes) -> article_volume
+article_volume %>%
+  inner_join(my_df, by = "issn") %>% 
+  select(1:4, Discipline) %>%
+  mutate(Discipline = case_when(
+  Discipline == "SSH" ~ "Social Sciences and Humanities",
+  Discipline == "PSM" ~ "Physical Sciences and Mathematics",
+  Discipline == "Health" ~ "Health Sciences",
+  Discipline == "LS" ~ "Life Sciences"
+)) %>%
+  mutate(vol_cat = case_when(
+   average < 20 ~ "Smallest",
+     average > 19 & average < 60 ~ "Small",
+     average > 59 & average < 150 ~ "Medium",
+     average > 149 & average < 600 ~ "Large",
+     average > 600 ~"Largest")
+  )  %>%
+  mutate(vol_cat = factor(vol_cat, levels = c("Smallest", "Small", "Medium", "Large", "Largest"))) %>%
+  mutate(Discipline = fct_infreq(Discipline)) -> my_df_tt
+year_all <- my_df_tt %>%
+  count(vol_cat)
+my_df_tt %>%
+  count(vol_cat, Discipline) %>% 
+  ggplot(aes(x = factor(vol_cat), y = nn, fill = Discipline)) +
+  geom_bar(stat = "identity", position = position_stack(reverse = TRUE)) +
+  scale_fill_viridis_d(name = "") +
+  theme_minimal() +
+  labs(x = "Journal Size", y = "Number of Journals") +
+  theme_minimal(base_family="Roboto") +
+  theme(plot.margin=margin(30,30,30,30)) +
+  theme(panel.grid.minor=element_blank()) +
+  theme(axis.ticks=element_blank()) +
+  theme(panel.grid.major.x=element_blank()) +
+  theme(panel.border=element_blank()) +
+  theme(legend.position = "top",
+          legend.justification = "right") +
+  guides(fill=guide_legend(nrow=2,byrow=TRUE))
+```
 
 #### d) Under which publisher did the reverse flip occur? Who currently publishes the journals?
 
@@ -545,7 +589,7 @@ hybrid %>%
 ```
 
 
-Retrieving open content licenses including start date from Crossref, we were able to obtain `r sum(hybrid_shares$hoa)` articles from `r length(unique(hybrid_shares$journal_title))` reverse flip journals that were made available immediately as open access articles in the year or after the reverse flip. They represent `r round(sum(hybrid_shares$hoa) / sum(hybrid_shares$jn_volume) * 100, 2)`% of the total article volume of these journals.
+Retrieving open content licenses including start date from Crossref, we were able to obtain `r sum(hybrid_shares$hoa)` articles from `r length(unique(hybrid_shares$journal_title))` reverse flip journals that were made available immediately as open access articles in the year or after the reverse flip. They represent `r round(sum(hybrid_shares$hoa) / sum(hybrid_shares$jn_volume) * 100, 2)`% of the total article volume of these journals after the reverse-flip (N = `r sum(hybrid_shares$jn_volume)`).
 
 Using data from the Open APC initiative, we then checked whether academic institutions had financed hybrid OA articles in reverse-flip journals. We found evidence for institutional sponsorship for three articles in these journals, and as part of the transformative agreement “Springer Compact" between Springer Nature and individual institutions and countries. Table summarizes the total number of articles in reverse-flip journals that were made openly available through “Springer Compact” as well as its proportion per transformation contract. Although the proportion of these articles is marginal, our findings suggest that control mechanisms that help institutions to prevent funding of OA publications in reverse-flipped journals are not in place.
 

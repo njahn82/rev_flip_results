@@ -56,6 +56,7 @@ Social Sciences and Humanities                          38                  25
 Life Sciences                                           23                  15
 Total                                                  152                 100
 
+![](results_files/figure-docx/unnamed-chunk-7-1.png)<!-- -->
 
 #### d) Under which publisher did the reverse flip occur? Who currently publishes the journals?
 
@@ -183,7 +184,7 @@ We were able to obtain publication fee list prices before and after the flip inc
 
 
 
-Retrieving open content licenses including start date from Crossref, we were able to obtain 1,083 articles from 25 reverse flip journals that were made available immediately as open access articles in the year or after the reverse flip. They represent 8.7% of the total article volume of these journals.
+Retrieving open content licenses including start date from Crossref, we were able to obtain 1,083 articles from 25 reverse flip journals that were made available immediately as open access articles in the year or after the reverse flip. They represent 8.7% of the total article volume of these journals after the reverse-flip (N = 12,517).
 
 Using data from the Open APC initiative, we then checked whether academic institutions had financed hybrid OA articles in reverse-flip journals. We found evidence for institutional sponsorship for three articles in these journals, and as part of the transformative agreement “Springer Compact" between Springer Nature and individual institutions and countries. Table summarizes the total number of articles in reverse-flip journals that were made openly available through “Springer Compact” as well as its proportion per transformation contract. Although the proportion of these articles is marginal, our findings suggest that control mechanisms that help institutions to prevent funding of OA publications in reverse-flipped journals are not in place.
 
