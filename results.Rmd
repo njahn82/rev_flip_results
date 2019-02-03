@@ -495,6 +495,36 @@ tt %>%
 
 There are, however, some cases were article volume increased noticeably. One example is the journal *Meta Gene* launched by Elsevier BV in 2013. Its article volume grew from 86 articles published in the year of the reverse flip (2016) to 201 articles published two years after (2018).
 
+```{r}
+tt %>%
+  select(1:4,year_reverse_flipped, journal_name, publisher, lag) %>%
+  group_by(issn) %>%
+  mutate(lags = lag(n)) %>%
+  mutate(pct_change = (n - lags) / lags) %>%
+  mutate(pct_change = ifelse(is.na(pct_change), 0, pct_change)) -> jn_vol_change
+write_csv(jn_vol_change, "data/jn_vol_change.csv")
+# jn_vol_change %>%
+#   mutate(publisher_normalize = ifelse(publisher %in% rev_pub_count$publisher, publisher, "Other"))
+# jn_vol_change %>%
+#   ggplot(aes(lag, pct_change, group = journal_name)) +
+#   geom_line(alpha = 0.2) 
+# jn_vol_change %>%
+#   mutate(publisher_normalize = ifelse(publisher %in% rev_pub_count$publisher, publisher, "Other")) %>%
+#   ggplot(aes(lag, pct_change, group = journal_name, color = publisher_normalize)) +
+#   geom_line(alpha = 0.2, size = 0.5) +
+#   scale_color_manual("Publisher", values = c("#068E8C",  "#E5BA52", "#C82E6B", "#364285", "#00A757", "#D86F27", "#991B37")) +
+#   theme_minimal() +
+#   scale_y_continuous(labels = scales::percent)-> p
+#   plotly::ggplotly(p)
+#   jn_vol_change %>%
+#   mutate(publisher_normalize = ifelse(publisher %in% rev_pub_count$publisher, publisher, "Other")) %>%
+#   ggplot(aes(lag, n, group = journal_name, color = publisher_normalize)) +
+#   geom_line(alpha = 0.2, size = 0.5) +
+#   scale_color_manual("Publisher", values = c("#068E8C",  "#E5BA52", "#C82E6B", "#364285", "#00A757", "#D86F27", "#991B37")) +
+#   theme_minimal() -> q
+# plotly::ggplotly(q)
+```
+
 #### c) Do journal-level citation metrics change?
 
 ```{r}
@@ -524,10 +554,9 @@ tt %>%
   geom_boxplot() +
   coord_cartesian(ylim = 0:2.5) +
   theme_minimal() +
-  xlab("Years since the reverse flip") +
+  xlab("Years since the Reverse Flip") +
   ylab("SNIP") +
   scale_fill_manual(values = c("#009392","#39b185","#e9e29c","#e88471","#cf597e")) +
-  # remove legend
   theme_minimal(base_family="Roboto") +
   theme(plot.margin=margin(30,30,30,30)) +
   theme(panel.grid.minor=element_blank()) +
@@ -535,7 +564,6 @@ tt %>%
   theme(panel.grid.major.x=element_blank()) +
   theme(panel.border=element_blank()) +
   guides(fill=FALSE)
-
 ```
 
 ### Research Question 5: For hybrid journals—OA journals that have flipped to hybrid OA directly as well as OA journals that first became subscription venues and then, at a later point, incorporated hybrid OA—,
@@ -555,12 +583,9 @@ ggplot(society_df,
                       "Institutional" = "#AE4132",
                       "No relation" = "grey60")) +
   labs(x = "Fully OA APC", y = "Hybrid OA APC") +
-#  scale_x_continuous(limits = c(0,4000)) +
   theme_minimal(base_family="Roboto") +
   theme(plot.margin=margin(30,30,30,30)) +
   theme(panel.grid.minor=element_blank()) +
- #theme(axis.ticks=element_blank()) +
- # theme(panel.grid.major.x=element_blank()) +
   theme(panel.border=element_blank()) +
   theme(legend.position = "top",
         legend.justification = "right")
@@ -586,6 +611,7 @@ hybrid %>%
   summarise(jn_volume = sum(yearly_jn_volume),
             hoa = sum(license_ref_n)) %>%
   mutate(prop = round(hoa/ jn_volume * 100, 2)) -> hybrid_shares
+write_csv(hybrid_shares, "data/hybrid_article_shares.csv")
 ```
 
 

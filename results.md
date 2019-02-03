@@ -159,6 +159,8 @@ To determine the variation in publication volume, we studied all journals that h
 
 There are, however, some cases were article volume increased noticeably. One example is the journal *Meta Gene* launched by Elsevier BV in 2013. Its article volume grew from 86 articles published in the year of the reverse flip (2016) to 201 articles published two years after (2018).
 
+
+
 #### c) Do journal-level citation metrics change?
 
 
