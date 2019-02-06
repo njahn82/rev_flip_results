@@ -28,8 +28,6 @@ knitr::knit_hooks$set(inline = function(x) {
    })
 # libraries
 library(tidyverse)
-#library(ggridges)
-#library(ggpubr)
 ```
 
 ```{r data}
@@ -161,7 +159,7 @@ my_df %>%
   knitr::kable(col.names = c("Discipline", "Reverse-flip Journals", "Proportion (in %)"), digits = 2, caption = "Breakdown of reverse flip journals by discipline")
 ```
 
-```{r}
+```{r fig_6}
 cr_md <- readr::read_csv("data/cr_md.csv", col_types = cols(.default = "c")) %>%
   mutate(issued_year = lubridate::year(lubridate::parse_date_time(issued, c('y', 'ymd', 'ym'))))
 cr_md %>%
@@ -279,7 +277,7 @@ visualizes the relationships of journals to scholarly societies and research org
 
 Figure visualizes the relationships of journals to scholarly societies and research organizations by publisher showing that the majority of reverse-flip journals from major publishers were not in-house venues, but journals affiliated with scholarly associations and other research organizations.
 
-```{r fig_6, fig.cap="Reverse-flip journals affiliated with scholarly societies and research institutions per publisher"}
+```{r fig_7, fig.cap="Reverse-flip journals affiliated with scholarly societies and research institutions per publisher"}
 my_df %>%
     mutate(publisher = ifelse(publisher %in% "Brill Academic Publishers", "Brill", publisher)) %>%
   mutate(publisher = forcats::fct_lump(publisher, 6)) %>%
@@ -311,7 +309,7 @@ ggplot(society_df, aes (publisher, ..count..,
 
 Figure presents the countries where the scholarly societies and research organizations are located by publisher.
 
-```{r fig_7}
+```{r fig_8}
 society_df %>%
   filter(!journal_location %in% c("-", "N/A")) %>% 
   mutate(country = forcats::fct_lump(journal_location, 8)) %>%
@@ -364,7 +362,7 @@ age_df %>%
 
 Figure presents the annual distribution of journals that converted from fully OA to a subscription-based business model grouped by journal age at the time of the flip
 
-```{r fig_8, fig.cap="Number of journals that converted from fully OA to a subscription-based business model per year, grouped by journal age at the time of the reverse flip"}
+```{r fig_9, fig.cap="Number of journals that converted from fully OA to a subscription-based business model per year, grouped by journal age at the time of the reverse flip"}
 my_df %>%
   mutate(age_at_time_of_flip = year_reverse_flipped - year_founded) %>%
   mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip < 6, "1-5", NA)) %>%
@@ -392,7 +390,7 @@ ggplot(my_df_tt, aes(as.factor(year_reverse_flipped), ..count..,
 Figure presents a breakdown of discipline by journal age at the time of the reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per discipline. 
 
 
-```{r fig_9, fig.cap='Discipline by journal age at the time of reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per Discipline.'}
+```{r fig_10, fig.cap='Discipline by journal age at the time of reverse flip, shown as proportion of the total number of reverse flip journals in the dataset. The colored areas represent the distribution of journals per Discipline.'}
 # Motivation: https://serialmentor.com/dataviz/nested-proportions.html
 my_df_tt %>%
   mutate(Discipline = fct_infreq(Discipline)) -> my_df_tt
@@ -470,7 +468,7 @@ tmp %>%
 
 To determine the variation in publication volume, we studied all journals that had reverse-flipped until 2016 for which Crossref provided article metadata two years before and after the conversion (N = `r tmp %>%  filter(lag %in% c(-2,2)) %>%  group_by(issn) %>%  filter(n() > 1) %>% group_by(issn) %>% summarise(n_distinct(issn)) %>% nrow()`).  For the most part, the article volumes two years before and after the flip reveal little change (see Figure X), yet some individual cases show a noticeable increase. Elsevier's Meta Gene, for example, launched as an OA journal with 16 published articles in 2013; the journal flipped to a hybrid model in 2016, publishing 86 articles that year, and increased its article volume to 201 in 2018.
 
-```{r fig_10, fig.cap='Developement of publication volume two years before and after the reverse flip.'}
+```{r fig_11, fig.cap='Developement of publication volume two years before and after the reverse flip.'}
 tmp %>% 
   filter(lag %in% c(-2:2)) %>% 
   group_by(issn) %>% 
@@ -548,7 +546,7 @@ To investigate whether the citation impact changed after the access model conver
 The most recent SNIP values were reported for 2017; accordingly, we only included journals that flipped until 2015 (N = `r n_distinct(tt$issn)`).
 Figure illustrates the SNIP distribution of reverse-flip journals two years before and after the conversion. Our analysis highlights that there is only little change in SNIP values before and after the business model change.
 
-```{r fig_11, fig.cap='Development of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.5'}
+```{r fig_12, fig.cap='Development of source normalized impact per paper (SNIP) value between two years before and after the reverse flip. Coordinate system limited to SNIP value 2.5'}
 tt %>%
   ggplot(aes(lag, SNIP.x, fill = lag)) +
   geom_boxplot() +
@@ -570,7 +568,7 @@ tt %>%
 
 #### a) How do APC levels differ before and after the flip?
 
-```{r fig_12, fig.cap="Scatterplot of APC list prices in USD based on pricing information for the year before the reverse-flip and for journals offering an hybrid open access option at the second half of 2018. Fully OA journals denoted with 0 did not charge an APC."}
+```{r fig_13, fig.cap="Scatterplot of APC list prices in USD based on pricing information for the year before the reverse-flip and for journals offering an hybrid open access option at the second half of 2018. Fully OA journals denoted with 0 did not charge an APC."}
 
 ggplot(society_df, 
        aes(as.numeric(apc_pre), as.numeric(apc_now))) + 
@@ -649,7 +647,7 @@ embargo <- readxl::read_xlsx("data/master_list.xlsx", sheet = 4) %>%
 ```
 We were able to find the embargo periods for `r embargo %>% filter(!is.na(embargo)) %>% nrow()`) out of `r nrow(embargo)` reverse-flip journals that currently offer a hybrid OA option. The majority of the journals (N=`r embargo %>% filter(embargo == 12) %>% nrow()`) does not allow authors to share their work openly, for example by depositing a copy of the manuscript in an OA repository, until 12 months after it has been published. However, 14% of the journals (N=16) raise the bar to 24 months, while 12% (N=13) do not impose any embargo periods (Figure).
 
-```{r fig_13}
+```{r fig_15}
 embargo %>%
   filter(!is.na(embargo)) %>%
   count(embargo) %>%
