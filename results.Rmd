@@ -569,9 +569,14 @@ tt %>%
 #### a) How do APC levels differ before and after the flip?
 
 ```{r fig_13, fig.cap="Scatterplot of APC list prices in USD based on pricing information for the year before the reverse-flip and for journals offering an hybrid open access option at the second half of 2018. Fully OA journals denoted with 0 did not charge an APC."}
-
-ggplot(society_df, 
-       aes(as.numeric(apc_pre), as.numeric(apc_now))) + 
+apc_subset <- society_df %>%
+  mutate(apc_pre_ = as.integer(as.numeric(apc_pre)), 
+         apc_now_ = as.integer(as.numeric(apc_now))) %>%
+  filter(!is.na(apc_pre_), !is.na(apc_now_)) %>% 
+  select(issn, journal_name, relation, apc_pre_, apc_now_) 
+# dump
+write_csv(apc_subset, "data/fig13_data.csv")
+ggplot(apc_subset, aes(apc_pre_, apc_now_)) + 
   geom_point(aes(color = factor(relation, 
                                      c("Society", "Institutional", "No relation"))), alpha = 0.7, size = 2) +
 #  coord_equal(ratio=1) +
@@ -580,7 +585,7 @@ ggplot(society_df,
                       "Society" = "#23445D",
                       "Institutional" = "#AE4132",
                       "No relation" = "grey60")) +
-  labs(x = "Fully OA APC", y = "Hybrid OA APC") +
+  labs(x = "APC Pre-Flip", y = "APC Post-Flip") +
   theme_minimal(base_family="Roboto") +
   theme(plot.margin=margin(30,30,30,30)) +
   theme(panel.grid.minor=element_blank()) +
