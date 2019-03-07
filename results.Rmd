@@ -367,7 +367,7 @@ my_df %>%
   mutate(age_at_time_of_flip = year_reverse_flipped - year_founded) %>%
   mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip < 6, "1-5", NA)) %>%
   mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip > 5, "6-10", age_at_time_of_flip_cat)) %>%
-  mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip > 9, "11-15", age_at_time_of_flip_cat)) %>%
+  mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip > 10, "11-15", age_at_time_of_flip_cat)) %>%
   mutate(age_at_time_of_flip_cat = ifelse(age_at_time_of_flip > 15, "> 15", age_at_time_of_flip_cat)) %>%
   mutate(age_at_time_of_flip_cat = factor(age_at_time_of_flip_cat,
                                             levels = c("1-5", "6-10", "11-15", "> 15"))) -> my_df_tt
@@ -585,7 +585,7 @@ ggplot(apc_subset, aes(apc_pre_, apc_now_)) +
                       "Society" = "#23445D",
                       "Institutional" = "#AE4132",
                       "No relation" = "grey60")) +
-  labs(x = "APC Pre-Flip", y = "APC Post-Flip") +
+  labs(x = "APC Pre-Flip (in USD)", y = "APC Post-Flip (in USD)") +
   theme_minimal(base_family="Roboto") +
   theme(plot.margin=margin(30,30,30,30)) +
   theme(panel.grid.minor=element_blank()) +
